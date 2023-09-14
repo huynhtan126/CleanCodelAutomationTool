@@ -1,0 +1,81 @@
+C:\TGL\Document\WpfApp1\WpfApp1\bin\Debug\CleanCode.exe.config
+C:\TGL\Document\WpfApp1\WpfApp1\bin\Debug\CleanCode.exe
+C:\TGL\Document\WpfApp1\WpfApp1\bin\Debug\CleanCode.pdb
+C:\TGL\Document\WpfApp1\WpfApp1\obj\Debug\CleanCode.csproj.AssemblyReference.cache
+C:\TGL\Document\WpfApp1\WpfApp1\obj\Debug\CleanCode.csproj.SuggestedBindingRedirects.cache
+C:\TGL\Document\WpfApp1\WpfApp1\obj\Debug\Interop.AutoCAD.dll
+C:\TGL\Document\WpfApp1\WpfApp1\obj\Debug\CleanCode.csproj.ResolveComReference.cache
+C:\TGL\Document\WpfApp1\WpfApp1\obj\Debug\App.g.cs
+C:\TGL\Document\WpfApp1\WpfApp1\obj\Debug\CleanCode_MarkupCompile.cache
+C:\TGL\Document\WpfApp1\WpfApp1\obj\Debug\CleanCode_MarkupCompile.lref
+C:\TGL\Document\WpfApp1\WpfApp1\obj\Debug\CleanCode.g.resources
+C:\TGL\Document\WpfApp1\WpfApp1\obj\Debug\CleanCode.Properties.Resources.resources
+C:\TGL\Document\WpfApp1\WpfApp1\obj\Debug\CleanCode.csproj.GenerateResource.cache
+C:\TGL\Document\WpfApp1\WpfApp1\obj\Debug\CleanCode.csproj.CoreCompileInputs.cache
+C:\TGL\Document\WpfApp1\WpfApp1\obj\Debug\CleanCode.exe
+C:\TGL\Document\WpfApp1\WpfApp1\obj\Debug\CleanCode.pdb
+C:\TGL\Document\WpfApp1\WpfApp1\obj\Debug\CleanCode.Resource1.resources
+C:\TGL\Document\WpfApp1\WpfApp1\obj\Debug\View\MainWindow.g.cs
+C:\TGL\Document\WpfApp1\WpfApp1\obj\Debug\View\MainWindow.baml
+C:\TGL\Document\WpfApp1\WpfApp1\bin\Debug\MaterialDesignColors.dll
+C:\TGL\Document\WpfApp1\WpfApp1\bin\Debug\MaterialDesignThemes.Wpf.dll
+C:\TGL\Document\WpfApp1\WpfApp1\bin\Debug\Microsoft.Xaml.Behaviors.dll
+C:\TGL\Document\WpfApp1\WpfApp1\bin\Debug\MaterialDesignColors.pdb
+C:\TGL\Document\WpfApp1\WpfApp1\bin\Debug\MaterialDesignThemes.Wpf.pdb
+C:\TGL\Document\WpfApp1\WpfApp1\bin\Debug\MaterialDesignThemes.Wpf.xml
+C:\TGL\Document\WpfApp1\WpfApp1\bin\Debug\Microsoft.Xaml.Behaviors.pdb
+C:\TGL\Document\WpfApp1\WpfApp1\bin\Debug\Microsoft.Xaml.Behaviors.xml
+C:\TGL\Document\WpfApp1\WpfApp1\obj\Debug\CleanCode.csproj.CopyComplete
+C:\TGL\Document\WpfApp1\CleanCode\bin\Debug\CleanCode.exe.config
+C:\TGL\Document\WpfApp1\CleanCode\bin\Debug\CleanCode.exe
+C:\TGL\Document\WpfApp1\CleanCode\bin\Debug\CleanCode.pdb
+C:\TGL\Document\WpfApp1\CleanCode\bin\Debug\MaterialDesignColors.dll
+C:\TGL\Document\WpfApp1\CleanCode\bin\Debug\MaterialDesignThemes.Wpf.dll
+C:\TGL\Document\WpfApp1\CleanCode\bin\Debug\Microsoft.Xaml.Behaviors.dll
+C:\TGL\Document\WpfApp1\CleanCode\bin\Debug\MaterialDesignColors.pdb
+C:\TGL\Document\WpfApp1\CleanCode\bin\Debug\MaterialDesignThemes.Wpf.pdb
+C:\TGL\Document\WpfApp1\CleanCode\bin\Debug\MaterialDesignThemes.Wpf.xml
+C:\TGL\Document\WpfApp1\CleanCode\bin\Debug\Microsoft.Xaml.Behaviors.pdb
+C:\TGL\Document\WpfApp1\CleanCode\bin\Debug\Microsoft.Xaml.Behaviors.xml
+C:\TGL\Document\WpfApp1\CleanCode\obj\Debug\CleanCode.csproj.AssemblyReference.cache
+C:\TGL\Document\WpfApp1\CleanCode\obj\Debug\Interop.AutoCAD.dll
+C:\TGL\Document\WpfApp1\CleanCode\obj\Debug\CleanCode.csproj.ResolveComReference.cache
+C:\TGL\Document\WpfApp1\CleanCode\obj\Debug\View\MainWindow.g.cs
+C:\TGL\Document\WpfApp1\CleanCode\obj\Debug\App.g.cs
+C:\TGL\Document\WpfApp1\CleanCode\obj\Debug\CleanCode_MarkupCompile.cache
+C:\TGL\Document\WpfApp1\CleanCode\obj\Debug\CleanCode_MarkupCompile.lref
+C:\TGL\Document\WpfApp1\CleanCode\obj\Debug\View\MainWindow.baml
+C:\TGL\Document\WpfApp1\CleanCode\obj\Debug\CleanCode.g.resources
+C:\TGL\Document\WpfApp1\CleanCode\obj\Debug\CleanCode.Properties.Resources.resources
+C:\TGL\Document\WpfApp1\CleanCode\obj\Debug\CleanCode.Resource1.resources
+C:\TGL\Document\WpfApp1\CleanCode\obj\Debug\CleanCode.csproj.GenerateResource.cache
+C:\TGL\Document\WpfApp1\CleanCode\obj\Debug\CleanCode.csproj.CoreCompileInputs.cache
+C:\TGL\Document\WpfApp1\CleanCode\obj\Debug\CleanCode.csproj.CopyComplete
+C:\TGL\Document\WpfApp1\CleanCode\obj\Debug\CleanCode.exe
+C:\TGL\Document\WpfApp1\CleanCode\obj\Debug\CleanCode.pdb
+C:\Super backup\K10-Tekla API\CleanCode\CleanCodelAutomationTool\CleanCode\bin\Debug\CleanCode.exe.config
+C:\Super backup\K10-Tekla API\CleanCode\CleanCodelAutomationTool\CleanCode\bin\Debug\CleanCode.exe
+C:\Super backup\K10-Tekla API\CleanCode\CleanCodelAutomationTool\CleanCode\bin\Debug\CleanCode.pdb
+C:\Super backup\K10-Tekla API\CleanCode\CleanCodelAutomationTool\CleanCode\bin\Debug\MaterialDesignColors.dll
+C:\Super backup\K10-Tekla API\CleanCode\CleanCodelAutomationTool\CleanCode\bin\Debug\MaterialDesignThemes.Wpf.dll
+C:\Super backup\K10-Tekla API\CleanCode\CleanCodelAutomationTool\CleanCode\bin\Debug\Microsoft.Xaml.Behaviors.dll
+C:\Super backup\K10-Tekla API\CleanCode\CleanCodelAutomationTool\CleanCode\bin\Debug\MaterialDesignColors.pdb
+C:\Super backup\K10-Tekla API\CleanCode\CleanCodelAutomationTool\CleanCode\bin\Debug\MaterialDesignThemes.Wpf.pdb
+C:\Super backup\K10-Tekla API\CleanCode\CleanCodelAutomationTool\CleanCode\bin\Debug\MaterialDesignThemes.Wpf.xml
+C:\Super backup\K10-Tekla API\CleanCode\CleanCodelAutomationTool\CleanCode\bin\Debug\Microsoft.Xaml.Behaviors.pdb
+C:\Super backup\K10-Tekla API\CleanCode\CleanCodelAutomationTool\CleanCode\bin\Debug\Microsoft.Xaml.Behaviors.xml
+C:\Super backup\K10-Tekla API\CleanCode\CleanCodelAutomationTool\CleanCode\obj\Debug\CleanCode.csproj.AssemblyReference.cache
+C:\Super backup\K10-Tekla API\CleanCode\CleanCodelAutomationTool\CleanCode\obj\Debug\CleanCode.csproj.ResolveComReference.cache
+C:\Super backup\K10-Tekla API\CleanCode\CleanCodelAutomationTool\CleanCode\obj\Debug\View\MainWindow.g.cs
+C:\Super backup\K10-Tekla API\CleanCode\CleanCodelAutomationTool\CleanCode\obj\Debug\App.g.cs
+C:\Super backup\K10-Tekla API\CleanCode\CleanCodelAutomationTool\CleanCode\obj\Debug\CleanCode_MarkupCompile.cache
+C:\Super backup\K10-Tekla API\CleanCode\CleanCodelAutomationTool\CleanCode\obj\Debug\CleanCode_MarkupCompile.lref
+C:\Super backup\K10-Tekla API\CleanCode\CleanCodelAutomationTool\CleanCode\obj\Debug\View\MainWindow.baml
+C:\Super backup\K10-Tekla API\CleanCode\CleanCodelAutomationTool\CleanCode\obj\Debug\CleanCode.g.resources
+C:\Super backup\K10-Tekla API\CleanCode\CleanCodelAutomationTool\CleanCode\obj\Debug\CleanCode.Properties.Resources.resources
+C:\Super backup\K10-Tekla API\CleanCode\CleanCodelAutomationTool\CleanCode\obj\Debug\CleanCode.Resource1.resources
+C:\Super backup\K10-Tekla API\CleanCode\CleanCodelAutomationTool\CleanCode\obj\Debug\CleanCode.csproj.GenerateResource.cache
+C:\Super backup\K10-Tekla API\CleanCode\CleanCodelAutomationTool\CleanCode\obj\Debug\CleanCode.csproj.CoreCompileInputs.cache
+C:\Super backup\K10-Tekla API\CleanCode\CleanCodelAutomationTool\CleanCode\obj\Debug\CleanCode.csproj.CopyComplete
+C:\Super backup\K10-Tekla API\CleanCode\CleanCodelAutomationTool\CleanCode\obj\Debug\CleanCode.exe
+C:\Super backup\K10-Tekla API\CleanCode\CleanCodelAutomationTool\CleanCode\obj\Debug\CleanCode.pdb

@@ -1,4 +1,4 @@
-# CleanCodelAutomationTool - tanhuynhapi@gmail.com
+# CleanCodeAutomationTool - tanhuynhapi@gmail.com
 **1. Auto Delete Empty lines + Auto Delete Comment**
 ![Autodeletecomment empty line](https://github.com/huynhtan126/CleanCodelAutomationTool/assets/22351132/14225029-741e-474e-b915-f199c68d7442)
 

@@ -444,7 +444,8 @@ namespace CleanCode
                     using (StreamReader reader = new StreamReader(file.FullName))
                     {
                         vanban = reader.ReadToEnd();
-                        var emptyline = @"^\s*$\n";
+                        //var emptyline = @"^\s*$\n";
+                        var emptyline = @"^(?([^\r\n])\s)*\r?\n(?([^\r\n])\s)*\r?\n";
                         vanban = Regex.Replace(vanban, emptyline, string.Empty, RegexOptions.Multiline);
                     }
                     using (StreamWriter writer = new StreamWriter(file.FullName))

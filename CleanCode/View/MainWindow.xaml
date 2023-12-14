@@ -41,14 +41,15 @@
                 VerticalAlignment="Top"
                 Width="122"
                 Command="{Binding ButtonRemoveComment}" />
-        <Button Content="Get string from source"
+        <Button Content="Get content"
                 Grid.Row="1"
                 HorizontalAlignment="Right"
-                Margin="0,10,10,0"
+                Margin="0,10,132,0"
                 VerticalAlignment="Top"
-                Height="24"
-                Command="{Binding ButtonGetStringFromSource}"
-                Width="158" />
+                Height="23"
+                Command="{Binding ButtonGetContentFromSource}"
+                Width="98"
+                Grid.RowSpan="2" />
         <TextBox Name="NameCommand"
                  Grid.Row="1"
                  HorizontalAlignment="Left"
@@ -56,7 +57,8 @@
                  TextWrapping="NoWrap"
                  Text="{Binding NameCommand}"
                  VerticalAlignment="Top"
-                 Width="120" />
+                 Width="120"
+                 Height="23" />
 
         <DataGrid x:Name="data"
                   Margin="10"
@@ -108,17 +110,17 @@
         </DataGrid>
 
         <StackPanel    Grid.Row="3"
-                       VerticalAlignment="Bottom"
-                       HorizontalAlignment="Right"
+                       VerticalAlignment="Center"
+                       HorizontalAlignment="Center"
                        Orientation="Horizontal"
-                       Margin="0,-25">
+                       
+                       Width="500">
             <Button Content="Apply to source"
-                    HorizontalAlignment="Right"
-                    Margin="25"
+                    Margin="25,0,25,0"
                     VerticalAlignment="Bottom"
                     Height="48"
                     Command="{Binding ButtonApplyStringtoSource}"
-                    Width="100" />
+                    Width="123" />
             <Button Content="Resx to ClipBoard"
                     HorizontalAlignment="Right"
                     Margin="0,0,25,25"
@@ -126,8 +128,40 @@
                     Height="48"
                     Width="100"
                     Command="{Binding ButtonResourceToClipBoard}" />
-    
+            <Button Content="Export Excel"
+                    Margin="0,0,25,25"
+                    VerticalAlignment="Bottom"
+                    Height="48"
+                    Width="74"
+                    Command="{Binding ButtonExportExcel}" />
+            <Button Content="Import Excel"
+                    Margin="0,0,25,25"
+                    VerticalAlignment="Bottom"
+                    Height="48"
+                    Width="70"
+                    Command="{Binding ButtonImportExcel}" />
+
         </StackPanel>
+        <ComboBox x:Name="NameCommand_Suffix"
+                  Grid.Row="1"
+                  HorizontalAlignment="Left"
+                  Margin="135,10,0,0"
+                  ItemsSource="{Binding listItem}"
+                  Text="{Binding NameCommand_Suffix}"
+                  VerticalAlignment="Top"
+                  Width="120"
+                  IsEditable="True"
+                  Height="23"
+                  Grid.RowSpan="2" />
+        <Button Content="Get string from file"
+                Grid.Row="1"
+                HorizontalAlignment="Right"
+                Margin="0,10,10,0"
+                VerticalAlignment="Top"
+                Height="24"
+                Command="{Binding ButtonGetStringFromSource}"
+                Width="108"
+                Grid.RowSpan="2" />
 
     </Grid>
 </Window>

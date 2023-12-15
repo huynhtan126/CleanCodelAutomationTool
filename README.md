@@ -1,6 +1,19 @@
 # CleanCodeAutomationTool - tanhuynhapi@gmail.com
 **1. Auto Delete Empty lines + Auto Delete Comment**
-![Autodeletecomment empty line](https://github.com/huynhtan126/CleanCodelAutomationTool/assets/22351132/14225029-741e-474e-b915-f199c68d7442)
+
+
+https://github.com/huynhtan126/CleanCodelAutomationTool/assets/22351132/62472e8b-9c68-4c9f-a92f-e7dc496c1136
+
+
 
 **2.Auto Get string to Resources**
-![Auto resoure](https://github.com/huynhtan126/CleanCodelAutomationTool/assets/22351132/112a11b7-85af-4753-ab30-23fdbb05d53e)
+
+
+
+
+https://github.com/huynhtan126/CleanCodelAutomationTool/assets/22351132/45adab41-7772-4452-a2d1-471f4b6460bc
+
+
+
+https://github.com/huynhtan126/CleanCodelAutomationTool/assets/22351132/09bc7cd9-edf4-4e10-a9e2-18817881070f
+

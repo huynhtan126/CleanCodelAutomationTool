@@ -113,7 +113,6 @@
                        VerticalAlignment="Center"
                        HorizontalAlignment="Center"
                        Orientation="Horizontal"
-                       
                        Width="500">
             <Button Content="Apply to source"
                     Margin="25,0,25,0"

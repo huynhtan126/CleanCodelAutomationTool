@@ -1,5 +1,6 @@
 using Microsoft.Win32;
 using OfficeOpenXml;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.Information;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -103,7 +104,7 @@ namespace CleanCode
         #region Initialize
         public CleanCodeViewModel()
         {
-            listItem = new List<string> { "lang:Localization {0}", "TranslationSource.Instance[nameof({0})]" };
+            listItem = new List<string> { "{0}","{Binding {0}}","lang:Localization {0}", "TranslationSource.Instance[nameof({0})]" };
             Path = string.Empty;
             NameCommand_Suffix = "TranslationSource.Instance[nameof({0})]";
             NameCommand = "_";
@@ -184,7 +185,8 @@ namespace CleanCode
                 {
                     var value = item.StringContent.Replace("\"", "");
                     value = value.Replace(_prefixContent, "");
-                    content = content + "<data name=\"" + item.NameinResx + "\" xml:space=\"preserve\"><value>" + value + "</value></data>\r\n";
+                    //content = content + "<data name=\"" + item.NameinResx + "\" xml:space=\"preserve\"><value>" + value + "</value></data>\r\n";
+                    content = content + item.NameinResx +"\t"+ value+"\r\n";
                 }
                 Clipboard.SetText(content);
                 MessageBox.Show("Set to clipboard successful.");
@@ -223,7 +225,7 @@ namespace CleanCode
                         var replacementString = match.Groups[0].Value.Replace(@"""", string.Empty);
                         replacementString = replacementString.Replace(@" ", string.Empty);
                         replacementString = Regex.Replace(replacementString, "[^a-zA-Z0-9]", "");
-                        var rex = new ResItem { NameInSource = string.Format(NameCommand_Suffix ,NameCommand + "." + replacementString), StringContent = match.Groups[0].Value, NameinResx = replacementString  };
+                        var rex = new ResItem { NameInSource = string.Format(NameCommand_Suffix ,NameCommand + "._" + replacementString), StringContent = match.Groups[0].Value, NameinResx = "_"+replacementString  };
                         if (!liststring.Any(x => x.StringContent == rex.StringContent))
                         {
                             liststring.Add(rex);

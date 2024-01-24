@@ -1,0 +1,12 @@
+C:\Users\huynh\Downloads\MouseKeyboardLibrary\GlobalMacroRecorder\bin\Debug\GlobalMacroRecorder.exe
+C:\Users\huynh\Downloads\MouseKeyboardLibrary\GlobalMacroRecorder\bin\Debug\GlobalMacroRecorder.pdb
+C:\Users\huynh\Downloads\MouseKeyboardLibrary\GlobalMacroRecorder\bin\Debug\MouseKeyboardLibrary.dll
+C:\Users\huynh\Downloads\MouseKeyboardLibrary\GlobalMacroRecorder\bin\Debug\MouseKeyboardLibrary.pdb
+C:\Users\huynh\Downloads\MouseKeyboardLibrary\GlobalMacroRecorder\obj\Debug\GlobalMacroRecorder.csproj.AssemblyReference.cache
+C:\Users\huynh\Downloads\MouseKeyboardLibrary\GlobalMacroRecorder\obj\Debug\GlobalMacroRecorder.MacroForm.resources
+C:\Users\huynh\Downloads\MouseKeyboardLibrary\GlobalMacroRecorder\obj\Debug\GlobalMacroRecorder.Properties.Resources.resources
+C:\Users\huynh\Downloads\MouseKeyboardLibrary\GlobalMacroRecorder\obj\Debug\GlobalMacroRecorder.csproj.GenerateResource.cache
+C:\Users\huynh\Downloads\MouseKeyboardLibrary\GlobalMacroRecorder\obj\Debug\GlobalMacroRecorder.csproj.CoreCompileInputs.cache
+C:\Users\huynh\Downloads\MouseKeyboardLibrary\GlobalMacroRecorder\obj\Debug\GlobalMacroRecorder.csproj.CopyComplete
+C:\Users\huynh\Downloads\MouseKeyboardLibrary\GlobalMacroRecorder\obj\Debug\GlobalMacroRecorder.exe
+C:\Users\huynh\Downloads\MouseKeyboardLibrary\GlobalMacroRecorder\obj\Debug\GlobalMacroRecorder.pdb

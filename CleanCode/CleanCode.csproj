@@ -57,6 +57,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Security" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -145,6 +146,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Logoonly.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Record\MouseKeyboardLibrary\MouseKeyboardLibrary.csproj">
+      <Project>{f419622f-4d82-40a6-b4fb-3fe36579f018}</Project>
+      <Name>MouseKeyboardLibrary</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\MaterialDesignThemes.4.9.0\build\MaterialDesignThemes.targets" Condition="Exists('..\packages\MaterialDesignThemes.4.9.0\build\MaterialDesignThemes.targets')" />

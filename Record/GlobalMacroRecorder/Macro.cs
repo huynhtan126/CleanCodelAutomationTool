@@ -28,10 +28,12 @@ namespace GlobalMacroRecorder
     {
 
         public MacroEventType MacroEventType;
-        public EventArgs EventArgs;
+        public string EventArgs;
+        //public EventArgs EventArgs;
+        
         public int TimeSinceLastEvent;
 
-        public MacroEvent(MacroEventType macroEventType, EventArgs eventArgs, int timeSinceLastEvent)
+        public MacroEvent(MacroEventType macroEventType, string eventArgs, int timeSinceLastEvent)
         {
 
             MacroEventType = macroEventType;

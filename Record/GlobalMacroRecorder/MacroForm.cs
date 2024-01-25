@@ -9,10 +9,13 @@ using System.Windows.Forms;
 
 using MouseKeyboardLibrary;
 using System.Threading;
+using Newtonsoft.Json;
+using System.IO;
+using System.Text.RegularExpressions;
 
 namespace GlobalMacroRecorder
 {
-    public partial class MacroForm : Form
+    public partial class MacroForm : MetroFramework.Forms.MetroForm
     {
 
         List<MacroEvent> events = new List<MacroEvent>();
@@ -41,7 +44,7 @@ namespace GlobalMacroRecorder
             events.Add(
                 new MacroEvent(
                     MacroEventType.MouseMove,
-                    e,
+                    e.X+"&&"+e.Y,
                     Environment.TickCount - lastTimeRecorded
                 ));
 
@@ -55,7 +58,7 @@ namespace GlobalMacroRecorder
             events.Add(
                 new MacroEvent(
                     MacroEventType.MouseDown,
-                    e,
+                    e.Button.ToString(),
                     Environment.TickCount - lastTimeRecorded
                 ));
 
@@ -69,7 +72,7 @@ namespace GlobalMacroRecorder
             events.Add(
                 new MacroEvent(
                     MacroEventType.MouseUp,
-                    e,
+                    e.Button.ToString(),
                     Environment.TickCount - lastTimeRecorded
                 ));
 
@@ -83,7 +86,7 @@ namespace GlobalMacroRecorder
             events.Add(
                 new MacroEvent(
                     MacroEventType.KeyDown,
-                    e,
+                     e.KeyCode.ToString(),
                     Environment.TickCount - lastTimeRecorded
                 ));
 
@@ -97,7 +100,7 @@ namespace GlobalMacroRecorder
             events.Add(
                 new MacroEvent(
                     MacroEventType.KeyUp,
-                    e,
+                    e.KeyCode.ToString(),
                     Environment.TickCount - lastTimeRecorded
                 ));
 
@@ -108,25 +111,49 @@ namespace GlobalMacroRecorder
         private void recordStartButton_Click(object sender, EventArgs e)
         {
 
-            events.Clear();
-            lastTimeRecorded = Environment.TickCount;
+            if (recordButton.Text == "Record")
+            {
+                events.Clear();
+                lastTimeRecorded = Environment.TickCount;
 
-            keyboardHook.Start();
-            mouseHook.Start();
+                keyboardHook.Start();
+                mouseHook.Start();
+                recordButton.Text = "Stop";
+            }
+            else
+            {
+
+                keyboardHook.Stop();
+                mouseHook.Stop();
+                ExportJson();
+                recordButton.Text = "Record";
+
+            }
 
         }
-
-
-        private void recordStopButton_Click(object sender, EventArgs e)
+        public void LoadRecordedMacro()
         {
+            foreach (MacroEvent macroEvent in events)
+            {
 
-            keyboardHook.Stop();
-            mouseHook.Stop();
-
+            }
+        }
+        public string duongdanfolder = "C:\\Users\\huynh\\Documents\\";
+        public void ExportJson()
+        {
+            var vanbanKho = JsonConvert.SerializeObject(events);
+            File.WriteAllText(duongdanfolder + "\\testcast1.dat", vanbanKho);
         }
 
         private void playBackMacroButton_Click(object sender, EventArgs e)
         {
+            var duongdan = duongdanfolder + "\\testcast1.dat";
+            if (File.Exists(duongdan))
+            {
+                var vanban = File.ReadAllText(duongdan);
+                var docMacro = JsonConvert.DeserializeObject<List<MacroEvent>>(vanban);
+                this.events = docMacro;
+            }
 
             foreach (MacroEvent macroEvent in events)
             {
@@ -138,46 +165,48 @@ namespace GlobalMacroRecorder
                     case MacroEventType.MouseMove:
                         {
 
-                            MouseEventArgs mouseArgs = (MouseEventArgs)macroEvent.EventArgs;
+                            //MouseEventArgs mouseArgs = (MouseEventArgs)macroEvent.EventArgs;
 
-                            MouseSimulator.X = mouseArgs.X;
-                            MouseSimulator.Y = mouseArgs.Y;
+                            var click = Regex.Split(macroEvent.EventArgs, "&&");
+
+                            MouseSimulator.X = int.Parse(click[0]);
+                            MouseSimulator.Y = int.Parse(click[1]);
 
                         }
                         break;
                     case MacroEventType.MouseDown:
                         {
 
-                            MouseEventArgs mouseArgs = (MouseEventArgs)macroEvent.EventArgs;
-
-                            MouseSimulator.MouseDown(mouseArgs.Button);
+                            //MouseEventArgs mouseArgs = macroEvent.EventArgs  as MouseEventArgs;
+                            MouseButton button = (MouseButton)Enum.Parse(typeof(MouseButton), macroEvent.EventArgs);
+                            MouseSimulator.MouseDown(button);
 
                         }
                         break;
                     case MacroEventType.MouseUp:
                         {
 
-                            MouseEventArgs mouseArgs = (MouseEventArgs)macroEvent.EventArgs;
+                            MouseButton button = (MouseButton)Enum.Parse(typeof(MouseButton), macroEvent.EventArgs);
 
-                            MouseSimulator.MouseUp(mouseArgs.Button);
+                            MouseSimulator.MouseUp(button);
 
                         }
                         break;
                     case MacroEventType.KeyDown:
                         {
 
-                            KeyEventArgs keyArgs = (KeyEventArgs)macroEvent.EventArgs;
-
-                            KeyboardSimulator.KeyDown(keyArgs.KeyCode);
+                            //KeyEventArgs keyArgs = (KeyEventArgs)macroEvent.EventArgs;
+                            Keys keys = (Keys)Enum.Parse(typeof(Keys), macroEvent.EventArgs);
+                            KeyboardSimulator.KeyDown(keys);
 
                         }
                         break;
                     case MacroEventType.KeyUp:
                         {
 
-                            KeyEventArgs keyArgs = (KeyEventArgs)macroEvent.EventArgs;
-
-                            KeyboardSimulator.KeyUp(keyArgs.KeyCode);
+                            //KeyEventArgs keyArgs = (KeyEventArgs)macroEvent.EventArgs;
+                            Keys keys = (Keys)Enum.Parse(typeof(Keys), macroEvent.EventArgs);
+                            KeyboardSimulator.KeyUp(keys);
 
                         }
                         break;

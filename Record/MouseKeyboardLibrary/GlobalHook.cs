@@ -2,7 +2,7 @@
 using System.Text;
 using System.Runtime.InteropServices;
 using System.Reflection;
-using System.Windows.Forms;
+//using System.Windows.Input;
 
 namespace MouseKeyboardLibrary
 {
@@ -62,7 +62,6 @@ namespace MouseKeyboardLibrary
         [DllImport("user32.dll", CharSet = CharSet.Auto,
             CallingConvention = CallingConvention.StdCall, SetLastError = true)]
         protected static extern int UnhookWindowsHookEx(int idHook);
-
 
         [DllImport("user32.dll", CharSet = CharSet.Auto,
              CallingConvention = CallingConvention.StdCall)]
@@ -150,7 +149,7 @@ namespace MouseKeyboardLibrary
         public GlobalHook()
         {
 
-            Application.ApplicationExit += new EventHandler(Application_ApplicationExit);
+            //Application.ApplicationExit += new EventHandler(Application_ApplicationExit);
 
         }
 

@@ -27,3 +27,8 @@ C:\TGL\CleanCode\CleanCodelAutomationTool\Record\GlobalMacroRecorder\obj\Debug\G
 C:\TGL\CleanCode\CleanCodelAutomationTool\Record\GlobalMacroRecorder\obj\Debug\GlobalMacroRecorder.pdb
 C:\TGL\CleanCode\CleanCodelAutomationTool\Record\GlobalMacroRecorder\bin\Debug\Newtonsoft.Json.dll
 C:\TGL\CleanCode\CleanCodelAutomationTool\Record\GlobalMacroRecorder\bin\Debug\Newtonsoft.Json.xml
+C:\TGL\CleanCode\CleanCodelAutomationTool\Record\GlobalMacroRecorder\bin\Debug\EPPlus.dll
+C:\TGL\CleanCode\CleanCodelAutomationTool\Record\GlobalMacroRecorder\bin\Debug\EPPlus.xml
+C:\TGL\CleanCode\CleanCodelAutomationTool\Record\GlobalMacroRecorder\bin\Debug\GlobalMacroRecorder.exe.config
+C:\TGL\CleanCode\CleanCodelAutomationTool\Record\GlobalMacroRecorder\bin\Debug\SharpAvi.dll
+C:\TGL\CleanCode\CleanCodelAutomationTool\Record\GlobalMacroRecorder\bin\Debug\SharpAvi.xml

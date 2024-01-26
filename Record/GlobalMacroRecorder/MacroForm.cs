@@ -1,17 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
-
+﻿using Captura;
 using MouseKeyboardLibrary;
-using System.Threading;
 using Newtonsoft.Json;
+using OfficeOpenXml;
+using System;
+using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading;
+using System.Windows.Forms;
+using Timer = System.Windows.Forms.Timer;
 
 namespace GlobalMacroRecorder
 {
@@ -44,7 +43,7 @@ namespace GlobalMacroRecorder
             events.Add(
                 new MacroEvent(
                     MacroEventType.MouseMove,
-                    e.X+"&&"+e.Y,
+                    e.X + "&&" + e.Y,
                     Environment.TickCount - lastTimeRecorded
                 ));
 
@@ -119,6 +118,8 @@ namespace GlobalMacroRecorder
                 keyboardHook.Start();
                 mouseHook.Start();
                 recordButton.Text = "Stop";
+                //timer1.Start();
+             
             }
             else
             {
@@ -127,33 +128,32 @@ namespace GlobalMacroRecorder
                 mouseHook.Stop();
                 ExportJson();
                 recordButton.Text = "Record";
-
+                //timer1.Stop();
             }
 
         }
-        public void LoadRecordedMacro()
-        {
-            foreach (MacroEvent macroEvent in events)
-            {
 
-            }
-        }
-        public string duongdanfolder = "C:\\Users\\huynh\\Documents\\";
+        public string duongdanfolder = "C:\\Users\\huynh\\Documents\\Step2";
         public void ExportJson()
         {
             var vanbanKho = JsonConvert.SerializeObject(events);
-            File.WriteAllText(duongdanfolder + "\\testcast1.dat", vanbanKho);
+            var datenow = DateTime.Now.ToString("ddMMyyyyHHmmss");
+            pathCurrentFile = duongdanfolder + "\\" + datenow + ".mcr";
+            File.WriteAllText(pathCurrentFile, vanbanKho);
         }
 
         private void playBackMacroButton_Click(object sender, EventArgs e)
         {
-            var duongdan = duongdanfolder + "\\testcast1.dat";
-            if (File.Exists(duongdan))
-            {
-                var vanban = File.ReadAllText(duongdan);
-                var docMacro = JsonConvert.DeserializeObject<List<MacroEvent>>(vanban);
-                this.events = docMacro;
-            }
+            var vanban = File.ReadAllText(pathCurrentFile);
+            var docMacro = JsonConvert.DeserializeObject<List<MacroEvent>>(vanban);
+            this.events = docMacro;
+            RunMacroandSaveVideo();
+        }
+        private string pathCurrentFile = "";
+        private void RunMacroandSaveVideo()
+        {
+            var datenow = DateTime.Now.ToString("ddMMyyyyHHmmss");
+            var rec = new Recorder(new RecorderParams(duongdanfolder + "\\" + datenow + ".avi", 30, SharpAvi.KnownFourCCs.Codecs.MicrosoftMpeg4V3, 70));
 
             foreach (MacroEvent macroEvent in events)
             {
@@ -216,12 +216,78 @@ namespace GlobalMacroRecorder
 
             }
 
+            //vf.Save(duongdanfolder + "\\" + datenow + ".mp4");
+            rec.Dispose();
         }
-
         private void MacroForm_Load(object sender, EventArgs e)
         {
 
         }
 
+        private void metroButton1_Click(object sender, EventArgs e)
+        {
+            var openFolder = new FolderBrowserDialog
+            {
+                ShowNewFolderButton = true,
+
+            };
+            if (openFolder.ShowDialog() == DialogResult.OK)
+            {
+                duongdanfolder = openFolder.SelectedPath;
+                textBox1.Text = duongdanfolder;
+            }
+
+        }
+
+        private void Run_click(object sender, EventArgs e)
+        {
+            if (Directory.Exists(duongdanfolder))
+            {
+                #region get all file
+
+                DirectoryInfo d = new DirectoryInfo(duongdanfolder);//Assuming Test is your Folder
+
+                FileInfo[] Files = d.GetFiles("*.mcr"); //Getting Text files
+                var filess = Files.ToList();
+                #endregion
+                //OPEN FILE EXCEL
+                FileInfo[] FilesExcel = d.GetFiles("*.xlsx"); //Getting Text files
+                var filex = FilesExcel.ToList();
+                var path = filex[0].FullName;
+                FileInfo fileInfo = new FileInfo(path);
+
+                ExcelPackage package = new ExcelPackage(fileInfo);
+                ExcelWorksheet worksheet = package.Workbook.Worksheets.FirstOrDefault();
+
+                // get number of rows and columns in the sheet
+                int rows = worksheet.Dimension.Rows; // 20
+                int columns = worksheet.Dimension.Columns; // 7
+
+                for (int i = 10; i <= rows; i++)
+                {
+                    try
+                    {
+                        var asembly = int.Parse(worksheet.Cells[i, 22].Value.ToString());
+
+                    }
+                    catch (Exception ex)
+                    {
+                        continue;
+                    }
+                }
+                foreach (var item in filess)
+                {
+                    var vanban = File.ReadAllText(item.FullName);
+                    var docMacro = JsonConvert.DeserializeObject<List<MacroEvent>>(vanban);
+                    this.events = docMacro;
+                    RunMacroandSaveVideo();
+                }
+
+            }
+            else
+            {
+                MessageBox.Show("Folder not exist");
+            }
+        }
     }
 }

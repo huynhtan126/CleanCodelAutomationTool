@@ -30,17 +30,19 @@
         {
             this.metroTabControl1 = new MetroFramework.Controls.MetroTabControl();
             this.metroTabPage1 = new MetroFramework.Controls.MetroTabPage();
-            this.metroTabPage2 = new MetroFramework.Controls.MetroTabPage();
-            this.metroTabPage3 = new MetroFramework.Controls.MetroTabPage();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.recordButton = new MetroFramework.Controls.MetroButton();
             this.metroButton2 = new MetroFramework.Controls.MetroButton();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.metroButton3 = new MetroFramework.Controls.MetroButton();
+            this.metroTabPage2 = new MetroFramework.Controls.MetroTabPage();
+            this.metroTabPage3 = new MetroFramework.Controls.MetroTabPage();
+            this.metroButton1 = new MetroFramework.Controls.MetroButton();
+            this.textBox1 = new System.Windows.Forms.TextBox();
             this.metroTabControl1.SuspendLayout();
             this.metroTabPage1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            this.groupBox2.SuspendLayout();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // metroTabControl1
@@ -48,7 +50,7 @@
             this.metroTabControl1.Controls.Add(this.metroTabPage1);
             this.metroTabControl1.Controls.Add(this.metroTabPage2);
             this.metroTabControl1.Controls.Add(this.metroTabPage3);
-            this.metroTabControl1.Location = new System.Drawing.Point(23, 77);
+            this.metroTabControl1.Location = new System.Drawing.Point(23, 131);
             this.metroTabControl1.Name = "metroTabControl1";
             this.metroTabControl1.SelectedIndex = 0;
             this.metroTabControl1.Size = new System.Drawing.Size(500, 433);
@@ -57,9 +59,8 @@
             // 
             // metroTabPage1
             // 
-            this.metroTabPage1.Controls.Add(this.dataGridView1);
-            this.metroTabPage1.Controls.Add(this.metroButton2);
-            this.metroTabPage1.Controls.Add(this.recordButton);
+            this.metroTabPage1.Controls.Add(this.groupBox2);
+            this.metroTabPage1.Controls.Add(this.groupBox1);
             this.metroTabPage1.HorizontalScrollbarBarColor = true;
             this.metroTabPage1.HorizontalScrollbarHighlightOnWheel = false;
             this.metroTabPage1.HorizontalScrollbarSize = 10;
@@ -72,6 +73,57 @@
             this.metroTabPage1.VerticalScrollbarHighlightOnWheel = false;
             this.metroTabPage1.VerticalScrollbarSize = 10;
             // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.recordButton);
+            this.groupBox2.Controls.Add(this.metroButton2);
+            this.groupBox2.Location = new System.Drawing.Point(3, 118);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(486, 100);
+            this.groupBox2.TabIndex = 10;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Create test case";
+            // 
+            // recordButton
+            // 
+            this.recordButton.Location = new System.Drawing.Point(23, 34);
+            this.recordButton.Name = "recordButton";
+            this.recordButton.Size = new System.Drawing.Size(88, 46);
+            this.recordButton.TabIndex = 3;
+            this.recordButton.Text = "Record";
+            this.recordButton.UseSelectable = true;
+            this.recordButton.Click += new System.EventHandler(this.recordStartButton_Click);
+            // 
+            // metroButton2
+            // 
+            this.metroButton2.Location = new System.Drawing.Point(131, 34);
+            this.metroButton2.Name = "metroButton2";
+            this.metroButton2.Size = new System.Drawing.Size(88, 46);
+            this.metroButton2.TabIndex = 4;
+            this.metroButton2.Text = "Play back";
+            this.metroButton2.UseSelectable = true;
+            this.metroButton2.Click += new System.EventHandler(this.playBackMacroButton_Click);
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.metroButton3);
+            this.groupBox1.Location = new System.Drawing.Point(3, 18);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(486, 82);
+            this.groupBox1.TabIndex = 9;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Run automation test case";
+            // 
+            // metroButton3
+            // 
+            this.metroButton3.Location = new System.Drawing.Point(12, 19);
+            this.metroButton3.Name = "metroButton3";
+            this.metroButton3.Size = new System.Drawing.Size(207, 46);
+            this.metroButton3.TabIndex = 8;
+            this.metroButton3.Text = "Run and Export Report";
+            this.metroButton3.UseSelectable = true;
+            this.metroButton3.Click += new System.EventHandler(this.Run_click);
+            // 
             // metroTabPage2
             // 
             this.metroTabPage2.HorizontalScrollbarBarColor = true;
@@ -79,7 +131,7 @@
             this.metroTabPage2.HorizontalScrollbarSize = 10;
             this.metroTabPage2.Location = new System.Drawing.Point(4, 38);
             this.metroTabPage2.Name = "metroTabPage2";
-            this.metroTabPage2.Size = new System.Drawing.Size(481, 364);
+            this.metroTabPage2.Size = new System.Drawing.Size(492, 391);
             this.metroTabPage2.TabIndex = 1;
             this.metroTabPage2.Text = "Auto resouces";
             this.metroTabPage2.VerticalScrollbarBarColor = true;
@@ -93,75 +145,47 @@
             this.metroTabPage3.HorizontalScrollbarSize = 10;
             this.metroTabPage3.Location = new System.Drawing.Point(4, 38);
             this.metroTabPage3.Name = "metroTabPage3";
-            this.metroTabPage3.Size = new System.Drawing.Size(481, 364);
+            this.metroTabPage3.Size = new System.Drawing.Size(492, 391);
             this.metroTabPage3.TabIndex = 2;
             this.metroTabPage3.Text = "Auto format code";
             this.metroTabPage3.VerticalScrollbarBarColor = true;
             this.metroTabPage3.VerticalScrollbarHighlightOnWheel = false;
             this.metroTabPage3.VerticalScrollbarSize = 10;
             // 
-            // recordButton
+            // metroButton1
             // 
-            this.recordButton.Location = new System.Drawing.Point(3, 16);
-            this.recordButton.Name = "recordButton";
-            this.recordButton.Size = new System.Drawing.Size(88, 46);
-            this.recordButton.TabIndex = 3;
-            this.recordButton.Text = "Record";
-            this.recordButton.UseSelectable = true;
-            this.recordButton.Click += new System.EventHandler(this.recordStartButton_Click);
+            this.metroButton1.Location = new System.Drawing.Point(468, 88);
+            this.metroButton1.Name = "metroButton1";
+            this.metroButton1.Size = new System.Drawing.Size(42, 22);
+            this.metroButton1.TabIndex = 6;
+            this.metroButton1.Text = "...";
+            this.metroButton1.UseSelectable = true;
+            this.metroButton1.Click += new System.EventHandler(this.metroButton1_Click);
             // 
-            // metroButton2
+            // textBox1
             // 
-            this.metroButton2.Location = new System.Drawing.Point(109, 16);
-            this.metroButton2.Name = "metroButton2";
-            this.metroButton2.Size = new System.Drawing.Size(88, 46);
-            this.metroButton2.TabIndex = 4;
-            this.metroButton2.Text = "Play back";
-            this.metroButton2.UseSelectable = true;
-            this.metroButton2.Click += new System.EventHandler(this.playBackMacroButton_Click);
-            // 
-            // dataGridView1
-            // 
-            this.dataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Column1,
-            this.Column2,
-            this.Column3});
-            this.dataGridView1.Location = new System.Drawing.Point(3, 78);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.RowHeadersVisible = false;
-            this.dataGridView1.Size = new System.Drawing.Size(475, 310);
-            this.dataGridView1.TabIndex = 5;
-            // 
-            // Column1
-            // 
-            this.Column1.HeaderText = "No";
-            this.Column1.Name = "Column1";
-            // 
-            // Column2
-            // 
-            this.Column2.HeaderText = "Macro Name";
-            this.Column2.Name = "Column2";
-            // 
-            // Column3
-            // 
-            this.Column3.HeaderText = "Note";
-            this.Column3.Name = "Column3";
+            this.textBox1.Location = new System.Drawing.Point(30, 88);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(432, 20);
+            this.textBox1.TabIndex = 7;
             // 
             // MacroForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(546, 533);
+            this.ClientSize = new System.Drawing.Size(546, 575);
+            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.metroButton1);
             this.Controls.Add(this.metroTabControl1);
             this.Name = "MacroForm";
             this.Text = "Automation Magage Code";
             this.Load += new System.EventHandler(this.MacroForm_Load);
             this.metroTabControl1.ResumeLayout(false);
             this.metroTabPage1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox1.ResumeLayout(false);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -172,10 +196,11 @@
         private MetroFramework.Controls.MetroTabPage metroTabPage3;
         private MetroFramework.Controls.MetroButton metroButton2;
         private MetroFramework.Controls.MetroButton recordButton;
-        private System.Windows.Forms.DataGridView dataGridView1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
+        private MetroFramework.Controls.MetroButton metroButton1;
+        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private MetroFramework.Controls.MetroButton metroButton3;
+        private System.Windows.Forms.GroupBox groupBox2;
     }
 }
 

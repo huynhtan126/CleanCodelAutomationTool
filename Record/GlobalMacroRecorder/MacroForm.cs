@@ -13,6 +13,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
+using System.Xml.Linq;
 using Timer = System.Windows.Forms.Timer;
 
 namespace GlobalMacroRecorder
@@ -343,12 +344,24 @@ namespace GlobalMacroRecorder
             {
                 var res = new ResItem()
                 {
-                    NameinResx = item.Cells[0].Value.ToString(),
-                    NameInSource = item.Cells[1].Value.ToString(),
-                    StringContent = item.Cells[2].Value.ToString(),
+                    StringContent = item.Cells[0].Value.ToString(),
+                    NameinResx = item.Cells[1].Value.ToString(),
+                    NameInSource = item.Cells[2].Value.ToString(),
                 };
                 liststring.Add(res);
 
+            }
+        }
+        private void ShowDataGrid()
+        {
+            dataGridView1.Rows.Clear();
+            foreach (var item in liststring)
+            {
+                var row = new DataGridViewRow();
+                var row1 = dataGridView1.Rows.Add(row);
+                dataGridView1.Rows[row1].Cells[0].Value = item.StringContent;
+                dataGridView1.Rows[row1].Cells[1].Value = item.NameinResx;
+                dataGridView1.Rows[row1].Cells[2].Value = item.NameInSource;
             }
         }
         private void ApplySource_Click(object sender, EventArgs e)
@@ -404,7 +417,69 @@ namespace GlobalMacroRecorder
 
         private void removeComment_Click(object sender, EventArgs e)
         {
+            if (ResourceName.Text == string.Empty)
+            {
+                MessageBox.Show("Please fill path");
+                return;
+            }
+            var typefile = TypeFile.all;
+            if (cs_cpp.Checked)
+            {
+                typefile = TypeFile.cs_cpp_h;
+            }
+            if (xaml.Checked)
+            {
+                typefile = TypeFile.xaml;
+            }
 
+            var filess = GetFiles(typefile);
+            foreach (FileInfo file in filess)
+            {
+                try
+                {
+                    string vanban;
+                    using (StreamReader reader = new StreamReader(file.FullName))
+                    {
+                        vanban = reader.ReadToEnd();
+                        var blockComments = @"/\*(.*?)\*/";
+                        var lineComments = @"//(.*?)\r?\n";
+                        var strings = @"""((\\[^\n]|[^""\n])*)""";
+                        var verbatimStrings = @"@(""[^""]*"")+";
+                        vanban = Regex.Replace(vanban,
+                        blockComments + "|" + lineComments + "|" + strings + "|" + verbatimStrings,
+                        me =>
+                        {
+                            if (todo.Checked && me.Value.StartsWith("//TODO"))
+                            {
+                            }
+                            else if (note.Checked && me.Value.StartsWith("//Note"))
+                            {
+                            }
+                            else if (sum.Checked && me.Value.StartsWith("///"))
+                            {
+                            }
+                            else
+                            {
+
+                                if (me.Value.StartsWith("/*") || me.Value.StartsWith("//"))
+                                    return me.Value.StartsWith("//") ? Environment.NewLine : "";
+                            }
+
+                            return me.Value;
+                        },
+                        RegexOptions.Singleline);
+                    }
+                    using (StreamWriter writer = new StreamWriter(file.FullName))
+                    {
+                        writer.Write(vanban);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    System.Windows.MessageBox.Show(ex.ToString());
+                }
+            }
+            MessageBox.Show(string.Format("Clean code {0} files succesful", filess.Count()));
         }
 
         public enum TypeFile
@@ -466,8 +541,8 @@ namespace GlobalMacroRecorder
                 MessageBox.Show("Please fill path");
                 return;
             }
-            GetDataGridtoListView();
-              var filess = GetFiles(TypeFile.xaml);
+            //GetDataGridtoListView();
+            var filess = GetFiles(TypeFile.xaml);
             foreach (FileInfo file in filess)
             {
                 var filePath = file.FullName;
@@ -494,6 +569,7 @@ namespace GlobalMacroRecorder
                 }
             }
             MessageBox.Show(string.Format("Get string {0} files succesful", filess.Count()));
+            ShowDataGrid();
         }
 
         private void Gettextfrom_Click(object sender, EventArgs e)
@@ -510,7 +586,7 @@ namespace GlobalMacroRecorder
                 MessageBox.Show("Please fill path");
                 return;
             }
-            GetDataGridtoListView();
+            //GetDataGridtoListView();
             var filess = GetFiles(TypeFile.all);
             foreach (FileInfo file in filess)
             {
@@ -539,7 +615,49 @@ namespace GlobalMacroRecorder
             }
 
             MessageBox.Show(string.Format("Get string {0} files succesful", filess.Count()));
+            ShowDataGrid();
+        }
 
+        private void RemoveDouble_Click(object sender, EventArgs e)
+        {
+            if (ResourceName.Text == string.Empty)
+            {
+                MessageBox.Show("Please fill path");
+                return;
+            }
+            var typefile = TypeFile.all;
+            if (cs_cpp.Checked)
+            {
+                typefile = TypeFile.cs_cpp_h;
+            }
+            if (xaml.Checked)
+            {
+                typefile = TypeFile.xaml;
+            }
+            var filess = GetFiles(typefile);
+            foreach (FileInfo file in filess)
+            {
+                try
+                {
+                    string vanban;
+                    using (StreamReader reader = new StreamReader(file.FullName))
+                    {
+                        vanban = reader.ReadToEnd();
+                        //var emptyline = @"^\s*$\n";
+                        var emptyline = @"^(?([^\r\n])\s)*\r?\n(?([^\r\n])\s)*\r?\n";
+                        vanban = Regex.Replace(vanban, emptyline, string.Empty, RegexOptions.Multiline);
+                    }
+                    using (StreamWriter writer = new StreamWriter(file.FullName))
+                    {
+                        writer.Write(vanban);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    System.Windows.MessageBox.Show(ex.ToString());
+                }
+            }
+            MessageBox.Show(string.Format("Clean code {0} files succesful", filess.Count()));
         }
     }
 }

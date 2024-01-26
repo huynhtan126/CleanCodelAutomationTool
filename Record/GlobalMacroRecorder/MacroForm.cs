@@ -2,8 +2,10 @@
 using MouseKeyboardLibrary;
 using Newtonsoft.Json;
 using OfficeOpenXml;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
@@ -17,10 +19,13 @@ namespace GlobalMacroRecorder
 {
     public partial class MacroForm : MetroFramework.Forms.MetroForm
     {
-
+        public string duongdanfolder = @"C:\Step2";
+        private string pathCurrentFile = "";
+        private string _pathRecordVideo = "";
+        private string _prefixContent = "Content=";
         List<MacroEvent> events = new List<MacroEvent>();
         int lastTimeRecorded = 0;
-
+        private List<ResItem> liststring = new List<ResItem>();
         MouseHook mouseHook = new MouseHook();
         KeyboardHook keyboardHook = new KeyboardHook();
 
@@ -39,7 +44,7 @@ namespace GlobalMacroRecorder
 
             var fileor = new FileInfo(pathfolder);
             pathfolder = fileor.Directory.ToString();
-            _pathRecordVideo = pathfolder + "\\RecordVideo\\RecordVideo.exe"; 
+            _pathRecordVideo = pathfolder + "\\RecordVideo\\RecordVideo.exe";
         }
 
         void mouseHook_MouseMove(object sender, MouseEventArgs e)
@@ -124,7 +129,7 @@ namespace GlobalMacroRecorder
                 mouseHook.Start();
                 recordButton.Text = "Stop";
                 //timer1.Start();
-             
+
             }
             else
             {
@@ -138,10 +143,9 @@ namespace GlobalMacroRecorder
 
         }
 
-        public string duongdanfolder = @"C:\Step2";
         public void ExportJson()
         {
-            if(!Directory.Exists(duongdanfolder))
+            if (!Directory.Exists(duongdanfolder))
             {
                 Directory.CreateDirectory(duongdanfolder);
             }
@@ -158,12 +162,14 @@ namespace GlobalMacroRecorder
             //this.events = docMacro;
             RunMacroandSaveVideo();
         }
-        private string pathCurrentFile = "";
-        private string _pathRecordVideo = "";
+
         private void RunMacroandSaveVideo()
         {
             //var datenow = DateTime.Now.ToString("ddMMyyyyHHmm");
             //var rec = new Recorder(new RecorderParams(duongdanfolder + "\\" + datenow + ".avi", 30, SharpAvi.KnownFourCCs.Codecs.MicrosoftMpeg4V3, 70));
+            var vanban = File.ReadAllText(pathCurrentFile);
+            var docMacro = JsonConvert.DeserializeObject<List<MacroEvent>>(vanban);
+            this.events = docMacro;
             var fileName = Path.GetFileNameWithoutExtension(pathCurrentFile);
             var startInfo = new ProcessStartInfo();
             startInfo.FileName = "\"" + _pathRecordVideo + "\"";
@@ -253,7 +259,7 @@ namespace GlobalMacroRecorder
             if (openFolder.ShowDialog() == DialogResult.OK)
             {
                 duongdanfolder = openFolder.SelectedPath;
-                textBox1.Text = duongdanfolder;
+                PathfileorFolder.Text = duongdanfolder;
             }
 
         }
@@ -276,32 +282,49 @@ namespace GlobalMacroRecorder
                 FileInfo fileInfo = new FileInfo(path);
 
                 ExcelPackage package = new ExcelPackage(fileInfo);
-                ExcelWorksheet worksheet = package.Workbook.Worksheets.FirstOrDefault();
+                ExcelWorksheet worksheet = package.Workbook.Worksheets[2];
 
                 // get number of rows and columns in the sheet
                 int rows = worksheet.Dimension.Rows; // 20
                 int columns = worksheet.Dimension.Columns; // 7
-
-                for (int i = 10; i <= rows; i++)
+                var listErrorCase = new List<string>();
+                for (int i = 12; i <= rows; i++)
                 {
                     try
                     {
-                        var asembly = int.Parse(worksheet.Cells[i, 22].Value.ToString());
+                        var fileName = worksheet.Cells[i, 5].Value.ToString();
+                        pathCurrentFile = duongdanfolder + "\\" + fileName + ".mcr";
 
+                        RunMacroandSaveVideo();
+
+                        if (worksheet.Cells[i, 9].Text.ToString().Trim() == string.Empty)
+                        {
+                            worksheet.Cells[i, 9].Formula = "=HYPERLINK(" + @"""" + duongdanfolder + "\\" + fileName + ".avi" + @"""" + "," + @"""Evidence :" + DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss") + @"""" + ")";
+                        }
+                        else
+                        {
+
+                        }
                     }
                     catch (Exception ex)
                     {
+                        listErrorCase.Add("Error at row :" + i + " " + ex.Message);
                         continue;
                     }
                 }
-                foreach (var item in filess)
+                var content = "";
+                foreach (var item in listErrorCase)
                 {
-                    var vanban = File.ReadAllText(item.FullName);
-                    var docMacro = JsonConvert.DeserializeObject<List<MacroEvent>>(vanban);
-                    this.events = docMacro;
-                    RunMacroandSaveVideo();
+                    content = content + item;
                 }
+                if (content != "")
+                {
+                    MessageBox.Show(content);
+                }
+                var name = DateTime.Now.ToString("yyyyMMdd");
 
+                package.SaveAs(new FileInfo(duongdanfolder + "\\TestResult" + name + ".xlsx"));
+                Process.Start(duongdanfolder + "\\TestResult" + name + ".xlsx");
             }
             else
             {
@@ -311,6 +334,211 @@ namespace GlobalMacroRecorder
 
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
+
+        }
+        private void GetDataGridtoListView()
+        {
+            liststring = new List<ResItem>();
+            foreach (DataGridViewRow item in dataGridView1.Rows)
+            {
+                var res = new ResItem()
+                {
+                    NameinResx = item.Cells[0].Value.ToString(),
+                    NameInSource = item.Cells[1].Value.ToString(),
+                    StringContent = item.Cells[2].Value.ToString(),
+                };
+                liststring.Add(res);
+
+            }
+        }
+        private void ApplySource_Click(object sender, EventArgs e)
+        {
+
+            if (ResourceName.Text == string.Empty)
+            {
+                MessageBox.Show("Please fill Name Command");
+                return;
+            }
+            if (PathfileorFolder.Text == string.Empty)
+            {
+                MessageBox.Show("Please fill path");
+                return;
+            }
+            GetDataGridtoListView();
+            var filess = GetFiles(TypeFile.all);
+            foreach (FileInfo file in filess)
+            {
+
+                string vanban = "";
+
+                foreach (var item in liststring)
+                {
+                    try
+                    {
+                        using (StreamReader reader = new StreamReader(file.FullName))
+                        {
+                            vanban = reader.ReadToEnd();
+
+                            vanban = vanban.Replace(item.StringContent, item.NameInSource);
+                        }
+                        using (StreamWriter writer = new StreamWriter(file.FullName))
+                        {
+                            writer.Write(vanban);
+                        }
+                    }
+
+                    catch (Exception ex)
+                    {
+                        System.Windows.MessageBox.Show(ex.ToString());
+                    }
+                }
+
+            }
+            MessageBox.Show(string.Format("Apply {0} files succesful", filess.Count()));
+        }
+
+        private void Clipboard_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void removeComment_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        public enum TypeFile
+        {
+            cs_cpp_h,
+            xaml,
+            all,
+        }
+        public FileInfo[] GetFiles(TypeFile typeFile)
+        {
+            try
+            {
+                if (File.Exists(PathfileorFolder.Text))
+                {
+                    FileInfo[] listFile = new FileInfo[] { new FileInfo(PathfileorFolder.Text) };
+                    return listFile;
+                }
+                else
+                {
+                    var pathfolder = PathfileorFolder.Text;
+                    DirectoryInfo d = new DirectoryInfo(pathfolder);
+                    var allfile = d.GetFiles("*.*", SearchOption.AllDirectories).ToList();
+                    switch (typeFile)
+                    {
+                        case TypeFile.cs_cpp_h:
+                            return allfile.Where(s => s.Name.EndsWith(".cs", StringComparison.OrdinalIgnoreCase)
+                || s.Name.EndsWith(".cpp", StringComparison.OrdinalIgnoreCase)
+                || s.Name.EndsWith(".h", StringComparison.OrdinalIgnoreCase)
+                ).ToArray();
+
+                        case TypeFile.xaml:
+                            return allfile.Where(s => s.Name.EndsWith(".xaml", StringComparison.OrdinalIgnoreCase)
+
+            ).ToArray();
+
+                        case TypeFile.all:
+                            return allfile.ToArray();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            FileInfo[] listFile1 = new FileInfo[] { };
+            return listFile1;
+        }
+
+        private void getContentUI_Click(object sender, EventArgs e)
+        {
+            //TranslationSource.Instance[nameof(InsertLevelViewRes.MainGrid)]
+            if (ResourceName.Text == string.Empty)
+            {
+                MessageBox.Show("Please fill Name Command");
+                return;
+            }
+            if (PathfileorFolder.Text == string.Empty)
+            {
+                MessageBox.Show("Please fill path");
+                return;
+            }
+            GetDataGridtoListView();
+              var filess = GetFiles(TypeFile.xaml);
+            foreach (FileInfo file in filess)
+            {
+                var filePath = file.FullName;
+                string fileContent = File.ReadAllText(filePath);
+                var pattern = _prefixContent + @"""(.*?)""";
+                MatchCollection matches = Regex.Matches(fileContent, pattern);
+                string modifiedContent = fileContent;
+                foreach (Match match in matches)
+                {
+                    try
+                    {
+                        var replacementString = match.Groups[0].Value.Replace(_prefixContent + @"""", string.Empty);
+                        replacementString = replacementString.Replace(@" ", string.Empty);
+                        replacementString = Regex.Replace(replacementString, "[^a-zA-Z0-9]", "");
+                        var rex = new ResItem { NameInSource = _prefixContent + "\"{" + string.Format(formula.Text, ResourceName.Text + replacementString) + "}\"", StringContent = match.Groups[0].Value, NameinResx = replacementString };
+                        if (!liststring.Any(x => x.StringContent == rex.StringContent))
+                        {
+                            liststring.Add(rex);
+                        }
+                    }
+                    catch (Exception)
+                    {
+                    }
+                }
+            }
+            MessageBox.Show(string.Format("Get string {0} files succesful", filess.Count()));
+        }
+
+        private void Gettextfrom_Click(object sender, EventArgs e)
+        {
+
+            //TranslationSource.Instance[nameof(InsertLevelViewRes.MainGrid)]
+            if (ResourceName.Text == string.Empty)
+            {
+                MessageBox.Show("Please fill Name Command");
+                return;
+            }
+            if (PathfileorFolder.Text == string.Empty)
+            {
+                MessageBox.Show("Please fill path");
+                return;
+            }
+            GetDataGridtoListView();
+            var filess = GetFiles(TypeFile.all);
+            foreach (FileInfo file in filess)
+            {
+                var filePath = file.FullName;
+                string fileContent = File.ReadAllText(filePath);
+                var pattern = @"""(.*?)""";
+                MatchCollection matches = Regex.Matches(fileContent, pattern);
+                string modifiedContent = fileContent;
+                foreach (Match match in matches)
+                {
+                    try
+                    {
+                        var replacementString = match.Groups[0].Value.Replace(@"""", string.Empty);
+                        replacementString = replacementString.Replace(@" ", string.Empty);
+                        replacementString = Regex.Replace(replacementString, "[^a-zA-Z0-9]", "");
+                        var rex = new ResItem { NameInSource = string.Format(formula.Text, ResourceName.Text + "." + replacementString), StringContent = match.Groups[0].Value, NameinResx = replacementString };
+                        if (!liststring.Any(x => x.StringContent == rex.StringContent))
+                        {
+                            liststring.Add(rex);
+                        }
+                    }
+                    catch (Exception)
+                    {
+                    }
+                }
+            }
+
+            MessageBox.Show(string.Format("Get string {0} files succesful", filess.Count()));
 
         }
     }

@@ -43,13 +43,16 @@
             this.formula = new System.Windows.Forms.ComboBox();
             this.metroLabel1 = new MetroFramework.Controls.MetroLabel();
             this.ResourceName = new System.Windows.Forms.TextBox();
-            this.Clipboard = new MetroFramework.Controls.MetroButton();
+            this.clip = new MetroFramework.Controls.MetroButton();
             this.ApplySource = new MetroFramework.Controls.MetroButton();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.metroTabPage3 = new MetroFramework.Controls.MetroTabPage();
+            this.metroRadioButton1 = new MetroFramework.Controls.MetroRadioButton();
+            this.xaml = new MetroFramework.Controls.MetroRadioButton();
+            this.cs_cpp = new MetroFramework.Controls.MetroRadioButton();
             this.sum = new System.Windows.Forms.CheckBox();
             this.RemoveDouble = new MetroFramework.Controls.MetroButton();
             this.note = new System.Windows.Forms.CheckBox();
@@ -58,9 +61,6 @@
             this.Brower = new MetroFramework.Controls.MetroButton();
             this.PathfileorFolder = new System.Windows.Forms.TextBox();
             this.programBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.cs_cpp = new MetroFramework.Controls.MetroRadioButton();
-            this.xaml = new MetroFramework.Controls.MetroRadioButton();
-            this.metroRadioButton1 = new MetroFramework.Controls.MetroRadioButton();
             this.metroTabControl1.SuspendLayout();
             this.metroTabPage1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -78,7 +78,7 @@
             this.metroTabControl1.Controls.Add(this.metroTabPage3);
             this.metroTabControl1.Location = new System.Drawing.Point(23, 116);
             this.metroTabControl1.Name = "metroTabControl1";
-            this.metroTabControl1.SelectedIndex = 2;
+            this.metroTabControl1.SelectedIndex = 1;
             this.metroTabControl1.Size = new System.Drawing.Size(500, 448);
             this.metroTabControl1.TabIndex = 3;
             this.metroTabControl1.UseSelectable = true;
@@ -158,7 +158,7 @@
             this.metroTabPage2.Controls.Add(this.formula);
             this.metroTabPage2.Controls.Add(this.metroLabel1);
             this.metroTabPage2.Controls.Add(this.ResourceName);
-            this.metroTabPage2.Controls.Add(this.Clipboard);
+            this.metroTabPage2.Controls.Add(this.clip);
             this.metroTabPage2.Controls.Add(this.ApplySource);
             this.metroTabPage2.Controls.Add(this.dataGridView1);
             this.metroTabPage2.HorizontalScrollbarBarColor = true;
@@ -229,17 +229,17 @@
             this.ResourceName.Name = "ResourceName";
             this.ResourceName.Size = new System.Drawing.Size(102, 20);
             this.ResourceName.TabIndex = 8;
-            this.ResourceName.Text = "_";
+            this.ResourceName.Text = "Resx.";
             // 
-            // Clipboard
+            // clip
             // 
-            this.Clipboard.Location = new System.Drawing.Point(380, 357);
-            this.Clipboard.Name = "Clipboard";
-            this.Clipboard.Size = new System.Drawing.Size(109, 46);
-            this.Clipboard.TabIndex = 5;
-            this.Clipboard.Text = "Resx to Clipboard";
-            this.Clipboard.UseSelectable = true;
-            this.Clipboard.Click += new System.EventHandler(this.Clipboard_Click);
+            this.clip.Location = new System.Drawing.Point(380, 357);
+            this.clip.Name = "clip";
+            this.clip.Size = new System.Drawing.Size(109, 46);
+            this.clip.TabIndex = 5;
+            this.clip.Text = "Resx to Clipboard";
+            this.clip.UseSelectable = true;
+            this.clip.Click += new System.EventHandler(this.Clipboard_Click);
             // 
             // ApplySource
             // 
@@ -302,6 +302,41 @@
             this.metroTabPage3.VerticalScrollbarBarColor = true;
             this.metroTabPage3.VerticalScrollbarHighlightOnWheel = false;
             this.metroTabPage3.VerticalScrollbarSize = 10;
+            // 
+            // metroRadioButton1
+            // 
+            this.metroRadioButton1.AutoSize = true;
+            this.metroRadioButton1.Checked = true;
+            this.metroRadioButton1.Location = new System.Drawing.Point(3, 91);
+            this.metroRadioButton1.Name = "metroRadioButton1";
+            this.metroRadioButton1.Size = new System.Drawing.Size(36, 15);
+            this.metroRadioButton1.TabIndex = 14;
+            this.metroRadioButton1.TabStop = true;
+            this.metroRadioButton1.Text = "*.*";
+            this.metroRadioButton1.TextAlign = System.Drawing.ContentAlignment.TopLeft;
+            this.metroRadioButton1.UseSelectable = true;
+            // 
+            // xaml
+            // 
+            this.xaml.AutoSize = true;
+            this.xaml.Location = new System.Drawing.Point(3, 60);
+            this.xaml.Name = "xaml";
+            this.xaml.Size = new System.Drawing.Size(57, 15);
+            this.xaml.TabIndex = 13;
+            this.xaml.Text = "*.xaml";
+            this.xaml.TextAlign = System.Drawing.ContentAlignment.TopLeft;
+            this.xaml.UseSelectable = true;
+            // 
+            // cs_cpp
+            // 
+            this.cs_cpp.AutoSize = true;
+            this.cs_cpp.Location = new System.Drawing.Point(3, 29);
+            this.cs_cpp.Name = "cs_cpp";
+            this.cs_cpp.Size = new System.Drawing.Size(94, 15);
+            this.cs_cpp.TabIndex = 12;
+            this.cs_cpp.Text = "*.cs *.cpp *.h ";
+            this.cs_cpp.TextAlign = System.Drawing.ContentAlignment.TopLeft;
+            this.cs_cpp.UseSelectable = true;
             // 
             // sum
             // 
@@ -382,47 +417,16 @@
             // 
             this.programBindingSource.DataSource = typeof(GlobalMacroRecorder.Program);
             // 
-            // cs_cpp
-            // 
-            this.cs_cpp.AutoSize = true;
-            this.cs_cpp.Location = new System.Drawing.Point(3, 29);
-            this.cs_cpp.Name = "cs_cpp";
-            this.cs_cpp.Size = new System.Drawing.Size(94, 15);
-            this.cs_cpp.TabIndex = 12;
-            this.cs_cpp.Text = "*.cs *.cpp *.h ";
-            this.cs_cpp.TextAlign = System.Drawing.ContentAlignment.TopLeft;
-            this.cs_cpp.UseSelectable = true;
-            // 
-            // xaml
-            // 
-            this.xaml.AutoSize = true;
-            this.xaml.Location = new System.Drawing.Point(3, 60);
-            this.xaml.Name = "xaml";
-            this.xaml.Size = new System.Drawing.Size(57, 15);
-            this.xaml.TabIndex = 13;
-            this.xaml.Text = "*.xaml";
-            this.xaml.TextAlign = System.Drawing.ContentAlignment.TopLeft;
-            this.xaml.UseSelectable = true;
-            // 
-            // metroRadioButton1
-            // 
-            this.metroRadioButton1.AutoSize = true;
-            this.metroRadioButton1.Location = new System.Drawing.Point(3, 91);
-            this.metroRadioButton1.Name = "metroRadioButton1";
-            this.metroRadioButton1.Size = new System.Drawing.Size(36, 15);
-            this.metroRadioButton1.TabIndex = 14;
-            this.metroRadioButton1.Text = "*.*";
-            this.metroRadioButton1.TextAlign = System.Drawing.ContentAlignment.TopLeft;
-            this.metroRadioButton1.UseSelectable = true;
-            // 
             // MacroForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BorderStyle = MetroFramework.Forms.MetroFormBorderStyle.FixedSingle;
             this.ClientSize = new System.Drawing.Size(546, 575);
             this.Controls.Add(this.PathfileorFolder);
             this.Controls.Add(this.Brower);
             this.Controls.Add(this.metroTabControl1);
+            this.MaximizeBox = false;
             this.Name = "MacroForm";
             this.Text = "Automation Manage Code";
             this.Load += new System.EventHandler(this.MacroForm_Load);
@@ -457,7 +461,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
-        private MetroFramework.Controls.MetroButton Clipboard;
+        private MetroFramework.Controls.MetroButton clip;
         private MetroFramework.Controls.MetroButton ApplySource;
         private MetroFramework.Controls.MetroButton removeComment;
         private System.Windows.Forms.CheckBox todo;

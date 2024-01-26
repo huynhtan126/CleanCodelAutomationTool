@@ -135,3 +135,5 @@ C:\TGL\CleanCode\CleanCodelAutomationTool\CleanCode\obj\Debug\CleanCode.csproj.C
 C:\TGL\CleanCode\CleanCodelAutomationTool\CleanCode\obj\Debug\CleanCode.csproj.CopyComplete
 C:\TGL\CleanCode\CleanCodelAutomationTool\CleanCode\obj\Debug\CleanCode.exe
 C:\TGL\CleanCode\CleanCodelAutomationTool\CleanCode\obj\Debug\CleanCode.pdb
+C:\TGL\CleanCode\CleanCodelAutomationTool\CleanCode\bin\Debug\MouseKeyboardLibrary.dll
+C:\TGL\CleanCode\CleanCodelAutomationTool\CleanCode\bin\Debug\MouseKeyboardLibrary.pdb

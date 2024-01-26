@@ -1,4 +1,4 @@
-﻿
+
 using MouseKeyboardLibrary;
 using Newtonsoft.Json;
 using OfficeOpenXml;
@@ -129,8 +129,6 @@ namespace GlobalMacroRecorder
                 keyboardHook.Start();
                 mouseHook.Start();
                 recordButton.Text = "Stop";
-                //timer1.Start();
-
             }
             else
             {
@@ -139,7 +137,7 @@ namespace GlobalMacroRecorder
                 mouseHook.Stop();
                 ExportJson();
                 recordButton.Text = "Record";
-                //timer1.Stop();
+                
             }
 
         }
@@ -154,20 +152,22 @@ namespace GlobalMacroRecorder
             var datenow = DateTime.Now.ToString("yyyyMMddHHmm");
             pathCurrentFile = duongdanfolder + "\\" + datenow + ".mcr";
             File.WriteAllText(pathCurrentFile, vanbanKho);
+            Process.Start(duongdanfolder);
         }
 
         private void playBackMacroButton_Click(object sender, EventArgs e)
         {
-            //var vanban = File.ReadAllText(pathCurrentFile);
-            //var docMacro = JsonConvert.DeserializeObject<List<MacroEvent>>(vanban);
-            //this.events = docMacro;
+            MessageBox.Show("Tool works better in 1920x1080 and scale 100%");
             RunMacroandSaveVideo();
         }
 
         private void RunMacroandSaveVideo()
         {
-            //var datenow = DateTime.Now.ToString("ddMMyyyyHHmm");
-            //var rec = new Recorder(new RecorderParams(duongdanfolder + "\\" + datenow + ".avi", 30, SharpAvi.KnownFourCCs.Codecs.MicrosoftMpeg4V3, 70));
+            if(!File.Exists(pathCurrentFile))
+            {
+                MessageBox.Show("File not exist");
+                return;
+            }
             var vanban = File.ReadAllText(pathCurrentFile);
             var docMacro = JsonConvert.DeserializeObject<List<MacroEvent>>(vanban);
             this.events = docMacro;
@@ -190,8 +190,6 @@ namespace GlobalMacroRecorder
                     case MacroEventType.MouseMove:
                         {
 
-                            //MouseEventArgs mouseArgs = (MouseEventArgs)macroEvent.EventArgs;
-
                             var click = Regex.Split(macroEvent.EventArgs, "&&");
 
                             MouseSimulator.X = int.Parse(click[0]);
@@ -201,8 +199,6 @@ namespace GlobalMacroRecorder
                         break;
                     case MacroEventType.MouseDown:
                         {
-
-                            //MouseEventArgs mouseArgs = macroEvent.EventArgs  as MouseEventArgs;
                             MouseButton button = (MouseButton)Enum.Parse(typeof(MouseButton), macroEvent.EventArgs);
                             MouseSimulator.MouseDown(button);
 
@@ -219,8 +215,6 @@ namespace GlobalMacroRecorder
                         break;
                     case MacroEventType.KeyDown:
                         {
-
-                            //KeyEventArgs keyArgs = (KeyEventArgs)macroEvent.EventArgs;
                             Keys keys = (Keys)Enum.Parse(typeof(Keys), macroEvent.EventArgs);
                             KeyboardSimulator.KeyDown(keys);
 
@@ -228,8 +222,6 @@ namespace GlobalMacroRecorder
                         break;
                     case MacroEventType.KeyUp:
                         {
-
-                            //KeyEventArgs keyArgs = (KeyEventArgs)macroEvent.EventArgs;
                             Keys keys = (Keys)Enum.Parse(typeof(Keys), macroEvent.EventArgs);
                             KeyboardSimulator.KeyUp(keys);
 
@@ -240,14 +232,21 @@ namespace GlobalMacroRecorder
                 }
 
             }
-
-            //vf.Save(duongdanfolder + "\\" + datenow + ".mp4");
-            //rec.Dispose();
+            
             process.Kill();
+           
+        }
+        public Bitmap GetScreenSnapshot()
+        {
+            Bitmap bitmap = new Bitmap(Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height);
+            Graphics graphics = Graphics.FromImage(bitmap);
+            graphics.CopyFromScreen(0, 0, 0, 0, bitmap.Size);
+
+            return bitmap;
         }
         private void MacroForm_Load(object sender, EventArgs e)
         {
-
+            formula.SelectedIndex = 0;
         }
 
         private void metroButton1_Click(object sender, EventArgs e)
@@ -267,27 +266,26 @@ namespace GlobalMacroRecorder
 
         private void Run_click(object sender, EventArgs e)
         {
+            MessageBox.Show("Tool works better in 1920x1080 and scale 100%");
             if (Directory.Exists(duongdanfolder))
             {
                 #region get all file
 
-                DirectoryInfo d = new DirectoryInfo(duongdanfolder);//Assuming Test is your Folder
+                DirectoryInfo d = new DirectoryInfo(duongdanfolder);
 
-                FileInfo[] Files = d.GetFiles("*.mcr"); //Getting Text files
+                FileInfo[] Files = d.GetFiles("*.mcr"); 
                 var filess = Files.ToList();
                 #endregion
-                //OPEN FILE EXCEL
-                FileInfo[] FilesExcel = d.GetFiles("*.xlsx"); //Getting Text files
+                
+                FileInfo[] FilesExcel = d.GetFiles("*.xlsx"); 
                 var filex = FilesExcel.ToList();
                 var path = filex[0].FullName;
                 FileInfo fileInfo = new FileInfo(path);
 
                 ExcelPackage package = new ExcelPackage(fileInfo);
                 ExcelWorksheet worksheet = package.Workbook.Worksheets[2];
-
-                // get number of rows and columns in the sheet
-                int rows = worksheet.Dimension.Rows; // 20
-                int columns = worksheet.Dimension.Columns; // 7
+                int rows = worksheet.Dimension.Rows; 
+                int columns = worksheet.Dimension.Columns; 
                 var listErrorCase = new List<string>();
                 for (int i = 12; i <= rows; i++)
                 {
@@ -297,14 +295,30 @@ namespace GlobalMacroRecorder
                         pathCurrentFile = duongdanfolder + "\\" + fileName + ".mcr";
 
                         RunMacroandSaveVideo();
-
+                        var screeenshot = GetScreenSnapshot();
                         if (worksheet.Cells[i, 9].Text.ToString().Trim() == string.Empty)
                         {
                             worksheet.Cells[i, 9].Formula = "=HYPERLINK(" + @"""" + duongdanfolder + "\\" + fileName + ".avi" + @"""" + "," + @"""Evidence :" + DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss") + @"""" + ")";
-                        }
-                        else
-                        {
 
+                            var picture = worksheet.Drawings.AddPicture(fileName, screeenshot);
+                            picture.SetSize(400, 250);
+                            picture.SetPosition((i-1),100, 9,0);
+                        }
+                        else if (worksheet.Cells[i, 11].Text.ToString().Trim() == string.Empty)
+                        {
+                            worksheet.Cells[i, 11].Formula = "=HYPERLINK(" + @"""" + duongdanfolder + "\\" + fileName + ".avi" + @"""" + "," + @"""Evidence :" + DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss") + @"""" + ")";
+
+                            var picture = worksheet.Drawings.AddPicture(fileName, screeenshot);
+                            picture.SetSize(400, 250);
+                            picture.SetPosition((i - 1), 100, 11, 0);
+                        }
+                        else if (worksheet.Cells[i, 13].Text.ToString().Trim() == string.Empty)
+                        {
+                            worksheet.Cells[i, 13].Formula = "=HYPERLINK(" + @"""" + duongdanfolder + "\\" + fileName + ".avi" + @"""" + "," + @"""Evidence :" + DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss") + @"""" + ")";
+
+                            var picture = worksheet.Drawings.AddPicture(fileName, screeenshot);
+                            picture.SetSize(400, 250);
+                            picture.SetPosition((i - 1), 100, 13, 0);
                         }
                     }
                     catch (Exception ex)
@@ -322,10 +336,10 @@ namespace GlobalMacroRecorder
                 {
                     MessageBox.Show(content);
                 }
-                var name = DateTime.Now.ToString("yyyyMMdd");
-
-                package.SaveAs(new FileInfo(duongdanfolder + "\\TestResult" + name + ".xlsx"));
-                Process.Start(duongdanfolder + "\\TestResult" + name + ".xlsx");
+                var name = DateTime.Now.ToString("yyyyMMddHHmm");
+                Directory.CreateDirectory(duongdanfolder + "\\TestResult");
+                package.SaveAs(new FileInfo(duongdanfolder + "\\TestResult\\" + name + ".xlsx"));
+                Process.Start(duongdanfolder + "\\TestResult\\" + name + ".xlsx");
             }
             else
             {
@@ -342,6 +356,10 @@ namespace GlobalMacroRecorder
             liststring = new List<ResItem>();
             foreach (DataGridViewRow item in dataGridView1.Rows)
             {
+                if (item.Cells[0].Value == null || item.Cells[1].Value == null || item.Cells[2].Value == null)
+                {
+                    continue;
+                }
                 var res = new ResItem()
                 {
                     StringContent = item.Cells[0].Value.ToString(),
@@ -413,6 +431,25 @@ namespace GlobalMacroRecorder
         private void Clipboard_Click(object sender, EventArgs e)
         {
 
+            try
+            {
+
+                GetDataGridtoListView();
+                var content = "";   
+                foreach (var item in liststring)
+                {
+                    var value = item.StringContent.Replace("\"", "");
+                    value = value.Replace(_prefixContent, "");
+                    
+                    content = content + item.NameinResx + "\t" + value + "\r\n";
+                }
+                Clipboard.SetText(content);
+                MessageBox.Show("Set to clipboard successful.");
+            }
+            catch (Exception ex)
+            {
+                System.Windows.MessageBox.Show(ex.ToString());
+            }
         }
 
         private void removeComment_Click(object sender, EventArgs e)
@@ -530,7 +567,7 @@ namespace GlobalMacroRecorder
 
         private void getContentUI_Click(object sender, EventArgs e)
         {
-            //TranslationSource.Instance[nameof(InsertLevelViewRes.MainGrid)]
+            
             if (ResourceName.Text == string.Empty)
             {
                 MessageBox.Show("Please fill Name Command");
@@ -541,7 +578,8 @@ namespace GlobalMacroRecorder
                 MessageBox.Show("Please fill path");
                 return;
             }
-            //GetDataGridtoListView();
+            
+            liststring = new List<ResItem>();
             var filess = GetFiles(TypeFile.xaml);
             foreach (FileInfo file in filess)
             {
@@ -574,8 +612,6 @@ namespace GlobalMacroRecorder
 
         private void Gettextfrom_Click(object sender, EventArgs e)
         {
-
-            //TranslationSource.Instance[nameof(InsertLevelViewRes.MainGrid)]
             if (ResourceName.Text == string.Empty)
             {
                 MessageBox.Show("Please fill Name Command");
@@ -586,7 +622,8 @@ namespace GlobalMacroRecorder
                 MessageBox.Show("Please fill path");
                 return;
             }
-            //GetDataGridtoListView();
+            
+            liststring = new List<ResItem>();
             var filess = GetFiles(TypeFile.all);
             foreach (FileInfo file in filess)
             {
@@ -602,7 +639,8 @@ namespace GlobalMacroRecorder
                         var replacementString = match.Groups[0].Value.Replace(@"""", string.Empty);
                         replacementString = replacementString.Replace(@" ", string.Empty);
                         replacementString = Regex.Replace(replacementString, "[^a-zA-Z0-9]", "");
-                        var rex = new ResItem { NameInSource = string.Format(formula.Text, ResourceName.Text + "." + replacementString), StringContent = match.Groups[0].Value, NameinResx = replacementString };
+                        replacementString= "_" + replacementString;
+                        var rex = new ResItem { NameInSource = string.Format(formula.Text, ResourceName.Text + replacementString), StringContent = match.Groups[0].Value, NameinResx = replacementString };
                         if (!liststring.Any(x => x.StringContent == rex.StringContent))
                         {
                             liststring.Add(rex);
@@ -643,7 +681,7 @@ namespace GlobalMacroRecorder
                     using (StreamReader reader = new StreamReader(file.FullName))
                     {
                         vanban = reader.ReadToEnd();
-                        //var emptyline = @"^\s*$\n";
+                        
                         var emptyline = @"^(?([^\r\n])\s)*\r?\n(?([^\r\n])\s)*\r?\n";
                         vanban = Regex.Replace(vanban, emptyline, string.Empty, RegexOptions.Multiline);
                     }

@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GlobalMacroRecorder", "..\R
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MouseKeyboardLibrary", "..\Record\MouseKeyboardLibrary\MouseKeyboardLibrary.csproj", "{F419622F-4D82-40A6-B4FB-3FE36579F018}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RecordVideo", "..\RecordVideo\RecordVideo.csproj", "{F6635C76-F8D5-4D71-BB2E-352E4EBBC6CD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{F419622F-4D82-40A6-B4FB-3FE36579F018}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F419622F-4D82-40A6-B4FB-3FE36579F018}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F419622F-4D82-40A6-B4FB-3FE36579F018}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F6635C76-F8D5-4D71-BB2E-352E4EBBC6CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F6635C76-F8D5-4D71-BB2E-352E4EBBC6CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F6635C76-F8D5-4D71-BB2E-352E4EBBC6CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F6635C76-F8D5-4D71-BB2E-352E4EBBC6CD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

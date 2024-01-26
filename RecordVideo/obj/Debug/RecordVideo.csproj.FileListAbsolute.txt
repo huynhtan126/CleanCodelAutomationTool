@@ -1,0 +1,13 @@
+C:\TGL\CleanCode\CleanCodelAutomationTool\RecordVideo\bin\Debug\RecordVideo.exe.config
+C:\TGL\CleanCode\CleanCodelAutomationTool\RecordVideo\bin\Debug\RecordVideo.exe
+C:\TGL\CleanCode\CleanCodelAutomationTool\RecordVideo\bin\Debug\RecordVideo.pdb
+C:\TGL\CleanCode\CleanCodelAutomationTool\RecordVideo\bin\Debug\SharpAvi.dll
+C:\TGL\CleanCode\CleanCodelAutomationTool\RecordVideo\bin\Debug\SharpAvi.xml
+C:\TGL\CleanCode\CleanCodelAutomationTool\RecordVideo\obj\Debug\RecordVideo.csproj.AssemblyReference.cache
+C:\TGL\CleanCode\CleanCodelAutomationTool\RecordVideo\obj\Debug\RecordVideo.csproj.CoreCompileInputs.cache
+C:\TGL\CleanCode\CleanCodelAutomationTool\RecordVideo\obj\Debug\RecordVideo.csproj.CopyComplete
+C:\TGL\CleanCode\CleanCodelAutomationTool\RecordVideo\obj\Debug\RecordVideo.exe
+C:\TGL\CleanCode\CleanCodelAutomationTool\RecordVideo\obj\Debug\RecordVideo.pdb
+C:\TGL\CleanCode\CleanCodelAutomationTool\Record\GlobalMacroRecorder\RecordVideo\RecordVideo.exe.config
+C:\TGL\CleanCode\CleanCodelAutomationTool\Record\GlobalMacroRecorder\RecordVideo\RecordVideo.exe
+C:\TGL\CleanCode\CleanCodelAutomationTool\Record\GlobalMacroRecorder\RecordVideo\RecordVideo.pdb

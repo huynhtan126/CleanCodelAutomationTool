@@ -1,9 +1,10 @@
-﻿using Captura;
+﻿
 using MouseKeyboardLibrary;
 using Newtonsoft.Json;
 using OfficeOpenXml;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -34,7 +35,11 @@ namespace GlobalMacroRecorder
 
             keyboardHook.KeyDown += new KeyEventHandler(keyboardHook_KeyDown);
             keyboardHook.KeyUp += new KeyEventHandler(keyboardHook_KeyUp);
+            var pathfolder = System.Reflection.Assembly.GetExecutingAssembly().Location;
 
+            var fileor = new FileInfo(pathfolder);
+            pathfolder = fileor.Directory.ToString();
+            _pathRecordVideo = pathfolder + "\\RecordVideo\\RecordVideo.exe"; 
         }
 
         void mouseHook_MouseMove(object sender, MouseEventArgs e)
@@ -133,27 +138,40 @@ namespace GlobalMacroRecorder
 
         }
 
-        public string duongdanfolder = "C:\\Users\\huynh\\Documents\\Step2";
+        public string duongdanfolder = @"C:\Step2";
         public void ExportJson()
         {
+            if(!Directory.Exists(duongdanfolder))
+            {
+                Directory.CreateDirectory(duongdanfolder);
+            }
             var vanbanKho = JsonConvert.SerializeObject(events);
-            var datenow = DateTime.Now.ToString("ddMMyyyyHHmmss");
+            var datenow = DateTime.Now.ToString("yyyyMMddHHmm");
             pathCurrentFile = duongdanfolder + "\\" + datenow + ".mcr";
             File.WriteAllText(pathCurrentFile, vanbanKho);
         }
 
         private void playBackMacroButton_Click(object sender, EventArgs e)
         {
-            var vanban = File.ReadAllText(pathCurrentFile);
-            var docMacro = JsonConvert.DeserializeObject<List<MacroEvent>>(vanban);
-            this.events = docMacro;
+            //var vanban = File.ReadAllText(pathCurrentFile);
+            //var docMacro = JsonConvert.DeserializeObject<List<MacroEvent>>(vanban);
+            //this.events = docMacro;
             RunMacroandSaveVideo();
         }
         private string pathCurrentFile = "";
+        private string _pathRecordVideo = "";
         private void RunMacroandSaveVideo()
         {
-            var datenow = DateTime.Now.ToString("ddMMyyyyHHmmss");
-            var rec = new Recorder(new RecorderParams(duongdanfolder + "\\" + datenow + ".avi", 30, SharpAvi.KnownFourCCs.Codecs.MicrosoftMpeg4V3, 70));
+            //var datenow = DateTime.Now.ToString("ddMMyyyyHHmm");
+            //var rec = new Recorder(new RecorderParams(duongdanfolder + "\\" + datenow + ".avi", 30, SharpAvi.KnownFourCCs.Codecs.MicrosoftMpeg4V3, 70));
+            var fileName = Path.GetFileNameWithoutExtension(pathCurrentFile);
+            var startInfo = new ProcessStartInfo();
+            startInfo.FileName = "\"" + _pathRecordVideo + "\"";
+            startInfo.Arguments = "\"" + duongdanfolder + "\\" + fileName + ".avi" + "\"";
+            startInfo.Verb = "runas";
+            startInfo.UseShellExecute = false;
+            startInfo.CreateNoWindow = true;
+            var process = Process.Start(startInfo);
 
             foreach (MacroEvent macroEvent in events)
             {
@@ -217,7 +235,8 @@ namespace GlobalMacroRecorder
             }
 
             //vf.Save(duongdanfolder + "\\" + datenow + ".mp4");
-            rec.Dispose();
+            //rec.Dispose();
+            process.Kill();
         }
         private void MacroForm_Load(object sender, EventArgs e)
         {
@@ -288,6 +307,11 @@ namespace GlobalMacroRecorder
             {
                 MessageBox.Show("Folder not exist");
             }
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>GlobalMacroRecorder</RootNamespace>
     <AssemblyName>GlobalMacroRecorder</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -59,8 +59,8 @@
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
-    <Reference Include="SharpAvi, Version=2.1.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\CleanCode\packages\SharpAvi.2.1.2\lib\net45\SharpAvi.dll</HintPath>
+    <Reference Include="SharpAvi, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\CleanCode\packages\SharpAvi.2.0.1\lib\net35-client\SharpAvi.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
@@ -92,7 +92,6 @@
     <Compile Include="Macro.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RecorderParams.cs" />
     <EmbeddedResource Include="MacroForm.resx">
       <DependentUpon>MacroForm.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -125,7 +124,13 @@
       <Name>MouseKeyboardLibrary</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="RecordVideo\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>xcopy /y "$(ProjectDir)\RecordVideo\*" "$(TargetDir)\RecordVideo\"</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

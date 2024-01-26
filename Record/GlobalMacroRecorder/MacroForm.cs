@@ -6,13 +6,16 @@ using OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices.ComTypes;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
+using System.Windows.Threading;
 using System.Xml.Linq;
 using Timer = System.Windows.Forms.Timer;
 
@@ -29,7 +32,7 @@ namespace GlobalMacroRecorder
         private List<ResItem> liststring = new List<ResItem>();
         MouseHook mouseHook = new MouseHook();
         KeyboardHook keyboardHook = new KeyboardHook();
-
+        public static bool isBreak = false;
         public MacroForm()
         {
 
@@ -168,6 +171,18 @@ namespace GlobalMacroRecorder
                 MessageBox.Show("File not exist");
                 return;
             }
+            Thread newWindowThread = new Thread(new ThreadStart(() =>
+            {
+                var i = -double.MaxValue;
+                var cancel = new CancelView();
+                cancel.Show();
+                //cancel.Show(this);
+                //_loadingUI.Dispatcher.Invoke(DispatcherPriority.Normal, new ThreadStart(() => _loadingUI.Percent.Text = text));
+            }));
+            newWindowThread.SetApartmentState(ApartmentState.STA);
+            newWindowThread.IsBackground = true;
+            newWindowThread.Start();
+
             var vanban = File.ReadAllText(pathCurrentFile);
             var docMacro = JsonConvert.DeserializeObject<List<MacroEvent>>(vanban);
             this.events = docMacro;
@@ -182,7 +197,11 @@ namespace GlobalMacroRecorder
 
             foreach (MacroEvent macroEvent in events)
             {
-
+                if (isBreak == true) 
+                {
+         
+                    return;
+                }
                 Thread.Sleep(macroEvent.TimeSinceLastEvent);
 
                 switch (macroEvent.MacroEventType)
@@ -247,6 +266,11 @@ namespace GlobalMacroRecorder
         private void MacroForm_Load(object sender, EventArgs e)
         {
             formula.SelectedIndex = 0;
+            //bg = new BackgroundWorker();
+            //bg.DoWork += Bg_DoWork;
+            //bg.ProgressChanged += Bg_ProgressChanged;
+            //bg.RunWorkerCompleted += Bg_RunWorkerCompleted;
+            //bg.WorkerReportsProgress = true;
         }
 
         private void metroButton1_Click(object sender, EventArgs e)
@@ -269,12 +293,13 @@ namespace GlobalMacroRecorder
             MessageBox.Show("Tool works better in 1920x1080 and scale 100%");
             if (Directory.Exists(duongdanfolder))
             {
+                
                 #region get all file
 
                 DirectoryInfo d = new DirectoryInfo(duongdanfolder);
 
-                FileInfo[] Files = d.GetFiles("*.mcr"); 
-                var filess = Files.ToList();
+                //FileInfo[] Files = d.GetFiles("*.mcr"); 
+                //var filess = Files.ToList();
                 #endregion
                 
                 FileInfo[] FilesExcel = d.GetFiles("*.xlsx"); 
@@ -295,6 +320,11 @@ namespace GlobalMacroRecorder
                         pathCurrentFile = duongdanfolder + "\\" + fileName + ".mcr";
 
                         RunMacroandSaveVideo();
+                         if (isBreak == true)
+                            {
+                                isBreak = false;
+                                return;
+                            };
                         var screeenshot = GetScreenSnapshot();
                         if (worksheet.Cells[i, 9].Text.ToString().Trim() == string.Empty)
                         {

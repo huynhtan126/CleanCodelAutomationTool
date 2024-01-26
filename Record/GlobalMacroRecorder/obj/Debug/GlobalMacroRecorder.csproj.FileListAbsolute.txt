@@ -32,3 +32,4 @@ C:\TGL\CleanCode\CleanCodelAutomationTool\Record\GlobalMacroRecorder\bin\Debug\E
 C:\TGL\CleanCode\CleanCodelAutomationTool\Record\GlobalMacroRecorder\bin\Debug\GlobalMacroRecorder.exe.config
 C:\TGL\CleanCode\CleanCodelAutomationTool\Record\GlobalMacroRecorder\bin\Debug\SharpAvi.dll
 C:\TGL\CleanCode\CleanCodelAutomationTool\Record\GlobalMacroRecorder\bin\Debug\SharpAvi.xml
+C:\TGL\CleanCode\CleanCodelAutomationTool\Record\GlobalMacroRecorder\obj\Debug\GlobalMacroRecorder.CancelView.resources

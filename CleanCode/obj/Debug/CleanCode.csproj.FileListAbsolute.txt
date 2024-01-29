@@ -114,6 +114,8 @@ C:\TGL\CleanCode\CleanCodelAutomationTool\CleanCode\bin\Debug\EPPlus.dll
 C:\TGL\CleanCode\CleanCodelAutomationTool\CleanCode\bin\Debug\MaterialDesignColors.dll
 C:\TGL\CleanCode\CleanCodelAutomationTool\CleanCode\bin\Debug\MaterialDesignThemes.Wpf.dll
 C:\TGL\CleanCode\CleanCodelAutomationTool\CleanCode\bin\Debug\Microsoft.Xaml.Behaviors.dll
+C:\TGL\CleanCode\CleanCodelAutomationTool\CleanCode\bin\Debug\MouseKeyboardLibrary.dll
+C:\TGL\CleanCode\CleanCodelAutomationTool\CleanCode\bin\Debug\MouseKeyboardLibrary.pdb
 C:\TGL\CleanCode\CleanCodelAutomationTool\CleanCode\bin\Debug\EPPlus.xml
 C:\TGL\CleanCode\CleanCodelAutomationTool\CleanCode\bin\Debug\MaterialDesignColors.pdb
 C:\TGL\CleanCode\CleanCodelAutomationTool\CleanCode\bin\Debug\MaterialDesignThemes.Wpf.pdb
@@ -135,5 +137,3 @@ C:\TGL\CleanCode\CleanCodelAutomationTool\CleanCode\obj\Debug\CleanCode.csproj.C
 C:\TGL\CleanCode\CleanCodelAutomationTool\CleanCode\obj\Debug\CleanCode.csproj.CopyComplete
 C:\TGL\CleanCode\CleanCodelAutomationTool\CleanCode\obj\Debug\CleanCode.exe
 C:\TGL\CleanCode\CleanCodelAutomationTool\CleanCode\obj\Debug\CleanCode.pdb
-C:\TGL\CleanCode\CleanCodelAutomationTool\CleanCode\bin\Debug\MouseKeyboardLibrary.dll
-C:\TGL\CleanCode\CleanCodelAutomationTool\CleanCode\bin\Debug\MouseKeyboardLibrary.pdb

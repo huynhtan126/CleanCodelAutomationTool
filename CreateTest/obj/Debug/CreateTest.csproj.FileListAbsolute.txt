@@ -1,0 +1,6 @@
+C:\TGL\CleanCode\CleanCodelAutomationTool\CreateTest\obj\Debug\CreateTest.csproj.AssemblyReference.cache
+C:\TGL\CleanCode\CleanCodelAutomationTool\CreateTest\obj\Debug\CreateTest.csproj.CoreCompileInputs.cache
+C:\TGL\CleanCode\CleanCodelAutomationTool\Record\GlobalMacroRecorder\RecordVideo\CreateTest.exe
+C:\TGL\CleanCode\CleanCodelAutomationTool\Record\GlobalMacroRecorder\RecordVideo\CreateTest.pdb
+C:\TGL\CleanCode\CleanCodelAutomationTool\CreateTest\obj\Debug\CreateTest.exe
+C:\TGL\CleanCode\CleanCodelAutomationTool\CreateTest\obj\Debug\CreateTest.pdb

@@ -4,9 +4,9 @@ C:\Users\huynh\Downloads\MouseKeyboardLibrary\MouseKeyboardLibrary\obj\Debug\Mou
 C:\Users\huynh\Downloads\MouseKeyboardLibrary\MouseKeyboardLibrary\obj\Debug\MouseKeyboardLibrary.csproj.CoreCompileInputs.cache
 C:\Users\huynh\Downloads\MouseKeyboardLibrary\MouseKeyboardLibrary\obj\Debug\MouseKeyboardLibrary.dll
 C:\Users\huynh\Downloads\MouseKeyboardLibrary\MouseKeyboardLibrary\obj\Debug\MouseKeyboardLibrary.pdb
+C:\TGL\CleanCode\CleanCodelAutomationTool\Record\MouseKeyboardLibrary\bin\Debug\MouseKeyboardLibrary.dll
+C:\TGL\CleanCode\CleanCodelAutomationTool\Record\MouseKeyboardLibrary\bin\Debug\MouseKeyboardLibrary.pdb
 C:\TGL\CleanCode\CleanCodelAutomationTool\Record\MouseKeyboardLibrary\obj\Debug\MouseKeyboardLibrary.csproj.AssemblyReference.cache
 C:\TGL\CleanCode\CleanCodelAutomationTool\Record\MouseKeyboardLibrary\obj\Debug\MouseKeyboardLibrary.csproj.CoreCompileInputs.cache
 C:\TGL\CleanCode\CleanCodelAutomationTool\Record\MouseKeyboardLibrary\obj\Debug\MouseKeyboardLibrary.dll
 C:\TGL\CleanCode\CleanCodelAutomationTool\Record\MouseKeyboardLibrary\obj\Debug\MouseKeyboardLibrary.pdb
-C:\TGL\CleanCode\CleanCodelAutomationTool\Record\MouseKeyboardLibrary\bin\Debug\MouseKeyboardLibrary.dll
-C:\TGL\CleanCode\CleanCodelAutomationTool\Record\MouseKeyboardLibrary\bin\Debug\MouseKeyboardLibrary.pdb

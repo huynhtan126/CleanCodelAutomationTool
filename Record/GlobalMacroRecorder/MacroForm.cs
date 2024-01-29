@@ -1,4 +1,5 @@
 
+using gma.System.Windows;
 using MouseKeyboardLibrary;
 using Newtonsoft.Json;
 using OfficeOpenXml;
@@ -10,7 +11,9 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.IO.Packaging;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -25,6 +28,8 @@ namespace GlobalMacroRecorder
     {
         public string duongdanfolder = @"C:\Step2";
         private string pathCurrentFile = "";
+        private string pathTest = "";
+        private string pathTestApp = "";
         private string _pathRecordVideo = "";
         private string _prefixContent = "Content=";
         List<MacroEvent> events = new List<MacroEvent>();
@@ -32,6 +37,7 @@ namespace GlobalMacroRecorder
         private List<ResItem> liststring = new List<ResItem>();
         MouseHook mouseHook = new MouseHook();
         KeyboardHook keyboardHook = new KeyboardHook();
+        //KeyboardHook keyboardHook_cancel = new KeyboardHook();
         public static bool isBreak = false;
         public MacroForm()
         {
@@ -44,11 +50,20 @@ namespace GlobalMacroRecorder
 
             keyboardHook.KeyDown += new KeyEventHandler(keyboardHook_KeyDown);
             keyboardHook.KeyUp += new KeyEventHandler(keyboardHook_KeyUp);
+            //keyboardHook_cancel.KeyDown += new KeyEventHandler(keyboardHookCancel_KeyDown);
+            //keyboardHook_cancel.KeyUp += new KeyEventHandler(keyboardHookCancel_KeyUp);
             var pathfolder = System.Reflection.Assembly.GetExecutingAssembly().Location;
 
             var fileor = new FileInfo(pathfolder);
             pathfolder = fileor.Directory.ToString();
             _pathRecordVideo = pathfolder + "\\RecordVideo\\RecordVideo.exe";
+            pathTestApp = pathfolder + "\\RecordVideo\\GlobalHookDemo.exe";
+            pathTest = pathfolder + "\\RecordVideo\\Test.txt";
+            //m_AsyncWorker.WorkerReportsProgress = true;
+            //m_AsyncWorker.WorkerSupportsCancellation = true;
+            //m_AsyncWorker.ProgressChanged += new ProgressChangedEventHandler(bwAsync_ProgressChanged);
+            //m_AsyncWorker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(bwAsync_RunWorkerCompleted);
+            //m_AsyncWorker.DoWork += new DoWorkEventHandler(bwAsync_DoWork);
         }
 
         void mouseHook_MouseMove(object sender, MouseEventArgs e)
@@ -92,7 +107,16 @@ namespace GlobalMacroRecorder
             lastTimeRecorded = Environment.TickCount;
 
         }
+        void keyboardHookCancel_KeyDown(object sender, KeyEventArgs e)
+        {
+            //if (/*e.Alt == true &&*/ e.KeyCode == Keys.F12)
+            //{
+            //    isBreak = true;
+            //    keyboardHook_cancel.Stop();
+            //    return;
+            //}
 
+        }
         void keyboardHook_KeyDown(object sender, KeyEventArgs e)
         {
 
@@ -106,7 +130,15 @@ namespace GlobalMacroRecorder
             lastTimeRecorded = Environment.TickCount;
 
         }
-
+        void keyboardHookCancel_KeyUp(object sender, KeyEventArgs e)
+        {
+            //if (/*e.Alt == true &&*/ e.KeyCode == Keys.C)
+            //{
+            //    isBreak = true;
+            //    keyboardHook_cancel.Stop();
+            //    return;
+            //}
+        }
         void keyboardHook_KeyUp(object sender, KeyEventArgs e)
         {
 
@@ -140,7 +172,7 @@ namespace GlobalMacroRecorder
                 mouseHook.Stop();
                 ExportJson();
                 recordButton.Text = "Record";
-                
+
             }
 
         }
@@ -161,35 +193,51 @@ namespace GlobalMacroRecorder
         private void playBackMacroButton_Click(object sender, EventArgs e)
         {
             MessageBox.Show("Tool works better in 1920x1080 and scale 100%");
+            MessageBox.Show("To Break automation : F12");
+            this.WindowState = FormWindowState.Minimized;
+            var startInfo = new ProcessStartInfo();
+            startInfo.FileName = "\"" + pathTestApp + "\"";
+            startInfo.Arguments = "\"" + pathTest + "\"";
+            startInfo.Verb = "runas";
+            startInfo.UseShellExecute = false;
+            startInfo.CreateNoWindow = true;
+            var process = Process.Start(startInfo);
+
             RunMacroandSaveVideo();
+            if (File.Exists(pathTest))
+            {
+                File.Delete(pathTest);
+                WindowState = FormWindowState.Normal;
+                MessageBox.Show("Macro is cancel.");
+                process.Kill();
+                return;
+            }
+            process.Kill();
+            WindowState = FormWindowState.Normal;
+            MessageBox.Show("Macro is done.");
+
         }
 
         private void RunMacroandSaveVideo()
         {
-            if(!File.Exists(pathCurrentFile))
+            if (!File.Exists(pathCurrentFile))
             {
                 MessageBox.Show("File not exist");
                 return;
             }
-            Thread newWindowThread = new Thread(new ThreadStart(() =>
-            {
-                var i = -double.MaxValue;
-                var cancel = new CancelView();
-                cancel.Show();
-                //cancel.Show(this);
-                //_loadingUI.Dispatcher.Invoke(DispatcherPriority.Normal, new ThreadStart(() => _loadingUI.Percent.Text = text));
-            }));
-            newWindowThread.SetApartmentState(ApartmentState.STA);
-            newWindowThread.IsBackground = true;
-            newWindowThread.Start();
+
+            //newWindowThread.SetApartmentState(ApartmentState.STA);
+            //newWindowThread.IsBackground = true;
+            //newWindowThread.Start();
 
             var vanban = File.ReadAllText(pathCurrentFile);
             var docMacro = JsonConvert.DeserializeObject<List<MacroEvent>>(vanban);
             this.events = docMacro;
             var fileName = Path.GetFileNameWithoutExtension(pathCurrentFile);
+            Directory.CreateDirectory(duongdanfolder + "\\TestResult");
             var startInfo = new ProcessStartInfo();
             startInfo.FileName = "\"" + _pathRecordVideo + "\"";
-            startInfo.Arguments = "\"" + duongdanfolder + "\\" + fileName + ".avi" + "\"";
+            startInfo.Arguments = "\"" + duongdanfolder + "\\TestResult\\" + fileName + ".avi" + "\"";
             startInfo.Verb = "runas";
             startInfo.UseShellExecute = false;
             startInfo.CreateNoWindow = true;
@@ -197,11 +245,20 @@ namespace GlobalMacroRecorder
 
             foreach (MacroEvent macroEvent in events)
             {
-                if (isBreak == true) 
+                //isBreak =bool.Parse(File.ReadAllText(pathTest));
+                //if (isBreak == true)
+                //{
+                //    process.Kill();
+                //    return;
+                //}
+                if (File.Exists(pathTest))
                 {
-         
+                    //File.Delete(pathTest);
+                    //MessageBox.Show("Macro is cancel.");
+                    process.Kill();
                     return;
                 }
+
                 Thread.Sleep(macroEvent.TimeSinceLastEvent);
 
                 switch (macroEvent.MacroEventType)
@@ -251,9 +308,9 @@ namespace GlobalMacroRecorder
                 }
 
             }
-            
+
             process.Kill();
-           
+
         }
         public Bitmap GetScreenSnapshot()
         {
@@ -263,14 +320,39 @@ namespace GlobalMacroRecorder
 
             return bitmap;
         }
+        private UserActivityHook actHook;
         private void MacroForm_Load(object sender, EventArgs e)
         {
             formula.SelectedIndex = 0;
-            //bg = new BackgroundWorker();
-            //bg.DoWork += Bg_DoWork;
-            //bg.ProgressChanged += Bg_ProgressChanged;
-            //bg.RunWorkerCompleted += Bg_RunWorkerCompleted;
-            //bg.WorkerReportsProgress = true;
+            //actHook = new UserActivityHook(); // crate an instance with global hooks
+            //                                  // hang on events
+            ////actHook.OnMouseActivity += new MouseEventHandler(MouseMoved);
+            //actHook.KeyDown += new KeyEventHandler(MyKeyDown);
+            //actHook.KeyPress += new KeyPressEventHandler(MyKeyPress);
+            //actHook.KeyUp += new KeyEventHandler(MyKeyUp);
+
+        }
+
+        public void MyKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.F12)
+            {
+                isBreak = true;
+
+                //keyboardHook_cancel.Stop();
+                return;
+            }
+            //LogWrite("KeyDown 	- " + e.KeyData.ToString());
+        }
+
+        public void MyKeyPress(object sender, KeyPressEventArgs e)
+        {
+            //LogWrite("KeyPress 	- " + e.KeyChar);
+        }
+
+        public void MyKeyUp(object sender, KeyEventArgs e)
+        {
+            //LogWrite("KeyUp 		- " + e.KeyData.ToString());
         }
 
         private void metroButton1_Click(object sender, EventArgs e)
@@ -290,10 +372,20 @@ namespace GlobalMacroRecorder
 
         private void Run_click(object sender, EventArgs e)
         {
+    
             MessageBox.Show("Tool works better in 1920x1080 and scale 100%");
+            MessageBox.Show("To Break automation : F12");
+            this.WindowState = FormWindowState.Minimized;
             if (Directory.Exists(duongdanfolder))
             {
-                
+                var startInfo = new ProcessStartInfo();
+                startInfo.FileName = "\"" + pathTestApp + "\"";
+                startInfo.Arguments = "\"" + pathTest + "\"";
+                startInfo.Verb = "runas";
+                startInfo.UseShellExecute = false;
+                startInfo.CreateNoWindow = true;
+                var process = Process.Start(startInfo);
+
                 #region get all file
 
                 DirectoryInfo d = new DirectoryInfo(duongdanfolder);
@@ -301,17 +393,18 @@ namespace GlobalMacroRecorder
                 //FileInfo[] Files = d.GetFiles("*.mcr"); 
                 //var filess = Files.ToList();
                 #endregion
-                
-                FileInfo[] FilesExcel = d.GetFiles("*.xlsx"); 
+
+                FileInfo[] FilesExcel = d.GetFiles("*.xlsx");
                 var filex = FilesExcel.ToList();
                 var path = filex[0].FullName;
                 FileInfo fileInfo = new FileInfo(path);
 
                 ExcelPackage package = new ExcelPackage(fileInfo);
                 ExcelWorksheet worksheet = package.Workbook.Worksheets[2];
-                int rows = worksheet.Dimension.Rows; 
-                int columns = worksheet.Dimension.Columns; 
+                int rows = worksheet.Dimension.Rows;
+                int columns = worksheet.Dimension.Columns;
                 var listErrorCase = new List<string>();
+                //keyboardHook_cancel.Start();
                 for (int i = 12; i <= rows; i++)
                 {
                     try
@@ -320,33 +413,37 @@ namespace GlobalMacroRecorder
                         pathCurrentFile = duongdanfolder + "\\" + fileName + ".mcr";
 
                         RunMacroandSaveVideo();
-                         if (isBreak == true)
-                            {
-                                isBreak = false;
-                                return;
-                            };
+                        if (File.Exists(pathTest))
+                        {
+                            File.Delete(pathTest);
+                            this.WindowState = FormWindowState.Normal;
+                            MessageBox.Show("Macro is cancel.");
+                            process.Kill();
+                            return;
+                        }
+
                         var screeenshot = GetScreenSnapshot();
                         if (worksheet.Cells[i, 9].Text.ToString().Trim() == string.Empty)
                         {
-                            worksheet.Cells[i, 9].Formula = "=HYPERLINK(" + @"""" + duongdanfolder + "\\" + fileName + ".avi" + @"""" + "," + @"""Evidence :" + DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss") + @"""" + ")";
+                            worksheet.Cells[i, 9].Formula = "=HYPERLINK(" + @""""  + fileName + ".avi" + @"""" + "," + @"""Evidence :" + DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss") + @"""" + ")";
 
-                            var picture = worksheet.Drawings.AddPicture(fileName, screeenshot);
+                            var picture = worksheet.Drawings.AddPicture(Guid.NewGuid().ToString(), screeenshot);
                             picture.SetSize(400, 250);
-                            picture.SetPosition((i-1),100, 9,0);
+                            picture.SetPosition((i - 1), 100, 9, 0);
                         }
                         else if (worksheet.Cells[i, 11].Text.ToString().Trim() == string.Empty)
                         {
-                            worksheet.Cells[i, 11].Formula = "=HYPERLINK(" + @"""" + duongdanfolder + "\\" + fileName + ".avi" + @"""" + "," + @"""Evidence :" + DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss") + @"""" + ")";
+                            worksheet.Cells[i, 11].Formula = "=HYPERLINK(" + @""""  + fileName + ".avi" + @"""" + "," + @"""Evidence :" + DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss") + @"""" + ")";
 
-                            var picture = worksheet.Drawings.AddPicture(fileName, screeenshot);
+                            var picture = worksheet.Drawings.AddPicture(Guid.NewGuid().ToString(), screeenshot);
                             picture.SetSize(400, 250);
                             picture.SetPosition((i - 1), 100, 11, 0);
                         }
                         else if (worksheet.Cells[i, 13].Text.ToString().Trim() == string.Empty)
                         {
-                            worksheet.Cells[i, 13].Formula = "=HYPERLINK(" + @"""" + duongdanfolder + "\\" + fileName + ".avi" + @"""" + "," + @"""Evidence :" + DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss") + @"""" + ")";
+                            worksheet.Cells[i, 13].Formula = "=HYPERLINK(" + @"""" + fileName + ".avi" + @"""" + "," + @"""Evidence :" + DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss") + @"""" + ")";
 
-                            var picture = worksheet.Drawings.AddPicture(fileName, screeenshot);
+                            var picture = worksheet.Drawings.AddPicture(Guid.NewGuid().ToString(), screeenshot);
                             picture.SetSize(400, 250);
                             picture.SetPosition((i - 1), 100, 13, 0);
                         }
@@ -370,11 +467,16 @@ namespace GlobalMacroRecorder
                 Directory.CreateDirectory(duongdanfolder + "\\TestResult");
                 package.SaveAs(new FileInfo(duongdanfolder + "\\TestResult\\" + name + ".xlsx"));
                 Process.Start(duongdanfolder + "\\TestResult\\" + name + ".xlsx");
+                //keyboardHook_cancel.Stop();
+
+                //actHook.Stop();
+                process.Kill();
             }
             else
             {
                 MessageBox.Show("Folder not exist");
             }
+            this.WindowState = FormWindowState.Normal;
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e)
@@ -465,12 +567,12 @@ namespace GlobalMacroRecorder
             {
 
                 GetDataGridtoListView();
-                var content = "";   
+                var content = "";
                 foreach (var item in liststring)
                 {
                     var value = item.StringContent.Replace("\"", "");
                     value = value.Replace(_prefixContent, "");
-                    
+
                     content = content + item.NameinResx + "\t" + value + "\r\n";
                 }
                 Clipboard.SetText(content);
@@ -597,7 +699,7 @@ namespace GlobalMacroRecorder
 
         private void getContentUI_Click(object sender, EventArgs e)
         {
-            
+
             if (ResourceName.Text == string.Empty)
             {
                 MessageBox.Show("Please fill Name Command");
@@ -608,7 +710,7 @@ namespace GlobalMacroRecorder
                 MessageBox.Show("Please fill path");
                 return;
             }
-            
+
             liststring = new List<ResItem>();
             var filess = GetFiles(TypeFile.xaml);
             foreach (FileInfo file in filess)
@@ -652,7 +754,7 @@ namespace GlobalMacroRecorder
                 MessageBox.Show("Please fill path");
                 return;
             }
-            
+
             liststring = new List<ResItem>();
             var filess = GetFiles(TypeFile.all);
             foreach (FileInfo file in filess)
@@ -669,7 +771,7 @@ namespace GlobalMacroRecorder
                         var replacementString = match.Groups[0].Value.Replace(@"""", string.Empty);
                         replacementString = replacementString.Replace(@" ", string.Empty);
                         replacementString = Regex.Replace(replacementString, "[^a-zA-Z0-9]", "");
-                        replacementString= "_" + replacementString;
+                        replacementString = "_" + replacementString;
                         var rex = new ResItem { NameInSource = string.Format(formula.Text, ResourceName.Text + replacementString), StringContent = match.Groups[0].Value, NameinResx = replacementString };
                         if (!liststring.Any(x => x.StringContent == rex.StringContent))
                         {
@@ -711,7 +813,7 @@ namespace GlobalMacroRecorder
                     using (StreamReader reader = new StreamReader(file.FullName))
                     {
                         vanban = reader.ReadToEnd();
-                        
+
                         var emptyline = @"^(?([^\r\n])\s)*\r?\n(?([^\r\n])\s)*\r?\n";
                         vanban = Regex.Replace(vanban, emptyline, string.Empty, RegexOptions.Multiline);
                     }
@@ -726,6 +828,13 @@ namespace GlobalMacroRecorder
                 }
             }
             MessageBox.Show(string.Format("Clean code {0} files succesful", filess.Count()));
+        }
+
+        private void MacroForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            keyboardHook.Stop();
+            //keyboardHook_cancel.Stop();
+            mouseHook.Stop();
         }
     }
 }

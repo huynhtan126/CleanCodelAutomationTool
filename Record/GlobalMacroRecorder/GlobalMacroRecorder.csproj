@@ -99,6 +99,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResItem.cs" />
+    <Compile Include="UserActivityHook.cs" />
     <EmbeddedResource Include="CancelView.resx">
       <DependentUpon>CancelView.cs</DependentUpon>
     </EmbeddedResource>
@@ -139,7 +140,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>xcopy /y "$(ProjectDir)\RecordVideo\*" "$(TargetDir)\RecordVideo\"</PostBuildEvent>
+    <PostBuildEvent>xcopy /y "$(ProjectDir)\RecordVideo\*" "$(TargetDir)\RecordVideo\*"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

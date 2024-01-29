@@ -18,8 +18,27 @@ namespace GlobalMacroRecorder
 
         private void metroButton1_Click(object sender, EventArgs e)
         {
-            MacroForm.isBreak= true;
+            MacroForm.isBreak = true;
             this.Close();
+        }
+
+        private void CancelView_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private bool m_Cancel = false;
+
+        public bool Cancel
+        {
+            get { return m_Cancel; }
+        }
+
+        private void CancelView_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            m_Cancel = true;
+            e.Cancel = true;
+
         }
     }
 }

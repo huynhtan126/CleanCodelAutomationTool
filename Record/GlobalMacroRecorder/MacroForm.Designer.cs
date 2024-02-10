@@ -60,6 +60,8 @@
             this.removeComment = new MetroFramework.Controls.MetroButton();
             this.Brower = new MetroFramework.Controls.MetroButton();
             this.PathfileorFolder = new System.Windows.Forms.TextBox();
+            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
+            this.label1 = new System.Windows.Forms.Label();
             this.programBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.metroTabControl1.SuspendLayout();
             this.metroTabPage1.SuspendLayout();
@@ -68,6 +70,7 @@
             this.metroTabPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.metroTabPage3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.programBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
@@ -85,6 +88,8 @@
             // 
             // metroTabPage1
             // 
+            this.metroTabPage1.Controls.Add(this.label1);
+            this.metroTabPage1.Controls.Add(this.numericUpDown1);
             this.metroTabPage1.Controls.Add(this.groupBox2);
             this.metroTabPage1.Controls.Add(this.groupBox1);
             this.metroTabPage1.HorizontalScrollbarBarColor = true;
@@ -103,7 +108,7 @@
             // 
             this.groupBox2.Controls.Add(this.recordButton);
             this.groupBox2.Controls.Add(this.metroButton2);
-            this.groupBox2.Location = new System.Drawing.Point(3, 118);
+            this.groupBox2.Location = new System.Drawing.Point(6, 127);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(486, 100);
             this.groupBox2.TabIndex = 10;
@@ -133,7 +138,7 @@
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.metroButton3);
-            this.groupBox1.Location = new System.Drawing.Point(3, 18);
+            this.groupBox1.Location = new System.Drawing.Point(6, 30);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(486, 82);
             this.groupBox1.TabIndex = 9;
@@ -413,6 +418,33 @@
             this.PathfileorFolder.Text = "C:\\Step2";
             this.PathfileorFolder.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
+            // numericUpDown1
+            // 
+            this.numericUpDown1.Location = new System.Drawing.Point(417, 7);
+            this.numericUpDown1.Minimum = new decimal(new int[] {
+            100,
+            0,
+            0,
+            -2147483648});
+            this.numericUpDown1.Name = "numericUpDown1";
+            this.numericUpDown1.Size = new System.Drawing.Size(66, 20);
+            this.numericUpDown1.TabIndex = 9;
+            this.numericUpDown1.Value = new decimal(new int[] {
+            5,
+            0,
+            0,
+            0});
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(314, 9);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(97, 13);
+            this.label1.TabIndex = 9;
+            this.label1.Text = "Speed Play Back x";
+            this.label1.Click += new System.EventHandler(this.label1_Click);
+            // 
             // programBindingSource
             // 
             this.programBindingSource.DataSource = typeof(GlobalMacroRecorder.Program);
@@ -433,6 +465,7 @@
             this.Load += new System.EventHandler(this.MacroForm_Load);
             this.metroTabControl1.ResumeLayout(false);
             this.metroTabPage1.ResumeLayout(false);
+            this.metroTabPage1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
             this.metroTabPage2.ResumeLayout(false);
@@ -440,6 +473,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.metroTabPage3.ResumeLayout(false);
             this.metroTabPage3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.programBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -479,6 +513,8 @@
         private MetroFramework.Controls.MetroRadioButton metroRadioButton1;
         private MetroFramework.Controls.MetroRadioButton xaml;
         private MetroFramework.Controls.MetroRadioButton cs_cpp;
+        private System.Windows.Forms.NumericUpDown numericUpDown1;
+        private System.Windows.Forms.Label label1;
     }
 }
 

@@ -3,13 +3,17 @@ using gma.System.Windows;
 using MouseKeyboardLibrary;
 using Newtonsoft.Json;
 using OfficeOpenXml;
+using OfficeOpenXml.Drawing;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
+using System.Drawing.Imaging;
+using System.Globalization;
 using System.IO;
 using System.IO.Packaging;
 using System.Linq;
@@ -30,6 +34,8 @@ namespace GlobalMacroRecorder
         private string pathCurrentFile = "";
         private string pathTest = "";
         private string pathTestApp = "";
+        private string AppTestName = "GlobalHookDemo.exe";
+        private string AppRecordName = "RecordVideo.exe";
         private string _pathRecordVideo = "";
         private string _prefixContent = "Content=";
         List<MacroEvent> events = new List<MacroEvent>();
@@ -56,8 +62,9 @@ namespace GlobalMacroRecorder
 
             var fileor = new FileInfo(pathfolder);
             pathfolder = fileor.Directory.ToString();
-            _pathRecordVideo = pathfolder + "\\RecordVideo\\RecordVideo.exe";
-            pathTestApp = pathfolder + "\\RecordVideo\\GlobalHookDemo.exe";
+
+            _pathRecordVideo = pathfolder + "\\RecordVideo\\"+ AppRecordName;
+            pathTestApp = pathfolder + "\\RecordVideo\\"+ AppTestName;
             pathTest = pathfolder + "\\RecordVideo\\Test.txt";
             //m_AsyncWorker.WorkerReportsProgress = true;
             //m_AsyncWorker.WorkerSupportsCancellation = true;
@@ -119,7 +126,17 @@ namespace GlobalMacroRecorder
         }
         void keyboardHook_KeyDown(object sender, KeyEventArgs e)
         {
+            if (e.KeyCode == Keys.F12)
+            {
+                //if(_process!=null)
+                //    _process.Kill();
+                keyboardHook.Stop();
+                mouseHook.Stop();
+                ExportJson();
+                recordButton.Text = "Record";
 
+                return;
+            }
             events.Add(
                 new MacroEvent(
                     MacroEventType.KeyDown,
@@ -152,26 +169,40 @@ namespace GlobalMacroRecorder
             lastTimeRecorded = Environment.TickCount;
 
         }
-
+        private Process _process;
         private void recordStartButton_Click(object sender, EventArgs e)
         {
 
             if (recordButton.Text == "Record")
             {
+                MessageBox.Show("Tool works better in 1920x1080 and scale 100%");
+                MessageBox.Show("To Break record : F12");
+                //this.WindowState = FormWindowState.Minimized;
+                //if (Directory.Exists(duongdanfolder))
+                //{
+                //    var startInfo = new ProcessStartInfo();
+                //    startInfo.FileName = "\"" + pathTestApp + "\"";
+                //    startInfo.Arguments = "\"" + pathTest + "\"";
+                //    startInfo.Verb = "runas";
+                //    startInfo.UseShellExecute = false;
+                //    startInfo.CreateNoWindow = true;
+                //    _process = Process.Start(startInfo);
+
                 events.Clear();
                 lastTimeRecorded = Environment.TickCount;
 
                 keyboardHook.Start();
                 mouseHook.Start();
-                recordButton.Text = "Stop";
+                recordButton.Text = "F12 to Stop";
+                //}
             }
             else
             {
 
-                keyboardHook.Stop();
-                mouseHook.Stop();
-                ExportJson();
-                recordButton.Text = "Record";
+                //keyboardHook.Stop();
+                //mouseHook.Stop();
+                //ExportJson();
+                //recordButton.Text = "Record";
 
             }
 
@@ -192,9 +223,8 @@ namespace GlobalMacroRecorder
 
         private void playBackMacroButton_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Tool works better in 1920x1080 and scale 100%");
-            MessageBox.Show("To Break automation : F12");
-            this.WindowState = FormWindowState.Minimized;
+            InitialSetup();
+
             var startInfo = new ProcessStartInfo();
             startInfo.FileName = "\"" + pathTestApp + "\"";
             startInfo.Arguments = "\"" + pathTest + "\"";
@@ -207,6 +237,7 @@ namespace GlobalMacroRecorder
             if (File.Exists(pathTest))
             {
                 File.Delete(pathTest);
+
                 WindowState = FormWindowState.Normal;
                 MessageBox.Show("Macro is cancel.");
                 process.Kill();
@@ -258,8 +289,9 @@ namespace GlobalMacroRecorder
                     process.Kill();
                     return;
                 }
-
-                Thread.Sleep(macroEvent.TimeSinceLastEvent);
+                var speed = numericUpDown1.Value;
+                var sleepTime = Math.Round(macroEvent.TimeSinceLastEvent / speed);
+                Thread.Sleep(int.Parse(sleepTime.ToString()));
 
                 switch (macroEvent.MacroEventType)
                 {
@@ -292,6 +324,10 @@ namespace GlobalMacroRecorder
                     case MacroEventType.KeyDown:
                         {
                             Keys keys = (Keys)Enum.Parse(typeof(Keys), macroEvent.EventArgs);
+                            if (keys == Keys.F11)
+                            {
+                                _bitmaps.Add(ScreenShotUtils.CaptureActiveWindow());
+                            }
                             KeyboardSimulator.KeyDown(keys);
 
                         }
@@ -369,13 +405,37 @@ namespace GlobalMacroRecorder
             }
 
         }
-
-        private void Run_click(object sender, EventArgs e)
+        private List<Bitmap> _bitmaps = new List<Bitmap>();
+        private void InitialSetup()
         {
-    
+            #region Initial setup
+            //var listProcess = Process.GetProcessesByName(_pathRecordVideo);
+            var listProcess = Process.GetProcessesByName(AppTestName);
+            foreach (var item in listProcess)
+            {
+                item.Kill();
+            }
+
+            var listProcessTest = Process.GetProcessesByName(AppRecordName);
+            foreach (var item in listProcessTest)
+            {
+                item.Kill();
+            }
+            if (File.Exists(pathTest))
+            {
+                File.Delete(pathTest);
+            }
+
             MessageBox.Show("Tool works better in 1920x1080 and scale 100%");
             MessageBox.Show("To Break automation : F12");
+
             this.WindowState = FormWindowState.Minimized;
+            #endregion
+        }
+        private void Run_click(object sender, EventArgs e)
+        {
+            InitialSetup();
+
             if (Directory.Exists(duongdanfolder))
             {
                 var startInfo = new ProcessStartInfo();
@@ -405,6 +465,13 @@ namespace GlobalMacroRecorder
                 int columns = worksheet.Dimension.Columns;
                 var listErrorCase = new List<string>();
                 //keyboardHook_cancel.Start();
+                var pics = worksheet.Drawings;
+                var listPic = new List<ExcelPicture>();
+                foreach (ExcelPicture item in pics)
+                {
+                    listPic.Add(item);
+                }
+
                 for (int i = 12; i <= rows; i++)
                 {
                     try
@@ -413,6 +480,7 @@ namespace GlobalMacroRecorder
                         pathCurrentFile = duongdanfolder + "\\" + fileName + ".mcr";
 
                         RunMacroandSaveVideo();
+
                         if (File.Exists(pathTest))
                         {
                             File.Delete(pathTest);
@@ -422,30 +490,80 @@ namespace GlobalMacroRecorder
                             return;
                         }
 
-                        var screeenshot = GetScreenSnapshot();
+                        //var screeenshot = GetScreenSnapshot();   
+                        var screeenshot = _bitmaps.LastOrDefault();
                         if (worksheet.Cells[i, 9].Text.ToString().Trim() == string.Empty)
                         {
-                            worksheet.Cells[i, 9].Formula = "=HYPERLINK(" + @""""  + fileName + ".avi" + @"""" + "," + @"""Evidence :" + DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss") + @"""" + ")";
+                            worksheet.Cells[i, 9].Formula = "=HYPERLINK(" + @"""" + fileName + ".avi" + @"""" + "," + @"""Evidence :" + DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss") + @"""" + ")";
+                            if (screeenshot != null)
+                            {
+                                var picture = worksheet.Drawings.AddPicture(Guid.NewGuid().ToString(), screeenshot);
+                                picture.SetSize(400, 250);
+                                picture.SetPosition((i - 1), 100, 9, 0);
 
-                            var picture = worksheet.Drawings.AddPicture(Guid.NewGuid().ToString(), screeenshot);
-                            picture.SetSize(400, 250);
-                            picture.SetPosition((i - 1), 100, 9, 0);
+                                var pic = listPic.Where(x => x.From.Row == i - 1 && x.From.Column == 6).ToList();
+                                if (pic.Count == 1)
+                                {
+                                    var kq = ImageUtils.CompareMemCmp(pic[0].Image as Bitmap, screeenshot);
+                                    if (kq)
+                                    {
+                                        worksheet.Cells[i, 10].Value = "OK";
+                                    }
+                                    else
+                                    {
+                                        worksheet.Cells[i, 10].Value = "NG";
+                                    }
+                                }
+                            }
+
                         }
                         else if (worksheet.Cells[i, 11].Text.ToString().Trim() == string.Empty)
                         {
-                            worksheet.Cells[i, 11].Formula = "=HYPERLINK(" + @""""  + fileName + ".avi" + @"""" + "," + @"""Evidence :" + DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss") + @"""" + ")";
+                            worksheet.Cells[i, 11].Formula = "=HYPERLINK(" + @"""" + fileName + ".avi" + @"""" + "," + @"""Evidence :" + DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss") + @"""" + ")";
+                            if (screeenshot != null)
+                            {
+                                var picture = worksheet.Drawings.AddPicture(Guid.NewGuid().ToString(), screeenshot);
+                                picture.SetSize(400, 250);
+                                picture.SetPosition((i - 1), 100, 11, 0);
 
-                            var picture = worksheet.Drawings.AddPicture(Guid.NewGuid().ToString(), screeenshot);
-                            picture.SetSize(400, 250);
-                            picture.SetPosition((i - 1), 100, 11, 0);
+                                var pic = listPic.Where(x => x.From.Row == i - 1 && x.From.Column == 6).ToList();
+                                if (pic.Count == 1)
+                                {
+                                    var kq = ImageUtils.CompareMemCmp(pic[0].Image as Bitmap, screeenshot);
+                                    if (kq)
+                                    {
+                                        worksheet.Cells[i, 10].Value = "OK";
+                                    }
+                                    else
+                                    {
+                                        worksheet.Cells[i, 10].Value = "NG";
+                                    }
+                                }
+                            }
                         }
                         else if (worksheet.Cells[i, 13].Text.ToString().Trim() == string.Empty)
                         {
                             worksheet.Cells[i, 13].Formula = "=HYPERLINK(" + @"""" + fileName + ".avi" + @"""" + "," + @"""Evidence :" + DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss") + @"""" + ")";
+                            if (screeenshot != null)
+                            {
+                                var picture = worksheet.Drawings.AddPicture(Guid.NewGuid().ToString(), screeenshot);
+                                picture.SetSize(400, 250);
+                                picture.SetPosition((i - 1), 100, 13, 0);
 
-                            var picture = worksheet.Drawings.AddPicture(Guid.NewGuid().ToString(), screeenshot);
-                            picture.SetSize(400, 250);
-                            picture.SetPosition((i - 1), 100, 13, 0);
+                                var pic = listPic.Where(x => x.From.Row == i - 1 && x.From.Column == 6).ToList();
+                                if (pic.Count == 1)
+                                {
+                                    var kq = ImageUtils.CompareMemCmp(pic[0].Image as Bitmap, screeenshot);
+                                    if (kq)
+                                    {
+                                        worksheet.Cells[i, 10].Value = "OK";
+                                    }
+                                    else
+                                    {
+                                        worksheet.Cells[i, 10].Value = "NG";
+                                    }
+                                }
+                            }
                         }
                     }
                     catch (Exception ex)
@@ -835,6 +953,43 @@ namespace GlobalMacroRecorder
             keyboardHook.Stop();
             //keyboardHook_cancel.Stop();
             mouseHook.Stop();
+        }
+
+        private void metroButton1_Click_1(object sender, EventArgs e)
+        {
+            //Rectangle bounds = this.Bounds;
+            //using (Bitmap bitmap = new Bitmap(bounds.Width, bounds.Height))
+            //{
+            //    using (Graphics g = Graphics.FromImage(bitmap))
+            //    {
+            //        g.CopyFromScreen(new Point(bounds.Left, bounds.Top), Point.Empty, bounds.Size);
+            //    }
+            var bitmap = ScreenShotUtils.CaptureActiveWindow();
+            bitmap.Save(@"C:\Users\huynh\Downloads\Active.jpg", ImageFormat.Jpeg);
+            MessageBox.Show("save ok");
+            //}
+
+        }
+        //compare
+        private void metroButton4_Click(object sender, EventArgs e)
+        {
+            var bitmap = Bitmap.FromFile(@"C:\Users\huynh\Downloads\Active.jpg") as Bitmap;
+            var bitmap1 = Bitmap.FromFile(@"C:\Users\huynh\Downloads\Active2.jpg") as Bitmap;
+            var kq = ImageUtils.CompareMemCmp(bitmap, bitmap1);
+            MessageBox.Show(kq.ToString());
+            //using (Comparer comparer = new Comparer("filepath/soureImage.jpg"))
+            //{
+            //    CompareOptions options = new CompareOptions();
+            //    options.GenerateSummaryPage = false; // To get the difference summary, set it 'true'
+
+            //    comparer.Add("filepath/targetImage.jpg");
+            //    comparer.Compare("filepath/comparisonResultImage.jpg", options);
+            //}
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

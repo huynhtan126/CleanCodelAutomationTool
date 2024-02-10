@@ -4,6 +4,22 @@
         <name>GlobalHookDemo</name>
     </assembly>
     <members>
+        <member name="T:GlobalHookDemo.Properties.Resources">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:GlobalHookDemo.Properties.Resources.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:GlobalHookDemo.Properties.Resources.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
         <member name="T:gma.System.Windows.UserActivityHook">
             <summary>
             This class allows you to tap keyboard and mouse and / or to detect their activity even when an 

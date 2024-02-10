@@ -22,3 +22,4 @@ C:\TGL\CleanCode\CleanCodelAutomationTool\Record\GlobalMacroRecorder\bin\Debug\R
 C:\TGL\CleanCode\CleanCodelAutomationTool\Record\GlobalMacroRecorder\bin\Debug\RecordVideo\GlobalHookDemo.exe
 C:\TGL\CleanCode\CleanCodelAutomationTool\Record\GlobalMacroRecorder\bin\Debug\RecordVideo\GlobalHookDemo.pdb
 C:\TGL\CleanCode\CleanCodelAutomationTool\Record\GlobalMacroRecorder\bin\Debug\RecordVideo\GlobalHookDemo.XML
+C:\TGL\CleanCode\CleanCodelAutomationTool\globalhook_src\obj\Debug\GlobalHookDemo.Properties.Resources.resources

@@ -49,7 +49,7 @@ namespace GlobalMacroRecorder
         {
 
             InitializeComponent();
-
+            mouseHook.MouseWheel += new MouseEventHandler(mouseHook_MouseWheel);
             mouseHook.MouseMove += new MouseEventHandler(mouseHook_MouseMove);
             mouseHook.MouseDown += new MouseEventHandler(mouseHook_MouseDown);
             mouseHook.MouseUp += new MouseEventHandler(mouseHook_MouseUp);
@@ -72,7 +72,19 @@ namespace GlobalMacroRecorder
             //m_AsyncWorker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(bwAsync_RunWorkerCompleted);
             //m_AsyncWorker.DoWork += new DoWorkEventHandler(bwAsync_DoWork);
         }
+        void mouseHook_MouseWheel(object sender, MouseEventArgs e)
+        {
 
+            events.Add(
+                new MacroEvent(
+                    MacroEventType.MouseWheel,
+                    e.Delta.ToString(),
+                    Environment.TickCount - lastTimeRecorded
+                ));;
+
+            lastTimeRecorded = Environment.TickCount;
+
+        }
         void mouseHook_MouseMove(object sender, MouseEventArgs e)
         {
 
@@ -295,6 +307,13 @@ namespace GlobalMacroRecorder
 
                 switch (macroEvent.MacroEventType)
                 {
+                    case MacroEventType.MouseWheel:
+                        {
+                            var wheel = int.Parse(macroEvent.EventArgs);
+                            MouseSimulator.MouseWheel(wheel);
+                            break;
+                        }
+
                     case MacroEventType.MouseMove:
                         {
 

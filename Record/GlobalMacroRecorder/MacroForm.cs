@@ -263,6 +263,11 @@ namespace GlobalMacroRecorder
 
         private void RunMacroandSaveVideo()
         {
+            if(dataGridView2.SelectedRows.Count > 0)
+            {
+                pathCurrentFile = duongdanfolder +"\\"+dataGridView2.SelectedRows[0].Cells[0].Value.ToString();
+            }
+
             if (!File.Exists(pathCurrentFile))
             {
                 MessageBox.Show("File not exist");
@@ -379,6 +384,7 @@ namespace GlobalMacroRecorder
         private void MacroForm_Load(object sender, EventArgs e)
         {
             formula.SelectedIndex = 0;
+            UpdateDataFileMRC();
             //actHook = new UserActivityHook(); // crate an instance with global hooks
             //                                  // hang on events
             ////actHook.OnMouseActivity += new MouseEventHandler(MouseMoved);
@@ -1009,6 +1015,30 @@ namespace GlobalMacroRecorder
         private void label1_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void UpdateDataFileMRC()
+        {
+            #region get all file
+
+            DirectoryInfo d = new DirectoryInfo(duongdanfolder);//Assuming Test is your Folder
+
+            FileInfo[] Files = d.GetFiles("*.mcr"); //Getting Text files
+            var filess = Files.ToList();
+            #endregion
+            dataGridView2.Rows.Clear();
+            foreach (var item in filess)
+            {
+                var row = new DataGridViewRow();
+                var row1 = dataGridView2.Rows.Add(row);
+                dataGridView2.Rows[row1].Cells[0].Value = item.Name;
+            }
+
+        }
+
+        private void metroButton1_Click_2(object sender, EventArgs e)
+        {
+            UpdateDataFileMRC();
         }
     }
 }

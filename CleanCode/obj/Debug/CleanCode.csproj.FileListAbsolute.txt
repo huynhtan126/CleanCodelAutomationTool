@@ -135,3 +135,31 @@ C:\TGL\CleanCode\CleanCodelAutomationTool\CleanCode\obj\Debug\CleanCode.csproj.C
 C:\TGL\CleanCode\CleanCodelAutomationTool\CleanCode\obj\Debug\CleanCode.csproj.CopyComplete
 C:\TGL\CleanCode\CleanCodelAutomationTool\CleanCode\obj\Debug\CleanCode.exe
 C:\TGL\CleanCode\CleanCodelAutomationTool\CleanCode\obj\Debug\CleanCode.pdb
+D:\My folder\CleanCodelAutomationTool\CleanCode\bin\Debug\CleanCode.exe.config
+D:\My folder\CleanCodelAutomationTool\CleanCode\bin\Debug\CleanCode.exe
+D:\My folder\CleanCodelAutomationTool\CleanCode\bin\Debug\CleanCode.pdb
+D:\My folder\CleanCodelAutomationTool\CleanCode\bin\Debug\EPPlus.dll
+D:\My folder\CleanCodelAutomationTool\CleanCode\bin\Debug\MaterialDesignColors.dll
+D:\My folder\CleanCodelAutomationTool\CleanCode\bin\Debug\MaterialDesignThemes.Wpf.dll
+D:\My folder\CleanCodelAutomationTool\CleanCode\bin\Debug\Microsoft.Xaml.Behaviors.dll
+D:\My folder\CleanCodelAutomationTool\CleanCode\bin\Debug\EPPlus.xml
+D:\My folder\CleanCodelAutomationTool\CleanCode\bin\Debug\MaterialDesignColors.pdb
+D:\My folder\CleanCodelAutomationTool\CleanCode\bin\Debug\MaterialDesignThemes.Wpf.pdb
+D:\My folder\CleanCodelAutomationTool\CleanCode\bin\Debug\MaterialDesignThemes.Wpf.xml
+D:\My folder\CleanCodelAutomationTool\CleanCode\bin\Debug\Microsoft.Xaml.Behaviors.pdb
+D:\My folder\CleanCodelAutomationTool\CleanCode\bin\Debug\Microsoft.Xaml.Behaviors.xml
+D:\My folder\CleanCodelAutomationTool\CleanCode\obj\Debug\CleanCode.csproj.AssemblyReference.cache
+D:\My folder\CleanCodelAutomationTool\CleanCode\obj\Debug\CleanCode.csproj.ResolveComReference.cache
+D:\My folder\CleanCodelAutomationTool\CleanCode\obj\Debug\View\MainWindow.g.cs
+D:\My folder\CleanCodelAutomationTool\CleanCode\obj\Debug\App.g.cs
+D:\My folder\CleanCodelAutomationTool\CleanCode\obj\Debug\CleanCode_MarkupCompile.cache
+D:\My folder\CleanCodelAutomationTool\CleanCode\obj\Debug\CleanCode_MarkupCompile.lref
+D:\My folder\CleanCodelAutomationTool\CleanCode\obj\Debug\View\MainWindow.baml
+D:\My folder\CleanCodelAutomationTool\CleanCode\obj\Debug\CleanCode.g.resources
+D:\My folder\CleanCodelAutomationTool\CleanCode\obj\Debug\CleanCode.Properties.Resources.resources
+D:\My folder\CleanCodelAutomationTool\CleanCode\obj\Debug\CleanCode.Resource1.resources
+D:\My folder\CleanCodelAutomationTool\CleanCode\obj\Debug\CleanCode.csproj.GenerateResource.cache
+D:\My folder\CleanCodelAutomationTool\CleanCode\obj\Debug\CleanCode.csproj.CoreCompileInputs.cache
+D:\My folder\CleanCodelAutomationTool\CleanCode\obj\Debug\CleanCode.csproj.CopyComplete
+D:\My folder\CleanCodelAutomationTool\CleanCode\obj\Debug\CleanCode.exe
+D:\My folder\CleanCodelAutomationTool\CleanCode\obj\Debug\CleanCode.pdb

@@ -99,14 +99,65 @@ namespace CleanCode
             }
         }
 
+        private bool _headerPrf;
+        public bool HeaderPrf
+        {
+            get { return _headerPrf; }
+            set
+            {
+                if (_headerPrf != value)
+                {
+                    _headerPrf = value;
+                    OnPropertyChanged(nameof(_headerPrf));
+                }
+            }
+        }
+
+        private bool _textPrf;
+        public bool TextPrf
+        {
+            get { return _textPrf; }
+            set
+            {
+                if (_textPrf != value)
+                {
+                    _textPrf = value;
+                    OnPropertyChanged(nameof(_textPrf));
+                }
+            }
+        }
+
+        private bool _contentPrf;
+        public bool ContentPrf
+        {
+            get { return _contentPrf; }
+            set
+            {
+                if (_contentPrf != value)
+                {
+                    _contentPrf = value;
+                    OnPropertyChanged(nameof(_contentPrf));
+                }
+            }
+        }
+
         #endregion
         #region Initialize
         public CleanCodeViewModel()
         {
-            listItem = new List<string> { "lang:Localization {0}", "TranslationSource.Instance[nameof({0})]" };
+            HeaderPrf = true;
+            TextPrf = false;
+            ContentPrf = false;
+
+            listItem = new List<string> 
+            { "lang:Localization {0}",
+               "TranslationSource.Instance[nameof({0})]",
+               "x:Static lang:{0}.{1}"
+
+            };
             Path = string.Empty;
             NameCommand_Suffix = "TranslationSource.Instance[nameof({0})]";
-            NameCommand = "_";
+            NameCommand = "";
             ButtonRemoveComment = new RelayCommand<object>(p => true, p => Remove_comment());
             ButtonRemoveEmptyLine = new RelayCommand<object>(p => true, p => Remove_empty_Line());
             ButtonGetStringFromSource = new RelayCommand<object>(p => true, p => GetStringFromSource());
@@ -117,8 +168,9 @@ namespace CleanCode
             ButtonGetContentFromSource = new RelayCommand<object>(p => true, p => GetContentFromSource());
         }
         #endregion
-        private string _prefixContent = "Content=";
-        //private string _prefixContent = "Title=";
+      //  private string _prefixContent = "Content=";
+        //private string _prefixContent = "Text=";
+       //private string _prefixContent = "Header=";
         public RelayCommand<object> ButtonGetContentFromSource { get; set; }
         public RelayCommand<object> ButtonRemoveComment { get; set; }
         public RelayCommand<object> ButtonRemoveEmptyLine { get; set; }
@@ -130,11 +182,11 @@ namespace CleanCode
         public void ApplyStringtoSource()
         {
 
-            if (NameCommand == string.Empty)
-            {
-                MessageBox.Show("Please fill Name Command");
-                return;
-            }
+            //if (NameCommand == string.Empty)
+            //{
+            //    MessageBox.Show("Please fill Name Command");
+            //    return;
+            //}
             if (Path == string.Empty)
             {
                 MessageBox.Show("Please fill path");
@@ -183,7 +235,7 @@ namespace CleanCode
                 foreach (var item in liststring)
                 {
                     var value = item.StringContent.Replace("\"", "");
-                    value = value.Replace(_prefixContent, "");
+                    value = value.Replace(GetPrefix(), "");
                     content = content + "<data name=\"" + item.NameinResx + "\" xml:space=\"preserve\"><value>" + value + "</value></data>\r\n";
                 }
                 Clipboard.SetText(content);
@@ -240,11 +292,11 @@ namespace CleanCode
         public void GetContentFromSource()
         {
             //TranslationSource.Instance[nameof(InsertLevelViewRes.MainGrid)]
-            if (NameCommand == string.Empty)
-            {
-                MessageBox.Show("Please fill Name Command");
-                return;
-            }
+            //if (NameCommand == string.Empty)
+            //{
+            //    MessageBox.Show("Please fill Name Command");
+            //    return;
+            //}
             if (Path == string.Empty)
             {
                 MessageBox.Show("Please fill path");
@@ -255,18 +307,30 @@ namespace CleanCode
             foreach (FileInfo file in filess)
             {
                 var filePath = file.FullName;
+                var dialogName = System.IO.Path.GetFileNameWithoutExtension(filePath) + "Res";
                 string fileContent = File.ReadAllText(filePath);
-                var pattern = _prefixContent+ @"""(.*?)""";
+                var pattern = GetPrefix()+ @"""(.*?)""";
                 MatchCollection matches = Regex.Matches(fileContent, pattern);
                 string modifiedContent = fileContent;
                 foreach (Match match in matches)
                 {
                     try
                     {
-                        var replacementString = match.Groups[0].Value.Replace(_prefixContent+@"""", string.Empty);
+                        var replacementString = match.Groups[0].Value.Replace(GetPrefix() + @"""", string.Empty);
                         replacementString = replacementString.Replace(@" ", string.Empty);
                         replacementString = Regex.Replace(replacementString, "[^a-zA-Z0-9]", "");
-                        var rex = new ResItem { NameInSource = _prefixContent+"\"{" + string.Format(NameCommand_Suffix, NameCommand + replacementString)+"}\"", StringContent = match.Groups[0].Value, NameinResx = replacementString };
+                        var dialogNames = System.IO.Path.GetFileNameWithoutExtension(filePath) + "Res";
+
+                        if (match.Groups[0].Value.Contains("Binding") ||
+                            match.Groups[0].Value.Contains("x:Static") ||
+                            match.Groups[0].Value.Contains("AIWPF") ||
+                            match.Groups[0].Value.StartsWith("..."))
+                        {
+                            continue;
+                        }
+
+                        var rex = new ResItem { NameInSource = GetPrefix() + "\"{" + string.Format(NameCommand_Suffix, dialogNames, NameCommand + replacementString)+"}\"", StringContent = match.Groups[0].Value, NameinResx = replacementString };
+                        
                         if (!liststring.Any(x => x.StringContent == rex.StringContent))
                         {
                             liststring.Add(rex);
@@ -484,6 +548,26 @@ namespace CleanCode
                 FileInfo[] listFile = new FileInfo[] { };
                 return listFile;
             }
+        }
+
+        private string GetPrefix()
+        {
+            var prefix = "";
+
+            if (HeaderPrf)
+            {
+                prefix = "Header=";
+            }
+            else if (TextPrf)
+            {
+                prefix = "Text=";
+            }
+            else if (ContentPrf)
+            {
+                prefix = "Content=";
+            }
+
+            return prefix;
         }
     }
 }

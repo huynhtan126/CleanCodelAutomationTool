@@ -63,8 +63,8 @@ namespace GlobalMacroRecorder
             var fileor = new FileInfo(pathfolder);
             pathfolder = fileor.Directory.ToString();
 
-            _pathRecordVideo = pathfolder + "\\RecordVideo\\"+ AppRecordName;
-            pathTestApp = pathfolder + "\\RecordVideo\\"+ AppTestName;
+            _pathRecordVideo = pathfolder + "\\RecordVideo\\" + AppRecordName;
+            pathTestApp = pathfolder + "\\RecordVideo\\" + AppTestName;
             pathTest = pathfolder + "\\RecordVideo\\Test.txt";
             //m_AsyncWorker.WorkerReportsProgress = true;
             //m_AsyncWorker.WorkerSupportsCancellation = true;
@@ -80,7 +80,7 @@ namespace GlobalMacroRecorder
                     MacroEventType.MouseWheel,
                     e.Delta.ToString(),
                     Environment.TickCount - lastTimeRecorded
-                ));;
+                )); ;
 
             lastTimeRecorded = Environment.TickCount;
 
@@ -261,11 +261,11 @@ namespace GlobalMacroRecorder
 
         }
 
-        private void RunMacroandSaveVideo()
+        private void RunMacroandSaveVideo(bool check = true)
         {
-            if(dataGridView2.SelectedRows.Count > 0)
+            if (dataGridView2.SelectedRows.Count > 0 && check)
             {
-                pathCurrentFile = duongdanfolder +"\\"+dataGridView2.SelectedRows[0].Cells[0].Value.ToString();
+                pathCurrentFile = duongdanfolder + "\\" + dataGridView2.SelectedRows[0].Cells[0].Value.ToString();
             }
 
             if (!File.Exists(pathCurrentFile))
@@ -485,116 +485,124 @@ namespace GlobalMacroRecorder
                 FileInfo fileInfo = new FileInfo(path);
 
                 ExcelPackage package = new ExcelPackage(fileInfo);
-                ExcelWorksheet worksheet = package.Workbook.Worksheets[2];
-                int rows = worksheet.Dimension.Rows;
-                int columns = worksheet.Dimension.Columns;
                 var listErrorCase = new List<string>();
-                //keyboardHook_cancel.Start();
-                var pics = worksheet.Drawings;
-                var listPic = new List<ExcelPicture>();
-                foreach (ExcelPicture item in pics)
+                var index = 0;
+                foreach (var sheet in package.Workbook.Worksheets)
                 {
-                    listPic.Add(item);
-                }
+                    index++;
+                    if (index == 1) continue;
+                    ExcelWorksheet worksheet = sheet;
 
-                for (int i = 12; i <= rows; i++)
-                {
-                    try
+                    int rows = worksheet.Dimension.Rows;
+                    int columns = worksheet.Dimension.Columns;
+                    //keyboardHook_cancel.Start();
+                    var pics = worksheet.Drawings;
+                    var listPic = new List<ExcelPicture>();
+                    foreach (ExcelPicture item in pics)
                     {
-                        var fileName = worksheet.Cells[i, 5].Value.ToString();
-                        pathCurrentFile = duongdanfolder + "\\" + fileName + ".mcr";
-
-                        RunMacroandSaveVideo();
-
-                        if (File.Exists(pathTest))
-                        {
-                            File.Delete(pathTest);
-                            this.WindowState = FormWindowState.Normal;
-                            MessageBox.Show("Macro is cancel.");
-                            process.Kill();
-                            return;
-                        }
-
-                        //var screeenshot = GetScreenSnapshot();   
-                        var screeenshot = _bitmaps.LastOrDefault();
-                        if (worksheet.Cells[i, 9].Text.ToString().Trim() == string.Empty)
-                        {
-                            worksheet.Cells[i, 9].Formula = "=HYPERLINK(" + @"""" + fileName + ".avi" + @"""" + "," + @"""Evidence :" + DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss") + @"""" + ")";
-                            if (screeenshot != null)
-                            {
-                                var picture = worksheet.Drawings.AddPicture(Guid.NewGuid().ToString(), screeenshot);
-                                picture.SetSize(400, 250);
-                                picture.SetPosition((i - 1), 100, 9, 0);
-
-                                var pic = listPic.Where(x => x.From.Row == i - 1 && x.From.Column == 6).ToList();
-                                if (pic.Count == 1)
-                                {
-                                    var kq = ImageUtils.CompareMemCmp(pic[0].Image as Bitmap, screeenshot);
-                                    if (kq)
-                                    {
-                                        worksheet.Cells[i, 10].Value = "OK";
-                                    }
-                                    else
-                                    {
-                                        worksheet.Cells[i, 10].Value = "NG";
-                                    }
-                                }
-                            }
-
-                        }
-                        else if (worksheet.Cells[i, 11].Text.ToString().Trim() == string.Empty)
-                        {
-                            worksheet.Cells[i, 11].Formula = "=HYPERLINK(" + @"""" + fileName + ".avi" + @"""" + "," + @"""Evidence :" + DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss") + @"""" + ")";
-                            if (screeenshot != null)
-                            {
-                                var picture = worksheet.Drawings.AddPicture(Guid.NewGuid().ToString(), screeenshot);
-                                picture.SetSize(400, 250);
-                                picture.SetPosition((i - 1), 100, 11, 0);
-
-                                var pic = listPic.Where(x => x.From.Row == i - 1 && x.From.Column == 6).ToList();
-                                if (pic.Count == 1)
-                                {
-                                    var kq = ImageUtils.CompareMemCmp(pic[0].Image as Bitmap, screeenshot);
-                                    if (kq)
-                                    {
-                                        worksheet.Cells[i, 10].Value = "OK";
-                                    }
-                                    else
-                                    {
-                                        worksheet.Cells[i, 10].Value = "NG";
-                                    }
-                                }
-                            }
-                        }
-                        else if (worksheet.Cells[i, 13].Text.ToString().Trim() == string.Empty)
-                        {
-                            worksheet.Cells[i, 13].Formula = "=HYPERLINK(" + @"""" + fileName + ".avi" + @"""" + "," + @"""Evidence :" + DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss") + @"""" + ")";
-                            if (screeenshot != null)
-                            {
-                                var picture = worksheet.Drawings.AddPicture(Guid.NewGuid().ToString(), screeenshot);
-                                picture.SetSize(400, 250);
-                                picture.SetPosition((i - 1), 100, 13, 0);
-
-                                var pic = listPic.Where(x => x.From.Row == i - 1 && x.From.Column == 6).ToList();
-                                if (pic.Count == 1)
-                                {
-                                    var kq = ImageUtils.CompareMemCmp(pic[0].Image as Bitmap, screeenshot);
-                                    if (kq)
-                                    {
-                                        worksheet.Cells[i, 10].Value = "OK";
-                                    }
-                                    else
-                                    {
-                                        worksheet.Cells[i, 10].Value = "NG";
-                                    }
-                                }
-                            }
-                        }
+                        listPic.Add(item);
                     }
-                    catch (Exception ex)
+
+                    for (int i = 12; i <= rows; i++)
                     {
-                        listErrorCase.Add("Error at row :" + i + " " + ex.Message);
-                        continue;
+                        try
+                        {
+                            var fileName = worksheet.Cells[i, 3].Text.Trim();
+                            if (fileName == "") continue;
+                            pathCurrentFile = duongdanfolder + "\\" + fileName + ".mcr";
+
+                            RunMacroandSaveVideo(false);
+
+                            if (File.Exists(pathTest))
+                            {
+                                File.Delete(pathTest);
+                                this.WindowState = FormWindowState.Normal;
+                                MessageBox.Show("Macro is cancel.");
+                                process.Kill();
+                                return;
+                            }
+
+                            //var screeenshot = GetScreenSnapshot();   
+                            var screeenshot = _bitmaps.LastOrDefault();
+                            if (worksheet.Cells[i, 9].Text.ToString().Trim() == string.Empty)
+                            {
+                                worksheet.Cells[i, 9].Formula = "=HYPERLINK(" + @"""" + fileName + ".avi" + @"""" + "," + @"""Evidence :" + DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss") + @"""" + ")";
+                                if (screeenshot != null)
+                                {
+                                    var picture = worksheet.Drawings.AddPicture(Guid.NewGuid().ToString(), screeenshot);
+                                    picture.SetSize(400, 250);
+                                    picture.SetPosition((i - 1), 100, 9, 0);
+
+                                    var pic = listPic.Where(x => x.From.Row == i - 1 && x.From.Column == 6).ToList();
+                                    if (pic.Count == 1)
+                                    {
+                                        var kq = ImageUtils.CompareMemCmp(pic[0].Image as Bitmap, screeenshot);
+                                        if (kq)
+                                        {
+                                            worksheet.Cells[i, 10].Value = "OK";
+                                        }
+                                        else
+                                        {
+                                            worksheet.Cells[i, 10].Value = "NG";
+                                        }
+                                    }
+                                }
+
+                            }
+                            else if (worksheet.Cells[i, 11].Text.ToString().Trim() == string.Empty)
+                            {
+                                worksheet.Cells[i, 11].Formula = "=HYPERLINK(" + @"""" + fileName + ".avi" + @"""" + "," + @"""Evidence :" + DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss") + @"""" + ")";
+                                if (screeenshot != null)
+                                {
+                                    var picture = worksheet.Drawings.AddPicture(Guid.NewGuid().ToString(), screeenshot);
+                                    picture.SetSize(400, 250);
+                                    picture.SetPosition((i - 1), 100, 11, 0);
+
+                                    var pic = listPic.Where(x => x.From.Row == i - 1 && x.From.Column == 6).ToList();
+                                    if (pic.Count == 1)
+                                    {
+                                        var kq = ImageUtils.CompareMemCmp(pic[0].Image as Bitmap, screeenshot);
+                                        if (kq)
+                                        {
+                                            worksheet.Cells[i, 10].Value = "OK";
+                                        }
+                                        else
+                                        {
+                                            worksheet.Cells[i, 10].Value = "NG";
+                                        }
+                                    }
+                                }
+                            }
+                            else if (worksheet.Cells[i, 13].Text.ToString().Trim() == string.Empty)
+                            {
+                                worksheet.Cells[i, 13].Formula = "=HYPERLINK(" + @"""" + fileName + ".avi" + @"""" + "," + @"""Evidence :" + DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss") + @"""" + ")";
+                                if (screeenshot != null)
+                                {
+                                    var picture = worksheet.Drawings.AddPicture(Guid.NewGuid().ToString(), screeenshot);
+                                    picture.SetSize(400, 250);
+                                    picture.SetPosition((i - 1), 100, 13, 0);
+
+                                    var pic = listPic.Where(x => x.From.Row == i - 1 && x.From.Column == 6).ToList();
+                                    if (pic.Count == 1)
+                                    {
+                                        var kq = ImageUtils.CompareMemCmp(pic[0].Image as Bitmap, screeenshot);
+                                        if (kq)
+                                        {
+                                            worksheet.Cells[i, 10].Value = "OK";
+                                        }
+                                        else
+                                        {
+                                            worksheet.Cells[i, 10].Value = "NG";
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            listErrorCase.Add("Sheet name: "+worksheet.Name+" Error at row :" + i + " " + ex.Message);
+                            continue;
+                        }
                     }
                 }
                 var content = "";
@@ -606,6 +614,7 @@ namespace GlobalMacroRecorder
                 {
                     MessageBox.Show(content);
                 }
+
                 var name = DateTime.Now.ToString("yyyyMMddHHmm");
                 Directory.CreateDirectory(duongdanfolder + "\\TestResult");
                 package.SaveAs(new FileInfo(duongdanfolder + "\\TestResult\\" + name + ".xlsx"));

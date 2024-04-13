@@ -1,4 +1,4 @@
-
+﻿
 using gma.System.Windows;
 using MouseKeyboardLibrary;
 using Newtonsoft.Json;
@@ -138,6 +138,12 @@ namespace GlobalMacroRecorder
         }
         void keyboardHook_KeyDown(object sender, KeyEventArgs e)
         {
+            if (e.KeyCode == Keys.F11)
+            {
+                MessageBox.Show("Đã chụp");
+
+                return;
+            }
             if (e.KeyCode == Keys.F12)
             {
                 //if(_process!=null)
@@ -270,7 +276,11 @@ namespace GlobalMacroRecorder
 
             if (!File.Exists(pathCurrentFile))
             {
-                MessageBox.Show("File not exist");
+                if (check)
+                {
+                    MessageBox.Show("File not exist");
+
+                }
                 return;
             }
 
@@ -350,6 +360,7 @@ namespace GlobalMacroRecorder
                             Keys keys = (Keys)Enum.Parse(typeof(Keys), macroEvent.EventArgs);
                             if (keys == Keys.F11)
                             {
+                              
                                 _bitmaps.Add(ScreenShotUtils.CaptureActiveWindow());
                             }
                             KeyboardSimulator.KeyDown(keys);
@@ -450,7 +461,7 @@ namespace GlobalMacroRecorder
             {
                 File.Delete(pathTest);
             }
-
+            //MessageBox.Show("Trở về trạng thái ban đầu. OK?");
             MessageBox.Show("Tool works better in 1920x1080 and scale 100%");
             MessageBox.Show("To Break automation : F12");
 
@@ -600,7 +611,7 @@ namespace GlobalMacroRecorder
                         }
                         catch (Exception ex)
                         {
-                            listErrorCase.Add("Sheet name: "+worksheet.Name+" Error at row :" + i + " " + ex.Message);
+                            listErrorCase.Add("Sheet name: " + worksheet.Name + " Error at row :" + i + " " + ex.Message);
                             continue;
                         }
                     }
@@ -1048,6 +1059,11 @@ namespace GlobalMacroRecorder
         private void metroButton1_Click_2(object sender, EventArgs e)
         {
             UpdateDataFileMRC();
+        }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -4,6 +4,7 @@ using MouseKeyboardLibrary;
 using Newtonsoft.Json;
 using OfficeOpenXml;
 using OfficeOpenXml.Drawing;
+using OfficeOpenXml.FormulaParsing;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 using System;
 using System.Collections;
@@ -140,6 +141,14 @@ namespace GlobalMacroRecorder
         {
             if (e.KeyCode == Keys.F11)
             {
+                events.Add(
+                new MacroEvent(
+                    MacroEventType.KeyDown,
+                     e.KeyCode.ToString(),
+                    Environment.TickCount - lastTimeRecorded
+                ));
+
+                lastTimeRecorded = Environment.TickCount;
                 MessageBox.Show("Đã chụp");
 
                 return;
@@ -360,7 +369,7 @@ namespace GlobalMacroRecorder
                             Keys keys = (Keys)Enum.Parse(typeof(Keys), macroEvent.EventArgs);
                             if (keys == Keys.F11)
                             {
-                              
+
                                 _bitmaps.Add(ScreenShotUtils.CaptureActiveWindow());
                             }
                             KeyboardSimulator.KeyDown(keys);
@@ -518,7 +527,7 @@ namespace GlobalMacroRecorder
                     {
                         try
                         {
-                            var fileName = worksheet.Cells[i, 3].Text.Trim();
+                            var fileName = worksheet.Cells[i, 1].Text.Trim();
                             if (fileName == "") continue;
                             pathCurrentFile = duongdanfolder + "\\" + fileName + ".mcr";
 
@@ -535,75 +544,78 @@ namespace GlobalMacroRecorder
 
                             //var screeenshot = GetScreenSnapshot();   
                             var screeenshot = _bitmaps.LastOrDefault();
-                            if (worksheet.Cells[i, 9].Text.ToString().Trim() == string.Empty)
+                            if (worksheet.Cells[i, 10].Text.ToString().Trim() == string.Empty)
                             {
-                                worksheet.Cells[i, 9].Formula = "=HYPERLINK(" + @"""" + fileName + ".avi" + @"""" + "," + @"""Evidence :" + DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss") + @"""" + ")";
+                                worksheet.Cells[i, 10].Formula = "=HYPERLINK(" + @"""" + fileName + ".avi" + @"""" + "," + @"""Evidence :" + DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss") + @"""" + ")";
                                 if (screeenshot != null)
                                 {
+                                    var cellH = int.Parse(Math.Round(worksheet.Row(i).Height*1.2).ToString());
+                                    var cellW = int.Parse(Math.Round(worksheet.Column(9).Width*7).ToString());
                                     var picture = worksheet.Drawings.AddPicture(Guid.NewGuid().ToString(), screeenshot);
-                                    picture.SetSize(400, 250);
-                                    picture.SetPosition((i - 1), 100, 9, 0);
+                                    picture.SetSize(cellW, cellH);
+                                    picture.SetPosition(i-1, 0, 8, 0);
 
-                                    var pic = listPic.Where(x => x.From.Row == i - 1 && x.From.Column == 6).ToList();
+                                    var pic = listPic.Where(x => x.From.Row == i - 1 && x.From.Column == 7).ToList();
                                     if (pic.Count == 1)
                                     {
                                         var kq = ImageUtils.CompareMemCmp(pic[0].Image as Bitmap, screeenshot);
                                         if (kq)
                                         {
-                                            worksheet.Cells[i, 10].Value = "OK";
+                                            worksheet.Cells[i, 11].Value = "OK";
                                         }
                                         else
                                         {
-                                            worksheet.Cells[i, 10].Value = "NG";
+                                            worksheet.Cells[i, 11].Value = "NG";
+
+                                        }
+                                    }
+
+                                }
+                                else if (worksheet.Cells[i, 12].Text.ToString().Trim() == string.Empty)
+                                {
+                                    worksheet.Cells[i, 12].Formula = "=HYPERLINK(" + @"""" + fileName + ".avi" + @"""" + "," + @"""Evidence :" + DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss") + @"""" + ")";
+                                    if (screeenshot != null)
+                                    {
+                                        var picture = worksheet.Drawings.AddPicture(Guid.NewGuid().ToString(), screeenshot);
+                                        picture.SetSize(400, 250);
+                                        picture.SetPosition((i - 1), 100, 1, 0);
+
+                                        var pic = listPic.Where(x => x.From.Row == i - 1 && x.From.Column == 6).ToList();
+                                        if (pic.Count == 1)
+                                        {
+                                            var kq = ImageUtils.CompareMemCmp(pic[0].Image as Bitmap, screeenshot);
+                                            if (kq)
+                                            {
+                                                worksheet.Cells[i, 13].Value = "OK";
+                                            }
+                                            else
+                                            {
+                                                worksheet.Cells[i, 13].Value = "NG";
+                                            }
                                         }
                                     }
                                 }
-
-                            }
-                            else if (worksheet.Cells[i, 11].Text.ToString().Trim() == string.Empty)
-                            {
-                                worksheet.Cells[i, 11].Formula = "=HYPERLINK(" + @"""" + fileName + ".avi" + @"""" + "," + @"""Evidence :" + DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss") + @"""" + ")";
-                                if (screeenshot != null)
+                                else if (worksheet.Cells[i, 14].Text.ToString().Trim() == string.Empty)
                                 {
-                                    var picture = worksheet.Drawings.AddPicture(Guid.NewGuid().ToString(), screeenshot);
-                                    picture.SetSize(400, 250);
-                                    picture.SetPosition((i - 1), 100, 11, 0);
-
-                                    var pic = listPic.Where(x => x.From.Row == i - 1 && x.From.Column == 6).ToList();
-                                    if (pic.Count == 1)
+                                    worksheet.Cells[i, 14].Formula = "=HYPERLINK(" + @"""" + fileName + ".avi" + @"""" + "," + @"""Evidence :" + DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss") + @"""" + ")";
+                                    if (screeenshot != null)
                                     {
-                                        var kq = ImageUtils.CompareMemCmp(pic[0].Image as Bitmap, screeenshot);
-                                        if (kq)
-                                        {
-                                            worksheet.Cells[i, 10].Value = "OK";
-                                        }
-                                        else
-                                        {
-                                            worksheet.Cells[i, 10].Value = "NG";
-                                        }
-                                    }
-                                }
-                            }
-                            else if (worksheet.Cells[i, 13].Text.ToString().Trim() == string.Empty)
-                            {
-                                worksheet.Cells[i, 13].Formula = "=HYPERLINK(" + @"""" + fileName + ".avi" + @"""" + "," + @"""Evidence :" + DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss") + @"""" + ")";
-                                if (screeenshot != null)
-                                {
-                                    var picture = worksheet.Drawings.AddPicture(Guid.NewGuid().ToString(), screeenshot);
-                                    picture.SetSize(400, 250);
-                                    picture.SetPosition((i - 1), 100, 13, 0);
+                                        var picture = worksheet.Drawings.AddPicture(Guid.NewGuid().ToString(), screeenshot);
+                                        picture.SetSize(400, 250);
+                                        picture.SetPosition((i - 1), 100, 13, 0);
 
-                                    var pic = listPic.Where(x => x.From.Row == i - 1 && x.From.Column == 6).ToList();
-                                    if (pic.Count == 1)
-                                    {
-                                        var kq = ImageUtils.CompareMemCmp(pic[0].Image as Bitmap, screeenshot);
-                                        if (kq)
+                                        var pic = listPic.Where(x => x.From.Row == i - 1 && x.From.Column == 6).ToList();
+                                        if (pic.Count == 1)
                                         {
-                                            worksheet.Cells[i, 10].Value = "OK";
-                                        }
-                                        else
-                                        {
-                                            worksheet.Cells[i, 10].Value = "NG";
+                                            var kq = ImageUtils.CompareMemCmp(pic[0].Image as Bitmap, screeenshot);
+                                            if (kq)
+                                            {
+                                                worksheet.Cells[i, 15].Value = "OK";
+                                            }
+                                            else
+                                            {
+                                                worksheet.Cells[i, 15].Value = "NG";
+                                            }
                                         }
                                     }
                                 }

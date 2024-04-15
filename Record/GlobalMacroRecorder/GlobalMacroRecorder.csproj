@@ -136,6 +136,9 @@
   <ItemGroup>
     <Folder Include="RecordVideo\" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\images %289%29.jpg" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>xcopy /y "$(ProjectDir)\RecordVideo\*" "$(TargetDir)\RecordVideo\*"</PostBuildEvent>

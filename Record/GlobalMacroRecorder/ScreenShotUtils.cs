@@ -98,13 +98,28 @@ namespace GlobalMacroRecorder
         {
             return CaptureWindow(GetForegroundWindow());
         }
-        public static Bitmap CaptureWindow(IntPtr hWnd)
+        public static Bitmap CaptureWindow1(IntPtr hWnd)
         {
             RECT region;
 
             GetWindowRect(hWnd, out region);
 
             return CaptureRegion(Rectangle.FromLTRB(region.Left, region.Top, region.Right, region.Bottom));
+        }
+
+        public static Bitmap CaptureWindow(IntPtr handle)
+        {
+            var rect = new RECT();
+            GetWindowRect(handle, out rect);
+            var bounds = new Rectangle(rect.Left, rect.Top, rect.Right - rect.Left, rect.Bottom - rect.Top);
+            var result = new Bitmap(bounds.Width, bounds.Height);
+
+            using (var graphics = Graphics.FromImage(result))
+            {
+                graphics.CopyFromScreen(new Point(bounds.Left, bounds.Top), Point.Empty, bounds.Size);
+            }
+
+            return result;
         }
 
     }

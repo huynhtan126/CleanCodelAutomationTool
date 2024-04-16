@@ -8,7 +8,7 @@ using System.Text;
 
 namespace GlobalMacroRecorder
 {
-    public  class ImageUtils
+    public class ImageUtils
     {
         [DllImport("msvcrt.dll")]
         private static extern int memcmp(IntPtr b1, IntPtr b2, long count);
@@ -37,5 +37,39 @@ namespace GlobalMacroRecorder
                 b2.UnlockBits(bd2);
             }
         }
+
+        //public static bool CompareMemCmp(Bitmap img1, Bitmap img2)
+        //{
+        //    string img1_ref, img2_ref;
+        //    //img1 = new Bitmap(fname1);
+        //    //img2 = new Bitmap(fname2);
+        //    //progressBar1.Maximum = img1.Width;
+        //    var flag = true;
+        //    if (img1.Width == img2.Width && img1.Height == img2.Height)
+        //    {
+        //        for (int i = 0; i < img1.Width; i++)
+        //        {
+        //            for (int j = 0; j < img1.Height; j++)
+        //            {
+        //                img1_ref = img1.GetPixel(i, j).ToString();
+        //                img2_ref = img2.GetPixel(i, j).ToString();
+        //                if (img1_ref != img2_ref)
+        //                {
+        //                    //count2++;
+        //                    flag = false;
+        //                    break;
+        //                }
+        //                //count1++;
+        //            }
+        //            //progressBar1.Value++;
+        //        }
+        //        //if (flag == false)
+        //        //MessageBox.Show("Sorry, Images are not same , " + count2 + " wrong pixels found");
+        //        //else
+        //        //MessageBox.Show(" Images are same , " + count1 + " same pixels found and " + count2 + " wrong pixels found");
+        //    }
+        //    return flag;
+        //}
+
     }
 }

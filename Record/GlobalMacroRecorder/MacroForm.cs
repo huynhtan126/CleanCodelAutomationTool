@@ -571,10 +571,7 @@ namespace GlobalMacroRecorder
                                 {
                                     var cellH = int.Parse(Math.Round(worksheet.Row(i).Height*1.2).ToString());
                                     var cellW = int.Parse(Math.Round(worksheet.Column(9).Width*7).ToString());
-                                    var picture = worksheet.Drawings.AddPicture(Guid.NewGuid().ToString(), screeenshot);
-                                    //picture.SetSize(cellW, cellH);
-                                    picture.SetSize(400, 400);
-                                    picture.SetPosition(i-1, 100, 8, 0);
+                                    //var picture = worksheet.Drawings.AddPicture(Guid.NewGuid().ToString(), screeenshot);
 
                                     var pic = listPic.Where(x => x.From.Row == i - 1 && x.From.Column == 7).ToList();
                                     if (pic.Count == 1)
@@ -590,7 +587,11 @@ namespace GlobalMacroRecorder
 
                                         }
                                     }
-
+                                    var picture = worksheet.Drawings.AddPicture(Guid.NewGuid().ToString(), screeenshot);
+                                    //var picture = worksheet.Drawings.AddPicture("Teo1", screeenshot);
+                                    picture.SetSize(cellW, cellH);
+                                    //picture.SetSize(400, 400);
+                                    picture.SetPosition(i - 1, 100, 8, 0);
                                 }
                                 //else if (worksheet.Cells[i, 12].Text.ToString().Trim() == string.Empty)
                                 //{

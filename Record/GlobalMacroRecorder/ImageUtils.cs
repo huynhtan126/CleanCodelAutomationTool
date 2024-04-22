@@ -59,27 +59,32 @@ namespace GlobalMacroRecorder
                         {
                             count2++;
                             flag = false;
-                            break;
+                            img2.SetPixel(i, j, Color.Aqua);
+                            //break;
                         }
                         count1++;
                     }
                     //progressBar1.Value++;
                 }
-                //double percent = count2 * 100.0 / count1;
-                //if (flag == false)
-                //{
-                //    if (percent < 0.5)
-                //    {
-                //        return true;
-                //    }
-                //    else
-                //        return false;
-                //}
+                double percent = count2 * 100.0 / count1;
+                if (flag == false)
+                {
+                    if (percent < 0.005)
+                    {
+                        return true;
+                    }
+                    else
+                        return false;
+                }
 
                 //if (flag == false)
                 //MessageBox.Show("Sorry, Images are not same , " + count2 + " wrong pixels found");
                 //else
                 //MessageBox.Show(" Images are same , " + count1 + " same pixels found and " + count2 + " wrong pixels found");
+            }
+            else
+            {
+                flag = false;
             }
             return flag;
         }

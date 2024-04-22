@@ -111,7 +111,7 @@ namespace GlobalMacroRecorder
         {
             var rect = new RECT();
             GetWindowRect(handle, out rect);
-            var bounds = new Rectangle(rect.Left+10, rect.Top+10, rect.Right - rect.Left-20, rect.Bottom - rect.Top-20);
+            var bounds = new Rectangle(rect.Left+15, rect.Top+15, rect.Right - rect.Left-30, rect.Bottom - rect.Top-30);
             var result = new Bitmap(bounds.Width, bounds.Height);
 
             using (var graphics = Graphics.FromImage(result))

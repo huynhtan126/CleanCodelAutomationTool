@@ -42,6 +42,11 @@
             this.recordButton = new MetroFramework.Controls.MetroButton();
             this.metroButton2 = new MetroFramework.Controls.MetroButton();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.CheckFromTo = new System.Windows.Forms.CheckBox();
+            this.GBexcel = new System.Windows.Forms.GroupBox();
+            this.txSheetName = new System.Windows.Forms.TextBox();
+            this.FromEx = new System.Windows.Forms.NumericUpDown();
+            this.ToEx = new System.Windows.Forms.NumericUpDown();
             this.label2 = new System.Windows.Forms.Label();
             this.metroButton3 = new MetroFramework.Controls.MetroButton();
             this.metroTabPage2 = new MetroFramework.Controls.MetroTabPage();
@@ -68,12 +73,8 @@
             this.removeComment = new MetroFramework.Controls.MetroButton();
             this.Brower = new MetroFramework.Controls.MetroButton();
             this.PathfileorFolder = new System.Windows.Forms.TextBox();
-            this.FromEx = new System.Windows.Forms.NumericUpDown();
-            this.ToEx = new System.Windows.Forms.NumericUpDown();
-            this.GBexcel = new System.Windows.Forms.GroupBox();
-            this.CheckFromTo = new System.Windows.Forms.CheckBox();
-            this.txSheetName = new System.Windows.Forms.TextBox();
             this.programBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.lbl_Status = new System.Windows.Forms.Label();
             this.metroTabControl1.SuspendLayout();
             this.metroTabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
@@ -81,12 +82,12 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
             this.groupBox1.SuspendLayout();
+            this.GBexcel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.FromEx)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ToEx)).BeginInit();
             this.metroTabPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.metroTabPage3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.FromEx)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ToEx)).BeginInit();
-            this.GBexcel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.programBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
@@ -247,6 +248,84 @@
             this.groupBox1.TabIndex = 9;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Run automation test case";
+            // 
+            // CheckFromTo
+            // 
+            this.CheckFromTo.AutoSize = true;
+            this.CheckFromTo.Location = new System.Drawing.Point(231, 9);
+            this.CheckFromTo.Name = "CheckFromTo";
+            this.CheckFromTo.Size = new System.Drawing.Size(88, 17);
+            this.CheckFromTo.TabIndex = 16;
+            this.CheckFromTo.Text = "Run From To";
+            this.CheckFromTo.UseVisualStyleBackColor = true;
+            this.CheckFromTo.CheckedChanged += new System.EventHandler(this.CheckFromTo_CheckedChanged);
+            // 
+            // GBexcel
+            // 
+            this.GBexcel.Controls.Add(this.txSheetName);
+            this.GBexcel.Controls.Add(this.FromEx);
+            this.GBexcel.Controls.Add(this.ToEx);
+            this.GBexcel.Enabled = false;
+            this.GBexcel.Location = new System.Drawing.Point(225, 32);
+            this.GBexcel.Name = "GBexcel";
+            this.GBexcel.Size = new System.Drawing.Size(255, 49);
+            this.GBexcel.TabIndex = 15;
+            this.GBexcel.TabStop = false;
+            this.GBexcel.Text = "Excel Sheet";
+            // 
+            // txSheetName
+            // 
+            this.txSheetName.Location = new System.Drawing.Point(6, 18);
+            this.txSheetName.Name = "txSheetName";
+            this.txSheetName.Size = new System.Drawing.Size(156, 20);
+            this.txSheetName.TabIndex = 15;
+            this.txSheetName.Text = "C15";
+            this.txSheetName.TextChanged += new System.EventHandler(this.txSheetName_TextChanged);
+            // 
+            // FromEx
+            // 
+            this.FromEx.Location = new System.Drawing.Point(168, 18);
+            this.FromEx.Maximum = new decimal(new int[] {
+            99999,
+            0,
+            0,
+            0});
+            this.FromEx.Minimum = new decimal(new int[] {
+            12,
+            0,
+            0,
+            0});
+            this.FromEx.Name = "FromEx";
+            this.FromEx.Size = new System.Drawing.Size(36, 20);
+            this.FromEx.TabIndex = 13;
+            this.FromEx.Value = new decimal(new int[] {
+            13,
+            0,
+            0,
+            0});
+            this.FromEx.ValueChanged += new System.EventHandler(this.numericUpDown2_ValueChanged);
+            // 
+            // ToEx
+            // 
+            this.ToEx.Location = new System.Drawing.Point(210, 18);
+            this.ToEx.Maximum = new decimal(new int[] {
+            9999999,
+            0,
+            0,
+            0});
+            this.ToEx.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.ToEx.Name = "ToEx";
+            this.ToEx.Size = new System.Drawing.Size(39, 20);
+            this.ToEx.TabIndex = 14;
+            this.ToEx.Value = new decimal(new int[] {
+            17,
+            0,
+            0,
+            0});
             // 
             // label2
             // 
@@ -533,86 +612,18 @@
             this.PathfileorFolder.Text = "C:\\Step2";
             this.PathfileorFolder.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
-            // FromEx
-            // 
-            this.FromEx.Location = new System.Drawing.Point(168, 18);
-            this.FromEx.Maximum = new decimal(new int[] {
-            99999,
-            0,
-            0,
-            0});
-            this.FromEx.Minimum = new decimal(new int[] {
-            12,
-            0,
-            0,
-            0});
-            this.FromEx.Name = "FromEx";
-            this.FromEx.Size = new System.Drawing.Size(36, 20);
-            this.FromEx.TabIndex = 13;
-            this.FromEx.Value = new decimal(new int[] {
-            12,
-            0,
-            0,
-            0});
-            this.FromEx.ValueChanged += new System.EventHandler(this.numericUpDown2_ValueChanged);
-            // 
-            // ToEx
-            // 
-            this.ToEx.Location = new System.Drawing.Point(210, 18);
-            this.ToEx.Maximum = new decimal(new int[] {
-            9999999,
-            0,
-            0,
-            0});
-            this.ToEx.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.ToEx.Name = "ToEx";
-            this.ToEx.Size = new System.Drawing.Size(39, 20);
-            this.ToEx.TabIndex = 14;
-            this.ToEx.Value = new decimal(new int[] {
-            100,
-            0,
-            0,
-            0});
-            // 
-            // GBexcel
-            // 
-            this.GBexcel.Controls.Add(this.txSheetName);
-            this.GBexcel.Controls.Add(this.FromEx);
-            this.GBexcel.Controls.Add(this.ToEx);
-            this.GBexcel.Enabled = false;
-            this.GBexcel.Location = new System.Drawing.Point(225, 32);
-            this.GBexcel.Name = "GBexcel";
-            this.GBexcel.Size = new System.Drawing.Size(255, 49);
-            this.GBexcel.TabIndex = 15;
-            this.GBexcel.TabStop = false;
-            this.GBexcel.Text = "Excel Row";
-            // 
-            // CheckFromTo
-            // 
-            this.CheckFromTo.AutoSize = true;
-            this.CheckFromTo.Location = new System.Drawing.Point(231, 9);
-            this.CheckFromTo.Name = "CheckFromTo";
-            this.CheckFromTo.Size = new System.Drawing.Size(88, 17);
-            this.CheckFromTo.TabIndex = 16;
-            this.CheckFromTo.Text = "Run From To";
-            this.CheckFromTo.UseVisualStyleBackColor = true;
-            this.CheckFromTo.CheckedChanged += new System.EventHandler(this.CheckFromTo_CheckedChanged);
-            // 
-            // txSheetName
-            // 
-            this.txSheetName.Location = new System.Drawing.Point(6, 18);
-            this.txSheetName.Name = "txSheetName";
-            this.txSheetName.Size = new System.Drawing.Size(156, 20);
-            this.txSheetName.TabIndex = 15;
-            this.txSheetName.TextChanged += new System.EventHandler(this.txSheetName_TextChanged);
-            // 
             // programBindingSource
             // 
             this.programBindingSource.DataSource = typeof(GlobalMacroRecorder.Program);
+            // 
+            // lbl_Status
+            // 
+            this.lbl_Status.AutoSize = true;
+            this.lbl_Status.Location = new System.Drawing.Point(30, 60);
+            this.lbl_Status.Name = "lbl_Status";
+            this.lbl_Status.Size = new System.Drawing.Size(16, 13);
+            this.lbl_Status.TabIndex = 10;
+            this.lbl_Status.Text = "...";
             // 
             // MacroForm
             // 
@@ -620,6 +631,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BorderStyle = MetroFramework.Forms.MetroFormBorderStyle.FixedSingle;
             this.ClientSize = new System.Drawing.Size(546, 575);
+            this.Controls.Add(this.lbl_Status);
             this.Controls.Add(this.PathfileorFolder);
             this.Controls.Add(this.Brower);
             this.Controls.Add(this.metroTabControl1);
@@ -638,15 +650,15 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            this.GBexcel.ResumeLayout(false);
+            this.GBexcel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.FromEx)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ToEx)).EndInit();
             this.metroTabPage2.ResumeLayout(false);
             this.metroTabPage2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.metroTabPage3.ResumeLayout(false);
             this.metroTabPage3.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.FromEx)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ToEx)).EndInit();
-            this.GBexcel.ResumeLayout(false);
-            this.GBexcel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.programBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -699,6 +711,7 @@
         private System.Windows.Forms.NumericUpDown FromEx;
         private System.Windows.Forms.CheckBox CheckFromTo;
         private System.Windows.Forms.TextBox txSheetName;
+        private System.Windows.Forms.Label lbl_Status;
     }
 }
 

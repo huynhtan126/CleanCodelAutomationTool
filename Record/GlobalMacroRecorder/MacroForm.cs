@@ -39,6 +39,7 @@ namespace GlobalMacroRecorder
         private string AppRecordName = "RecordVideo.exe";
         private string _pathRecordVideo = "";
         private string _prefixContent = "Content=";
+        private decimal _speed = 1;
         List<MacroEvent> events = new List<MacroEvent>();
         int lastTimeRecorded = 0;
         private List<ResItem> liststring = new List<ResItem>();
@@ -325,8 +326,8 @@ namespace GlobalMacroRecorder
                     process.Kill();
                     return;
                 }
-                var speed = numericUpDown1.Value;
-                var sleepTime = Math.Round(macroEvent.TimeSinceLastEvent / speed);
+                _speed = numericUpDown1.Value;
+                var sleepTime = Math.Round(macroEvent.TimeSinceLastEvent / _speed);
                 Thread.Sleep(int.Parse(sleepTime.ToString()));
 
                 switch (macroEvent.MacroEventType)
@@ -549,8 +550,13 @@ namespace GlobalMacroRecorder
                             }
                             var fileName = worksheet.Cells[i, 1].Text.Trim();
                             if (fileName == "") continue;
+                            if (fileName.StartsWith("$"))
+                            {
+                                fileName = fileName.Substring(2);
+                                decimal.TryParse(fileName.Substring(1,1),out _speed);
+                            }    
                             pathCurrentFile = duongdanfolder + "\\"+ sheet.Name+"\\" + fileName + ".mcr";
-
+                            lbl_Status.Text = "Excute test : "+sheet.Name + " \\ " + fileName;
                             RunMacroandSaveVideo(false);
 
                             if (File.Exists(pathTest))
@@ -573,7 +579,7 @@ namespace GlobalMacroRecorder
                                     var cellW = int.Parse(Math.Round(worksheet.Column(9).Width*7).ToString());
                                     //var picture = worksheet.Drawings.AddPicture(Guid.NewGuid().ToString(), screeenshot);
 
-                                    var pic = listPic.Where(x => x.From.Row == i - 1 && x.From.Column == 7).ToList();
+                                    var pic = listPic.Where(x => x.From.Row == i-1 && x.From.Column == 7).ToList();
                                     if (pic.Count == 1)
                                     {
                                         var kq = ImageUtils.CompareMemCmp(pic[0].Image as Bitmap, screeenshot);
@@ -591,7 +597,7 @@ namespace GlobalMacroRecorder
                                     //var picture = worksheet.Drawings.AddPicture("Teo1", screeenshot);
                                     picture.SetSize(cellW, cellH);
                                     //picture.SetSize(400, 400);
-                                    picture.SetPosition(i - 1, 100, 8, 0);
+                                    picture.SetPosition(i - 1, 0, 8, 0);
                                 }
                                 //else if (worksheet.Cells[i, 12].Text.ToString().Trim() == string.Empty)
                                 //{
@@ -681,7 +687,7 @@ namespace GlobalMacroRecorder
 
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
-
+            duongdanfolder = PathfileorFolder.Text;
         }
         private void GetDataGridtoListView()
         {

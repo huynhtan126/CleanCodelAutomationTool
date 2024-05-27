@@ -40,6 +40,7 @@ namespace GlobalMacroRecorder
         private string _pathRecordVideo = "";
         private string _prefixContent = "Content=";
         private decimal _speed = 1;
+        private bool _isDefaultSpeed = true;
         List<MacroEvent> events = new List<MacroEvent>();
         int lastTimeRecorded = 0;
         private List<ResItem> liststring = new List<ResItem>();
@@ -326,7 +327,11 @@ namespace GlobalMacroRecorder
                     process.Kill();
                     return;
                 }
-                _speed = numericUpDown1.Value;
+                if (_isDefaultSpeed)
+                {
+                    _speed = numericUpDown1.Value;
+
+                }
                 var sleepTime = Math.Round(macroEvent.TimeSinceLastEvent / _speed);
                 Thread.Sleep(int.Parse(sleepTime.ToString()));
 
@@ -523,7 +528,7 @@ namespace GlobalMacroRecorder
                 foreach (var sheet in package.Workbook.Worksheets)
                 {
                     index++;
-                    if(validSheet!="" && sheet.Name != validSheet) continue;
+                    if (validSheet != "" && sheet.Name != validSheet) continue;
                     if (index == 1) continue;
                     ExcelWorksheet worksheet = sheet;
 
@@ -541,22 +546,24 @@ namespace GlobalMacroRecorder
                     {
                         try
                         {
-                            if(listValid.Count != 0)
+                            if (listValid.Count != 0)
                             {
-                                if(!listValid.Contains(i))
+                                if (!listValid.Contains(i))
                                 {
                                     continue;
-                                }    
+                                }
                             }
                             var fileName = worksheet.Cells[i, 1].Text.Trim();
                             if (fileName == "") continue;
+                            _isDefaultSpeed = true;
                             if (fileName.StartsWith("$"))
                             {
+                                _isDefaultSpeed = false;
+                                decimal.TryParse(fileName.Substring(1, 1), out _speed);
                                 fileName = fileName.Substring(2);
-                                decimal.TryParse(fileName.Substring(1,1),out _speed);
-                            }    
-                            pathCurrentFile = duongdanfolder + "\\"+ sheet.Name+"\\" + fileName + ".mcr";
-                            lbl_Status.Text = "Excute test : "+sheet.Name + " \\ " + fileName;
+                            }
+                            pathCurrentFile = duongdanfolder + "\\" + sheet.Name + "\\" + fileName + ".mcr";
+                            lbl_Status.Text = "Excute test : " + sheet.Name + " \\ " + fileName;
                             RunMacroandSaveVideo(false);
 
                             if (File.Exists(pathTest))
@@ -575,11 +582,11 @@ namespace GlobalMacroRecorder
                                 worksheet.Cells[i, 10].Formula = "=HYPERLINK(" + @"""" + fileName + ".avi" + @"""" + "," + @"""Evidence :" + DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss") + @"""" + ")";
                                 if (screeenshot != null)
                                 {
-                                    var cellH = int.Parse(Math.Round(worksheet.Row(i).Height*1.2).ToString());
-                                    var cellW = int.Parse(Math.Round(worksheet.Column(9).Width*7).ToString());
+                                    var cellH = int.Parse(Math.Round(worksheet.Row(i).Height * 1.2).ToString());
+                                    var cellW = int.Parse(Math.Round(worksheet.Column(9).Width * 7).ToString());
                                     //var picture = worksheet.Drawings.AddPicture(Guid.NewGuid().ToString(), screeenshot);
 
-                                    var pic = listPic.Where(x => x.From.Row == i-1 && x.From.Column == 7).ToList();
+                                    var pic = listPic.Where(x => x.From.Row == i - 1 && x.From.Column == 7).ToList();
                                     if (pic.Count == 1)
                                     {
                                         var kq = ImageUtils.CompareMemCmp(pic[0].Image as Bitmap, screeenshot);
@@ -1116,7 +1123,7 @@ namespace GlobalMacroRecorder
 
         private void CheckFromTo_CheckedChanged(object sender, EventArgs e)
         {
-            if(CheckFromTo.Checked)
+            if (CheckFromTo.Checked)
             {
                 GBexcel.Enabled = true;
             }

@@ -1,0 +1,14 @@
+C:\TGL\NewCAD\Automationtest\globalhook_src\bin\Debug\GlobalHookDemo.exe.config
+C:\TGL\NewCAD\Automationtest\globalhook_src\bin\Debug\GlobalHookDemo.XML
+C:\TGL\NewCAD\Automationtest\globalhook_src\bin\Debug\GlobalHookDemo.exe
+C:\TGL\NewCAD\Automationtest\globalhook_src\bin\Debug\GlobalHookDemo.pdb
+C:\TGL\NewCAD\Automationtest\globalhook_src\obj\Debug\GlobalHookDemo.csproj.AssemblyReference.cache
+C:\TGL\NewCAD\Automationtest\globalhook_src\obj\Debug\GlobalHookDemo.MainForm.resources
+C:\TGL\NewCAD\Automationtest\globalhook_src\obj\Debug\GlobalHookDemo.csproj.GenerateResource.cache
+C:\TGL\NewCAD\Automationtest\globalhook_src\obj\Debug\GlobalHookDemo.csproj.CoreCompileInputs.cache
+C:\TGL\NewCAD\Automationtest\globalhook_src\obj\Debug\GlobalHookDemo.exe
+C:\TGL\NewCAD\Automationtest\globalhook_src\obj\Debug\GlobalHookDemo.pdb
+C:\TGL\CleanCode\CleanCodelAutomationTool\globalhook_src\bin\Debug\GlobalHookDemo.exe.config
+C:\TGL\CleanCode\CleanCodelAutomationTool\globalhook_src\bin\Debug\GlobalHookDemo.XML
+C:\TGL\CleanCode\CleanCodelAutomationTool\globalhook_src\bin\Debug\GlobalHookDemo.exe
+C:\TGL\CleanCode\CleanCodelAutomationTool\globalhook_src\bin\Debug\GlobalHookDemo.pdb

@@ -1,0 +1,5 @@
+C:\TGL\CleanCode\CleanCodelAutomationTool\RecordVideo\bin\Debug\RecordVideo.exe.config
+C:\TGL\CleanCode\CleanCodelAutomationTool\RecordVideo\bin\Debug\RecordVideo.exe
+C:\TGL\CleanCode\CleanCodelAutomationTool\RecordVideo\bin\Debug\RecordVideo.pdb
+C:\TGL\CleanCode\CleanCodelAutomationTool\RecordVideo\bin\Debug\SharpAvi.dll
+C:\TGL\CleanCode\CleanCodelAutomationTool\RecordVideo\bin\Debug\SharpAvi.xml

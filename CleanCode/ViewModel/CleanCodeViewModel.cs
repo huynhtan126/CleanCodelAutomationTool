@@ -1,17 +1,12 @@
-using Microsoft.Win32;
-using OfficeOpenXml;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows;
-using System.Windows.Documents;
-using System.Windows.Markup;
-using System.Windows.Shapes;
 using Utilities;
+
 namespace CleanCode
 {
     public class CleanCodeViewModel : ViewModelBase
@@ -103,7 +98,7 @@ namespace CleanCode
         #region Initialize
         public CleanCodeViewModel()
         {
-            listItem = new List<string> { "lang:Localization {0}", "TranslationSource.Instance[nameof({0})]" };
+            listItem = new List<string> { "{0}", "lang:Localization {0}", "TranslationSource.Instance[nameof({0})]" };
             Path = string.Empty;
             NameCommand_Suffix = "TranslationSource.Instance[nameof({0})]";
             NameCommand = "_";
@@ -112,9 +107,10 @@ namespace CleanCode
             ButtonGetStringFromSource = new RelayCommand<object>(p => true, p => GetStringFromSource());
             ButtonResourceToClipBoard = new RelayCommand<object>(p => true, p => ResourceToClipBoard());
             ButtonApplyStringtoSource = new RelayCommand<object>(p => true, p => ApplyStringtoSource());
-            ButtonImportExcel = new RelayCommand<object>(p => true, p => ImportExcel());
-            ButtonExportExcel = new RelayCommand<object>(p => true, p => ExportExcel());
+            //ButtonRecordMacro = new RelayCommand<object>(p => true, p => RecordMacro());
+            //ButtonPlayBack = new RelayCommand<object>(p => true, p => Playback());
             ButtonGetContentFromSource = new RelayCommand<object>(p => true, p => GetContentFromSource());
+
         }
         #endregion
         private string _prefixContent = "Content=";
@@ -125,8 +121,9 @@ namespace CleanCode
         public RelayCommand<object> ButtonGetStringFromSource { get; set; }
         public RelayCommand<object> ButtonApplyStringtoSource { get; set; }
         public RelayCommand<object> ButtonResourceToClipBoard { get; set; }
-        public RelayCommand<object> ButtonImportExcel{ get; set; }
-        public RelayCommand<object> ButtonExportExcel { get; set; }
+        public RelayCommand<object> ButtonRecordMacro { get; set; }
+        public RelayCommand<object> ButtonPlayBack { get; set; }
+        public string ButtonRecordMacroContent { get; set; }
         public void ApplyStringtoSource()
         {
 
@@ -168,8 +165,6 @@ namespace CleanCode
                         System.Windows.MessageBox.Show(ex.ToString());
                     }
                 }
-
-
 
             }
             MessageBox.Show(string.Format("Apply {0} files succesful", filess.Count()));
@@ -223,7 +218,7 @@ namespace CleanCode
                         var replacementString = match.Groups[0].Value.Replace(@"""", string.Empty);
                         replacementString = replacementString.Replace(@" ", string.Empty);
                         replacementString = Regex.Replace(replacementString, "[^a-zA-Z0-9]", "");
-                        var rex = new ResItem { NameInSource = string.Format(NameCommand_Suffix ,NameCommand + "." + replacementString), StringContent = match.Groups[0].Value, NameinResx = replacementString  };
+                        var rex = new ResItem { NameInSource = string.Format(NameCommand_Suffix, NameCommand + "." + replacementString), StringContent = match.Groups[0].Value, NameinResx = replacementString };
                         if (!liststring.Any(x => x.StringContent == rex.StringContent))
                         {
                             liststring.Add(rex);
@@ -256,17 +251,17 @@ namespace CleanCode
             {
                 var filePath = file.FullName;
                 string fileContent = File.ReadAllText(filePath);
-                var pattern = _prefixContent+ @"""(.*?)""";
+                var pattern = _prefixContent + @"""(.*?)""";
                 MatchCollection matches = Regex.Matches(fileContent, pattern);
                 string modifiedContent = fileContent;
                 foreach (Match match in matches)
                 {
                     try
                     {
-                        var replacementString = match.Groups[0].Value.Replace(_prefixContent+@"""", string.Empty);
+                        var replacementString = match.Groups[0].Value.Replace(_prefixContent + @"""", string.Empty);
                         replacementString = replacementString.Replace(@" ", string.Empty);
                         replacementString = Regex.Replace(replacementString, "[^a-zA-Z0-9]", "");
-                        var rex = new ResItem { NameInSource = _prefixContent+"\"{" + string.Format(NameCommand_Suffix, NameCommand + replacementString)+"}\"", StringContent = match.Groups[0].Value, NameinResx = replacementString };
+                        var rex = new ResItem { NameInSource = _prefixContent + "\"{" + string.Format(NameCommand_Suffix, NameCommand + replacementString) + "}\"", StringContent = match.Groups[0].Value, NameinResx = replacementString };
                         if (!liststring.Any(x => x.StringContent == rex.StringContent))
                         {
                             liststring.Add(rex);
@@ -280,100 +275,7 @@ namespace CleanCode
             OnPropertyChanged(nameof(liststring));
             MessageBox.Show(string.Format("Get string {0} files succesful", filess.Count()));
         }
-        public void ImportExcel()
-        {
-            OpenFileDialog openFileDialog1 = new OpenFileDialog
-            {
-                //InitialDirectory = @"E:\",
-                Title = "Browse Files",
 
-                CheckFileExists = true,
-                CheckPathExists = true,
-
-                DefaultExt = "xlsx",
-                Filter = "Excel files (*.xlsx)|*.xlsx",
-                FilterIndex = 2,
-                RestoreDirectory = true,
-
-                //ReadOnlyChecked = true
-                //ShowReadOnly = true
-            };
-            if (!openFileDialog1.ShowDialog().HasValue || !openFileDialog1.ShowDialog().Value) return;
-            //OPEN FILE EXCEL          
-            var path = openFileDialog1.FileName;
-            FileInfo fileInfo = new FileInfo(path);
-
-            ExcelPackage package = new ExcelPackage(fileInfo);
-            ExcelWorksheet worksheet = package.Workbook.Worksheets.FirstOrDefault();
-
-            // get number of rows and columns in the sheet
-            int rows = worksheet.Dimension.Rows; // 20
-            int columns = worksheet.Dimension.Columns; // 7
-            liststring.Clear();
-            for (int i = 2; i <= rows; i++)
-            {
-                try
-                {
-                    var name = worksheet.Cells[i, 1].Value.ToString();
-                    var desciptionVN = worksheet.Cells[i, 2].Value.ToString();
-                    liststring.Add(new ResItem { StringContent = desciptionVN, NameinResx = name });
-                }
-                catch (Exception ex)
-                {
-                    continue;
-                }
-            }
-            OnPropertyChanged(nameof(liststring));
-            MessageBox.Show("Import Succeses.");
-        }
-        public void ExportExcel()
-        {
-            SaveFileDialog openFileDialog1 = new SaveFileDialog
-            {
-                //InitialDirectory = @"E:\",
-                Title = "Browse Files",
-
-                CheckFileExists = true,
-                CheckPathExists = true,
-
-                DefaultExt = "xlsx",
-                Filter = "Excel files (*.xlsx)|*.xlsx",
-                FilterIndex = 2,
-                RestoreDirectory = true,
-
-                //ReadOnlyChecked = true
-                //ShowReadOnly = true
-            };
-            if (!openFileDialog1.ShowDialog().HasValue || !openFileDialog1.ShowDialog().Value) return;
-            //OPEN FILE EXCEL          
-            var path = openFileDialog1.FileName;
-            FileInfo fileInfo = new FileInfo(path);
-
-            ExcelPackage package = new ExcelPackage();
-            ExcelWorksheet worksheet = package.Workbook.Worksheets.FirstOrDefault();
-
-            worksheet.Cells[1, 1].Value = "Name Variable";
-            worksheet.Cells[1, 2].Value = "Description";
-
-            var i = 2;
-            foreach (var item in liststring)
-            {
-                try
-                {
-                    worksheet.Cells[i, 1].Value = item.NameinResx;
-                    worksheet.Cells[i, 2].Value = item.StringContent;
-
-                    i++;
-                }
-                catch (Exception ex)
-                {
-                    continue;
-                }
-
-            }
-            OnPropertyChanged(nameof(liststring));
-            Process.Start(fileInfo.Directory.FullName);
-        }
         public void Remove_comment()
         {
             if (Path == string.Empty)
@@ -465,7 +367,6 @@ namespace CleanCode
             try
             {
 
-
                 if (File.Exists(Path))
                 {
                     FileInfo[] listFile = new FileInfo[] { new FileInfo(Path) };
@@ -485,5 +386,6 @@ namespace CleanCode
                 return listFile;
             }
         }
+
     }
 }

@@ -8,160 +8,232 @@
         Title="CleanCode - tanhuynhapi.com"
         Loaded="Window_Loaded"
         Activated="Window_Activated"
-        MaxHeight="550"
-        MaxWidth="500"
-        MinHeight="550"
-        MinWidth="500">
-    <Grid Margin="0">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
-        <TextBox Name="Path"
-                 Grid.Row="0"
-                 HorizontalAlignment="Stretch"
-                 Margin="10"
-                 TextWrapping="Wrap"
-                 Text="{Binding Path}"
-                 VerticalAlignment="Top"
-                 Width="Auto"
-                 Height="49" />
-        <Button Content="Remove Empty Line"
-                Grid.Row="0"
-                HorizontalAlignment="Right"
-                Margin="0,70,10,0"
-                VerticalAlignment="Top"
-                Command="{Binding ButtonRemoveEmptyLine}" />
-        <Button Content="Remove Comment"
-                Grid.Row="0"
-                HorizontalAlignment="Right"
-                Margin="0,70,150,0"
-                VerticalAlignment="Top"
-                Width="122"
-                Command="{Binding ButtonRemoveComment}" />
-        <Button Content="Get content"
-                Grid.Row="1"
-                HorizontalAlignment="Right"
-                Margin="0,10,132,0"
-                VerticalAlignment="Top"
-                Height="23"
-                Command="{Binding ButtonGetContentFromSource}"
-                Width="98"
-                Grid.RowSpan="2" />
-        <TextBox Name="NameCommand"
-                 Grid.Row="1"
-                 HorizontalAlignment="Left"
-                 Margin="10,10,0,0"
-                 TextWrapping="NoWrap"
-                 Text="{Binding NameCommand}"
-                 VerticalAlignment="Top"
-                 Width="120"
-                 Height="23" />
+        Height="500"
+        Width="500">
 
-        <DataGrid x:Name="data"
-                  Margin="10"
-                  AlternatingRowBackground="LightGreen"
-                  ItemsSource="{Binding liststring}"
-                  Grid.Row="2"
-                  Height="300"
-                  AutoGenerateColumns="False"
-                  BorderThickness="0"
-                  GridLinesVisibility="Vertical"
-                  Width="450">
-            <DataGrid.Columns>
-                <DataGridTemplateColumn Header="String in source">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <TextBlock TextWrapping="Wrap"
-                                       Width="150"
-                                       HorizontalAlignment="Left"
-                                       Text="{Binding Path=StringContent}" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn >
-                <DataGridTemplateColumn Header="Name in Resx">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <TextBlock TextWrapping="Wrap"
-                                       Width="150"
-                                       HorizontalAlignment="Left"
-                                       Text="{Binding Path=NameinResx}" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate >
-                </DataGridTemplateColumn>
-                <DataGridTemplateColumn>
-                    <DataGridTemplateColumn.HeaderTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="Name in Source" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.HeaderTemplate>
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <TextBlock TextWrapping="Wrap"
-                                       Width="150"
-                                       HorizontalAlignment="Left"
-                                       Text="{Binding Path=NameInSource}" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-            </DataGrid.Columns>
-        </DataGrid>
+    <ScrollViewer HorizontalScrollBarVisibility="Auto"
+                  VerticalScrollBarVisibility="Auto"
+                  Height="550">
+        <StackPanel>
+            <Border Background="#99FFFFFF"
+                    BorderBrush="#CCCCFF"
+                    BorderThickness="2"
+                    HorizontalAlignment="Left"
+                    Padding="20"
+                    Margin="0,0,0,0"
+                    Width="auto"
+                    Height="auto">
+                <TabControl Name="Tabs1"
+                            TabStripPlacement="Top"
+                            Background="LightGray"
+                            BorderBrush="Blue"
+                            Margin="-22,-22,-32,-12">
+                    <TabItem Header="Automation Test"
+                             Background="Gray">
+                        <Grid Height="auto">
+                            <StackPanel Orientation="Horizontal">
+                                <Button Content="Record"
+                                        Grid.Row="1"
+                                        HorizontalAlignment="Right"
+                                        Margin="0,0,0,0"
+                                        VerticalAlignment="Top"
+                                        Height="23"
+                                        Command="{Binding ButtonRecordMacro}"
+                                        Width="98"
+                                        Grid.Column="2"
+                                        />
+                                <Button Content="Play Back"
+                                        Grid.Row="1"
+                                        HorizontalAlignment="Right"
+                                        Margin="0,0,0,0"
+                                        VerticalAlignment="Top"
+                                        Height="23"
+                                        Command="{Binding ButtonPlayBack}"
+                                        Width="98"
+                                        Grid.Column="2" />
+                            </StackPanel>
+                     
+                        </Grid>
 
-        <StackPanel    Grid.Row="3"
-                       VerticalAlignment="Center"
-                       HorizontalAlignment="Center"
-                       Orientation="Horizontal"
-                       
-                       Width="500">
-            <Button Content="Apply to source"
-                    Margin="25,0,25,0"
-                    VerticalAlignment="Bottom"
-                    Height="48"
-                    Command="{Binding ButtonApplyStringtoSource}"
-                    Width="123" />
-            <Button Content="Resx to ClipBoard"
-                    HorizontalAlignment="Right"
-                    Margin="0,0,25,25"
-                    VerticalAlignment="Bottom"
-                    Height="48"
-                    Width="100"
-                    Command="{Binding ButtonResourceToClipBoard}" />
-            <Button Content="Export Excel"
-                    Margin="0,0,25,25"
-                    VerticalAlignment="Bottom"
-                    Height="48"
-                    Width="74"
-                    Command="{Binding ButtonExportExcel}" />
-            <Button Content="Import Excel"
-                    Margin="0,0,25,25"
-                    VerticalAlignment="Bottom"
-                    Height="48"
-                    Width="70"
-                    Command="{Binding ButtonImportExcel}" />
+                    </TabItem>
+                    <TabItem Header="Auto Resouces"
+                             IsSelected="True"
+                             Background="Gray">
+                        <Grid Height="auto">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto" />
+                                <ColumnDefinition Width="97.824" />
+                                <ColumnDefinition Width="265.176" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
 
+                            <Button Content="Get content"
+                                    Grid.Row="1"
+                                    HorizontalAlignment="Right"
+                                    Margin="0,10,132,0"
+                                    VerticalAlignment="Top"
+                                    Height="23"
+                                    Command="{Binding ButtonGetContentFromSource}"
+                                    Width="98"
+                                    Grid.Column="2" />
+                            <TextBox Name="NameCommand"
+                                     Grid.Row="1"
+                                     HorizontalAlignment="Left"
+                                     Margin="10,10,0,0"
+                                     TextWrapping="NoWrap"
+                                     Text="{Binding NameCommand}"
+                                     VerticalAlignment="Top"
+                                     Width="120"
+                                     Height="23" />
+
+                            <DataGrid x:Name="data"
+                                      Margin="23,10,23,10"
+                                      AlternatingRowBackground="LightGreen"
+                                      ItemsSource="{Binding liststring}"
+                                      Grid.Row="1"
+                                      Height="300"
+                                      AutoGenerateColumns="False"
+                                      BorderThickness="0"
+                                      GridLinesVisibility="Vertical"
+                                      Width="450"
+                                      Grid.ColumnSpan="3">
+                                <DataGrid.Columns>
+                                    <DataGridTemplateColumn Header="String in source">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock TextWrapping="Wrap"
+                                                           Width="150"
+                                                           HorizontalAlignment="Left"
+                                                           Text="{Binding Path=StringContent}" />
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn >
+                                    <DataGridTemplateColumn Header="Name in Resx">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock TextWrapping="Wrap"
+                                                           Width="150"
+                                                           HorizontalAlignment="Left"
+                                                           Text="{Binding Path=NameinResx}" />
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate >
+                                    </DataGridTemplateColumn>
+                                    <DataGridTemplateColumn>
+                                        <DataGridTemplateColumn.HeaderTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="Name in Source" />
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.HeaderTemplate>
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock TextWrapping="Wrap"
+                                                           Width="150"
+                                                           HorizontalAlignment="Left"
+                                                           Text="{Binding Path=NameInSource}" />
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                </DataGrid.Columns>
+                            </DataGrid>
+
+                            <StackPanel    Grid.Row="2"
+                                           VerticalAlignment="Center"
+                                           HorizontalAlignment="Left"
+                                           Orientation="Horizontal"
+                                           Width="500"
+                                           Grid.ColumnSpan="3"
+                                           Margin="-4,0,0,0">
+
+                                <Button Content="Apply to source"
+                                        HorizontalAlignment="Right"
+                                        Margin="0,0,25,25"
+                                        VerticalAlignment="Bottom"
+                                        Height="48"
+                                        Width="100"
+                                        Command="{Binding ButtonApplyStringtoSource}" />
+                                <Button Content="Resx to ClipBoard"
+                                        HorizontalAlignment="Right"
+                                        Margin="0,0,25,25"
+                                        VerticalAlignment="Bottom"
+                                        Height="48"
+                                        Width="100"
+                                        Command="{Binding ButtonResourceToClipBoard}" />
+
+                            </StackPanel>
+                            <ComboBox x:Name="NameCommand_Suffix"
+                                      Grid.Row="1"
+                                      HorizontalAlignment="Left"
+                                      Margin="38,10,0,0"
+                                      ItemsSource="{Binding listItem}"
+                                      Text="{Binding NameCommand_Suffix}"
+                                      VerticalAlignment="Top"
+                                      Width="120"
+                                      IsEditable="True"
+                                      Height="23"
+                                      Grid.Column="1"
+                                      Grid.ColumnSpan="2" />
+                            <Button Content="Get string from file"
+                                    Grid.Row="1"
+                                    HorizontalAlignment="Right"
+                                    Margin="0,10,10,0"
+                                    VerticalAlignment="Top"
+                                    Height="24"
+                                    Command="{Binding ButtonGetStringFromSource}"
+                                    Width="108"
+                                    Grid.Column="2" />
+
+                        </Grid>
+                    </TabItem>
+
+                    <TabItem Header="Auto FormatCode"
+                             Background="Gray">
+                        <Grid Height="auto">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto" />
+                                <ColumnDefinition Width="auto" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <TextBox Name="Path"
+                                     Grid.Row="0"
+                                     Margin="10,10,10,0"
+                                     TextWrapping="Wrap"
+                                     Text="{Binding Path}"
+                                     VerticalAlignment="Top"
+                                     Width="Auto"
+                                     Height="49"
+                                     Grid.ColumnSpan="2" />
+                            <Button Content="Remove Empty Line"
+                                    Grid.Row="0"
+                                    HorizontalAlignment="Right"
+                                    Margin="0,70,10,0"
+                                    VerticalAlignment="Top"
+                                    Command="{Binding ButtonRemoveEmptyLine}"
+                                    Grid.Column="1"
+                                    Grid.RowSpan="2" />
+                            <Button Content="Remove Comment"
+                                    Grid.Row="0"
+                                    HorizontalAlignment="Right"
+                                    Margin="0,70,150,0"
+                                    VerticalAlignment="Top"
+                                    Width="122"
+                                    Command="{Binding ButtonRemoveComment}"
+                                    Grid.Column="1"
+                                    Grid.RowSpan="2" />
+                        </Grid>
+                    </TabItem>
+
+                </TabControl>
+            </Border>
         </StackPanel>
-        <ComboBox x:Name="NameCommand_Suffix"
-                  Grid.Row="1"
-                  HorizontalAlignment="Left"
-                  Margin="135,10,0,0"
-                  ItemsSource="{Binding listItem}"
-                  Text="{Binding NameCommand_Suffix}"
-                  VerticalAlignment="Top"
-                  Width="120"
-                  IsEditable="True"
-                  Height="23"
-                  Grid.RowSpan="2" />
-        <Button Content="Get string from file"
-                Grid.Row="1"
-                HorizontalAlignment="Right"
-                Margin="0,10,10,0"
-                VerticalAlignment="Top"
-                Height="24"
-                Command="{Binding ButtonGetStringFromSource}"
-                Width="108"
-                Grid.RowSpan="2" />
-
-    </Grid>
+    </ScrollViewer>
 </Window>
+

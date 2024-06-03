@@ -12,4 +12,3 @@ C:\TGL\CleanCode\CleanCodelAutomationTool\globalhook_src\bin\Debug\GlobalHookDem
 C:\TGL\CleanCode\CleanCodelAutomationTool\globalhook_src\bin\Debug\GlobalHookDemo.XML
 C:\TGL\CleanCode\CleanCodelAutomationTool\globalhook_src\bin\Debug\GlobalHookDemo.exe
 C:\TGL\CleanCode\CleanCodelAutomationTool\globalhook_src\bin\Debug\GlobalHookDemo.pdb
-C:\TGL\CleanCode\CleanCodelAutomationTool\Record\GlobalMacroRecorder\bin\Debug\RecordVideo\GlobalHookDemo.exe

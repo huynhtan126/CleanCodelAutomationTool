@@ -75,8 +75,8 @@
             this.Brower = new MetroFramework.Controls.MetroButton();
             this.PathfileorFolder = new System.Windows.Forms.TextBox();
             this.lbl_Status = new System.Windows.Forms.Label();
-            this.programBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.cb_Manual_Split = new System.Windows.Forms.CheckBox();
+            this.programBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.metroTabControl1.SuspendLayout();
             this.metroTabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
@@ -624,7 +624,7 @@
             this.PathfileorFolder.Name = "PathfileorFolder";
             this.PathfileorFolder.Size = new System.Drawing.Size(432, 20);
             this.PathfileorFolder.TabIndex = 7;
-            this.PathfileorFolder.Text = "C:\\Step2";
+            this.PathfileorFolder.Text = "C:\\Record";
             this.PathfileorFolder.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
             // lbl_Status
@@ -637,10 +637,6 @@
             this.lbl_Status.TabIndex = 10;
             this.lbl_Status.Text = "...";
             // 
-            // programBindingSource
-            // 
-            this.programBindingSource.DataSource = typeof(GlobalMacroRecorder.Program);
-            // 
             // cb_Manual_Split
             // 
             this.cb_Manual_Split.AutoSize = true;
@@ -650,6 +646,10 @@
             this.cb_Manual_Split.TabIndex = 17;
             this.cb_Manual_Split.Text = "Manual Split by F12";
             this.cb_Manual_Split.UseVisualStyleBackColor = true;
+            // 
+            // programBindingSource
+            // 
+            this.programBindingSource.DataSource = typeof(GlobalMacroRecorder.Program);
             // 
             // MacroForm
             // 

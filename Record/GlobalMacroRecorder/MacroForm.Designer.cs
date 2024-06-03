@@ -34,6 +34,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.JoinButton = new MetroFramework.Controls.MetroButton();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.label3 = new System.Windows.Forms.Label();
             this.metroButton1 = new MetroFramework.Controls.MetroButton();
@@ -73,8 +74,9 @@
             this.removeComment = new MetroFramework.Controls.MetroButton();
             this.Brower = new MetroFramework.Controls.MetroButton();
             this.PathfileorFolder = new System.Windows.Forms.TextBox();
-            this.programBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.lbl_Status = new System.Windows.Forms.Label();
+            this.programBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.cb_Manual_Split = new System.Windows.Forms.CheckBox();
             this.metroTabControl1.SuspendLayout();
             this.metroTabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
@@ -150,6 +152,8 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.cb_Manual_Split);
+            this.groupBox2.Controls.Add(this.JoinButton);
             this.groupBox2.Controls.Add(this.pictureBox1);
             this.groupBox2.Controls.Add(this.label3);
             this.groupBox2.Controls.Add(this.metroButton1);
@@ -162,6 +166,17 @@
             this.groupBox2.TabIndex = 10;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Create test case";
+            // 
+            // JoinButton
+            // 
+            this.JoinButton.Location = new System.Drawing.Point(269, 223);
+            this.JoinButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.JoinButton.Name = "JoinButton";
+            this.JoinButton.Size = new System.Drawing.Size(208, 28);
+            this.JoinButton.TabIndex = 13;
+            this.JoinButton.Text = "Join files";
+            this.JoinButton.UseSelectable = true;
+            this.JoinButton.Click += new System.EventHandler(this.JoinButton_Click);
             // 
             // pictureBox1
             // 
@@ -204,12 +219,12 @@
             this.dataGridView2.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Column4});
             this.dataGridView2.Location = new System.Drawing.Point(269, 34);
-            this.dataGridView2.MultiSelect = false;
             this.dataGridView2.Name = "dataGridView2";
             this.dataGridView2.RowHeadersVisible = false;
             this.dataGridView2.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridView2.Size = new System.Drawing.Size(208, 150);
             this.dataGridView2.TabIndex = 5;
+            this.dataGridView2.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView2_CellContentClick);
             // 
             // Column4
             // 
@@ -612,18 +627,29 @@
             this.PathfileorFolder.Text = "C:\\Step2";
             this.PathfileorFolder.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
-            // programBindingSource
-            // 
-            this.programBindingSource.DataSource = typeof(GlobalMacroRecorder.Program);
-            // 
             // lbl_Status
             // 
             this.lbl_Status.AutoSize = true;
+            this.lbl_Status.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.lbl_Status.Location = new System.Drawing.Point(30, 60);
             this.lbl_Status.Name = "lbl_Status";
             this.lbl_Status.Size = new System.Drawing.Size(16, 13);
             this.lbl_Status.TabIndex = 10;
             this.lbl_Status.Text = "...";
+            // 
+            // programBindingSource
+            // 
+            this.programBindingSource.DataSource = typeof(GlobalMacroRecorder.Program);
+            // 
+            // cb_Manual_Split
+            // 
+            this.cb_Manual_Split.AutoSize = true;
+            this.cb_Manual_Split.Location = new System.Drawing.Point(269, 11);
+            this.cb_Manual_Split.Name = "cb_Manual_Split";
+            this.cb_Manual_Split.Size = new System.Drawing.Size(119, 17);
+            this.cb_Manual_Split.TabIndex = 17;
+            this.cb_Manual_Split.Text = "Manual Split by F12";
+            this.cb_Manual_Split.UseVisualStyleBackColor = true;
             // 
             // MacroForm
             // 
@@ -712,6 +738,8 @@
         private System.Windows.Forms.CheckBox CheckFromTo;
         private System.Windows.Forms.TextBox txSheetName;
         private System.Windows.Forms.Label lbl_Status;
+        private MetroFramework.Controls.MetroButton JoinButton;
+        private System.Windows.Forms.CheckBox cb_Manual_Split;
     }
 }
 

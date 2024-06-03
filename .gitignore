@@ -37,3 +37,4 @@ Record/GlobalMacroRecorder/obj/Debug/DesignTimeResolveAssemblyReferences.cache
 *.cache
 /CleanCode/.vs
 /Record/GlobalMacroRecorder/bin
+/CleanCode/bin/Debug

@@ -151,8 +151,9 @@ namespace GlobalMacroRecorder
                 ));
 
                 lastTimeRecorded = Environment.TickCount;
-                MessageBox.Show("Đã chụp");
+                //MessageBox.Show("Đã chụp");
 
+                lbl_Status.Text = "Đã chụp lúc " + DateTime.Now.Hour + ":" + DateTime.Now.Minute + ": " + DateTime.Now.Second;
                 return;
             }
             if (e.KeyCode == Keys.F12)
@@ -228,10 +229,10 @@ namespace GlobalMacroRecorder
             else
             {
 
-                //keyboardHook.Stop();
-                //mouseHook.Stop();
-                //ExportJson();
-                //recordButton.Text = "Record";
+                keyboardHook.Stop();
+                mouseHook.Stop();
+                ExportJson();
+                recordButton.Text = "Record";
 
             }
 
@@ -282,120 +283,266 @@ namespace GlobalMacroRecorder
         {
             if (dataGridView2.SelectedRows.Count > 0 && check)
             {
-                pathCurrentFile = duongdanfolder + "\\" + dataGridView2.SelectedRows[0].Cells[0].Value.ToString();
-            }
-
-            if (!File.Exists(pathCurrentFile))
-            {
-                if (check)
+                for (int k = dataGridView2.SelectedRows.Count - 1; k >= 0; k--)
                 {
-                    MessageBox.Show("File not exist");
+                    pathCurrentFile = duongdanfolder + "\\" + dataGridView2.SelectedRows[k].Cells[0].Value.ToString();
+                    if (!File.Exists(pathCurrentFile))
+                    {
+                        if (check)
+                        {
+                            MessageBox.Show("File not exist");
 
-                }
-                return;
-            }
+                        }
+                        return;
+                    }
 
-            //newWindowThread.SetApartmentState(ApartmentState.STA);
-            //newWindowThread.IsBackground = true;
-            //newWindowThread.Start();
+                    //newWindowThread.SetApartmentState(ApartmentState.STA);
+                    //newWindowThread.IsBackground = true;
+                    //newWindowThread.Start();
 
-            var vanban = File.ReadAllText(pathCurrentFile);
-            var docMacro = JsonConvert.DeserializeObject<List<MacroEvent>>(vanban);
-            this.events = docMacro;
-            var fileName = Path.GetFileNameWithoutExtension(pathCurrentFile);
-            Directory.CreateDirectory(duongdanfolder + "\\TestResult");
-            var startInfo = new ProcessStartInfo();
-            startInfo.FileName = "\"" + _pathRecordVideo + "\"";
-            startInfo.Arguments = "\"" + duongdanfolder + "\\TestResult\\" + fileName + ".avi" + "\"";
-            startInfo.Verb = "runas";
-            startInfo.UseShellExecute = false;
-            startInfo.CreateNoWindow = true;
-            var process = Process.Start(startInfo);
+                    var vanban = File.ReadAllText(pathCurrentFile);
+                    var docMacro = JsonConvert.DeserializeObject<List<MacroEvent>>(vanban);
+                    this.events = docMacro;
+                    var fileName = Path.GetFileNameWithoutExtension(pathCurrentFile);
+                    Directory.CreateDirectory(duongdanfolder + "\\TestResult");
+                    var startInfo = new ProcessStartInfo();
+                    startInfo.FileName = "\"" + _pathRecordVideo + "\"";
+                    startInfo.Arguments = "\"" + duongdanfolder + "\\TestResult\\" + fileName + ".avi" + "\"";
+                    startInfo.Verb = "runas";
+                    startInfo.UseShellExecute = false;
+                    startInfo.CreateNoWindow = true;
+                    var process = Process.Start(startInfo);
+                    List<MacroEvent> doneEvents = new List<MacroEvent>();
+                    int eventIndex = -1;
+                    foreach (MacroEvent macroEvent in events)
+                    {
+                        //isBreak =bool.Parse(File.ReadAllText(pathTest));
+                        //if (isBreak == true)
+                        //{
+                        //    process.Kill();
+                        //    return;
+                        //}
+                        eventIndex++;
+                        if (File.Exists(pathTest))
+                        {
+                            if (!cb_Manual_Split.Checked)
+                            {
+                                File.Delete(pathTest);
+                                MessageBox.Show("Macro is cancel.");
+                            }
+                            else
+                            {
+                                //split current file/
+                                ExportJsonSelectedEvents(doneEvents, fileName + "_Done");
 
-            foreach (MacroEvent macroEvent in events)
-            {
-                //isBreak =bool.Parse(File.ReadAllText(pathTest));
-                //if (isBreak == true)
-                //{
-                //    process.Kill();
-                //    return;
-                //}
-                if (File.Exists(pathTest))
-                {
-                    //File.Delete(pathTest);
-                    //MessageBox.Show("Macro is cancel.");
+                                List<MacroEvent> remainEvents = new List<MacroEvent>();
+                                for (int i = eventIndex; i < events.Count; i++)
+                                {
+                                    remainEvents.Add(events[i]);
+                                }
+                                ExportJsonSelectedEvents(remainEvents, fileName + "_Remain");
+                            }
+
+                            process.Kill();
+                            return;
+                        }
+                        if (_isDefaultSpeed)
+                        {
+                            _speed = numericUpDown1.Value;
+
+                        }
+                        var sleepTime = Math.Round(macroEvent.TimeSinceLastEvent / _speed);
+                        Thread.Sleep(int.Parse(sleepTime.ToString()));
+
+                        switch (macroEvent.MacroEventType)
+                        {
+                            case MacroEventType.MouseWheel:
+                                {
+                                    var wheel = int.Parse(macroEvent.EventArgs);
+                                    MouseSimulator.MouseWheel(wheel);
+                                    break;
+                                }
+
+                            case MacroEventType.MouseMove:
+                                {
+
+                                    var click = Regex.Split(macroEvent.EventArgs, "&&");
+
+                                    MouseSimulator.X = int.Parse(click[0]);
+                                    MouseSimulator.Y = int.Parse(click[1]);
+
+                                }
+                                break;
+                            case MacroEventType.MouseDown:
+                                {
+                                    MouseButton button = (MouseButton)Enum.Parse(typeof(MouseButton), macroEvent.EventArgs);
+                                    MouseSimulator.MouseDown(button);
+
+                                }
+                                break;
+                            case MacroEventType.MouseUp:
+                                {
+
+                                    MouseButton button = (MouseButton)Enum.Parse(typeof(MouseButton), macroEvent.EventArgs);
+
+                                    MouseSimulator.MouseUp(button);
+
+                                }
+                                break;
+                            case MacroEventType.KeyDown:
+                                {
+                                    Keys keys = (Keys)Enum.Parse(typeof(Keys), macroEvent.EventArgs);
+                                    if (keys == Keys.F11)
+                                    {
+
+                                        _bitmaps.Add(ScreenShotUtils.CaptureActiveWindow());
+                                    }
+                                    KeyboardSimulator.KeyDown(keys);
+
+                                }
+                                break;
+                            case MacroEventType.KeyUp:
+                                {
+                                    Keys keys = (Keys)Enum.Parse(typeof(Keys), macroEvent.EventArgs);
+                                    KeyboardSimulator.KeyUp(keys);
+
+                                }
+                                break;
+                            default:
+                                break;
+                        }
+                        doneEvents.Add(macroEvent);
+                    }
                     process.Kill();
+                }
+            }
+            else
+            {
+                if (!File.Exists(pathCurrentFile))
+                {
+                    if (check)
+                    {
+                        MessageBox.Show("File not exist");
+
+                    }
                     return;
                 }
-                if (_isDefaultSpeed)
+
+                //newWindowThread.SetApartmentState(ApartmentState.STA);
+                //newWindowThread.IsBackground = true;
+                //newWindowThread.Start();
+
+                var vanban = File.ReadAllText(pathCurrentFile);
+                var docMacro = JsonConvert.DeserializeObject<List<MacroEvent>>(vanban);
+                this.events = docMacro;
+                var fileName = Path.GetFileNameWithoutExtension(pathCurrentFile);
+                Directory.CreateDirectory(duongdanfolder + "\\TestResult");
+                var startInfo = new ProcessStartInfo();
+                startInfo.FileName = "\"" + _pathRecordVideo + "\"";
+                startInfo.Arguments = "\"" + duongdanfolder + "\\TestResult\\" + fileName + ".avi" + "\"";
+                startInfo.Verb = "runas";
+                startInfo.UseShellExecute = false;
+                startInfo.CreateNoWindow = true;
+                var process = Process.Start(startInfo);
+                List<MacroEvent> doneEvents = new List<MacroEvent>();
+                int eventIndex = -1;
+                foreach (MacroEvent macroEvent in events)
                 {
+                    //isBreak =bool.Parse(File.ReadAllText(pathTest));
+                    //if (isBreak == true)
+                    //{
+                    //    process.Kill();
+                    //    return;
+                    //}
+                    eventIndex++;
+                    if (File.Exists(pathTest))
+                    {
+
+                        if (!cb_Manual_Split.Checked)
+                        {
+                            File.Delete(pathTest);
+                            MessageBox.Show("Macro is cancel.");
+                        }
+                        else
+                        {
+                            //split current file/
+                            ExportJsonSelectedEvents(doneEvents, fileName + "_Done");
+
+                            List<MacroEvent> remainEvents = new List<MacroEvent>();
+                            for (int i = eventIndex; i < events.Count; i++)
+                            {
+                                remainEvents.Add(events[i]);
+                            }
+                            ExportJsonSelectedEvents(remainEvents, fileName + "_Remain");
+                        }
+                        process.Kill();
+                        return;
+                    }
                     _speed = numericUpDown1.Value;
+                    var sleepTime = Math.Round(macroEvent.TimeSinceLastEvent / _speed);
+                    Thread.Sleep(int.Parse(sleepTime.ToString()));
 
-                }
-                var sleepTime = Math.Round(macroEvent.TimeSinceLastEvent / _speed);
-                Thread.Sleep(int.Parse(sleepTime.ToString()));
+                    switch (macroEvent.MacroEventType)
+                    {
+                        case MacroEventType.MouseWheel:
+                            {
+                                var wheel = int.Parse(macroEvent.EventArgs);
+                                MouseSimulator.MouseWheel(wheel);
+                                break;
+                            }
 
-                switch (macroEvent.MacroEventType)
-                {
-                    case MacroEventType.MouseWheel:
-                        {
-                            var wheel = int.Parse(macroEvent.EventArgs);
-                            MouseSimulator.MouseWheel(wheel);
-                            break;
-                        }
-
-                    case MacroEventType.MouseMove:
-                        {
-
-                            var click = Regex.Split(macroEvent.EventArgs, "&&");
-
-                            MouseSimulator.X = int.Parse(click[0]);
-                            MouseSimulator.Y = int.Parse(click[1]);
-
-                        }
-                        break;
-                    case MacroEventType.MouseDown:
-                        {
-                            MouseButton button = (MouseButton)Enum.Parse(typeof(MouseButton), macroEvent.EventArgs);
-                            MouseSimulator.MouseDown(button);
-
-                        }
-                        break;
-                    case MacroEventType.MouseUp:
-                        {
-
-                            MouseButton button = (MouseButton)Enum.Parse(typeof(MouseButton), macroEvent.EventArgs);
-
-                            MouseSimulator.MouseUp(button);
-
-                        }
-                        break;
-                    case MacroEventType.KeyDown:
-                        {
-                            Keys keys = (Keys)Enum.Parse(typeof(Keys), macroEvent.EventArgs);
-                            if (keys == Keys.F11)
+                        case MacroEventType.MouseMove:
                             {
 
-                                _bitmaps.Add(ScreenShotUtils.CaptureActiveWindow());
+                                var click = Regex.Split(macroEvent.EventArgs, "&&");
+
+                                MouseSimulator.X = int.Parse(click[0]);
+                                MouseSimulator.Y = int.Parse(click[1]);
+
                             }
-                            KeyboardSimulator.KeyDown(keys);
+                            break;
+                        case MacroEventType.MouseDown:
+                            {
+                                MouseButton button = (MouseButton)Enum.Parse(typeof(MouseButton), macroEvent.EventArgs);
+                                MouseSimulator.MouseDown(button);
 
-                        }
-                        break;
-                    case MacroEventType.KeyUp:
-                        {
-                            Keys keys = (Keys)Enum.Parse(typeof(Keys), macroEvent.EventArgs);
-                            KeyboardSimulator.KeyUp(keys);
+                            }
+                            break;
+                        case MacroEventType.MouseUp:
+                            {
 
-                        }
-                        break;
-                    default:
-                        break;
+                                MouseButton button = (MouseButton)Enum.Parse(typeof(MouseButton), macroEvent.EventArgs);
+
+                                MouseSimulator.MouseUp(button);
+
+                            }
+                            break;
+                        case MacroEventType.KeyDown:
+                            {
+                                Keys keys = (Keys)Enum.Parse(typeof(Keys), macroEvent.EventArgs);
+                                if (keys == Keys.F11)
+                                {
+
+                                    _bitmaps.Add(ScreenShotUtils.CaptureActiveWindow());
+                                }
+                                KeyboardSimulator.KeyDown(keys);
+
+                            }
+                            break;
+                        case MacroEventType.KeyUp:
+                            {
+                                Keys keys = (Keys)Enum.Parse(typeof(Keys), macroEvent.EventArgs);
+                                KeyboardSimulator.KeyUp(keys);
+
+                            }
+                            break;
+                        default:
+                            break;
+                    }
+                    doneEvents.Add(macroEvent);
                 }
-
+                process.Kill();
             }
-
-            process.Kill();
 
         }
         public Bitmap GetScreenSnapshot()
@@ -1090,7 +1237,10 @@ namespace GlobalMacroRecorder
         private void UpdateDataFileMRC()
         {
             #region get all file
-
+            if (!Directory.Exists(duongdanfolder))
+            {
+                Directory.CreateDirectory(duongdanfolder);
+            }
             DirectoryInfo d = new DirectoryInfo(duongdanfolder);//Assuming Test is your Folder
 
             FileInfo[] Files = d.GetFiles("*.mcr"); //Getting Text files
@@ -1135,6 +1285,57 @@ namespace GlobalMacroRecorder
         }
 
         private void txSheetName_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+        public void ExportJsonSelectedEvents(List<MacroEvent> listEvent, string nameSuffix)
+        {
+            if (!Directory.Exists(duongdanfolder))
+            {
+                Directory.CreateDirectory(duongdanfolder);
+            }
+            var vanbanKho = JsonConvert.SerializeObject(listEvent);
+            var datenow = DateTime.Now.ToString("yyyyMMddHHmm");
+            pathCurrentFile = duongdanfolder + "\\" + datenow + "_" + nameSuffix + ".mcr";
+            File.WriteAllText(pathCurrentFile, vanbanKho);
+            Process.Start(duongdanfolder);
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void JoinButton_Click(object sender, EventArgs e)
+        {
+            string retContent = string.Empty;
+            for (int i = dataGridView2.SelectedRows.Count - 1; i >= 0; i--)
+            {
+                string mcrFile = duongdanfolder + "\\" + dataGridView2.SelectedRows[i].Cells[0].Value.ToString();
+                if (File.Exists(mcrFile))
+                {
+                    string contentFile = File.ReadAllText(mcrFile);
+                    if (retContent.Equals(string.Empty))
+                    {
+                        retContent = contentFile;
+                    }
+                    else
+                    {
+                        string firstContent = retContent.Substring(0, retContent.Length - 1);
+                        string secondContent = contentFile.Substring(1, contentFile.Length - 1);
+
+                        retContent = firstContent + "," + secondContent;
+                    }
+                }
+            }
+
+            var datenow = DateTime.Now.ToString("yyyyMMddHHmmss");
+            pathCurrentFile = duongdanfolder + "\\" + datenow + "_Joined.mcr";
+            File.WriteAllText(pathCurrentFile, retContent);
+            Process.Start(duongdanfolder);
+        }
+
+        private void dataGridView2_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
         }

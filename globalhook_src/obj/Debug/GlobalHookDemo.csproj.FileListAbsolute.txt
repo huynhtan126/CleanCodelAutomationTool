@@ -12,14 +12,4 @@ C:\TGL\CleanCode\CleanCodelAutomationTool\globalhook_src\bin\Debug\GlobalHookDem
 C:\TGL\CleanCode\CleanCodelAutomationTool\globalhook_src\bin\Debug\GlobalHookDemo.XML
 C:\TGL\CleanCode\CleanCodelAutomationTool\globalhook_src\bin\Debug\GlobalHookDemo.exe
 C:\TGL\CleanCode\CleanCodelAutomationTool\globalhook_src\bin\Debug\GlobalHookDemo.pdb
-C:\TGL\CleanCode\CleanCodelAutomationTool\globalhook_src\obj\Debug\GlobalHookDemo.csproj.AssemblyReference.cache
-C:\TGL\CleanCode\CleanCodelAutomationTool\globalhook_src\obj\Debug\GlobalHookDemo.MainForm.resources
-C:\TGL\CleanCode\CleanCodelAutomationTool\globalhook_src\obj\Debug\GlobalHookDemo.csproj.GenerateResource.cache
-C:\TGL\CleanCode\CleanCodelAutomationTool\globalhook_src\obj\Debug\GlobalHookDemo.csproj.CoreCompileInputs.cache
-C:\TGL\CleanCode\CleanCodelAutomationTool\globalhook_src\obj\Debug\GlobalHookDemo.exe
-C:\TGL\CleanCode\CleanCodelAutomationTool\globalhook_src\obj\Debug\GlobalHookDemo.pdb
-C:\TGL\CleanCode\CleanCodelAutomationTool\Record\GlobalMacroRecorder\bin\Debug\RecordVideo\GlobalHookDemo.exe.config
 C:\TGL\CleanCode\CleanCodelAutomationTool\Record\GlobalMacroRecorder\bin\Debug\RecordVideo\GlobalHookDemo.exe
-C:\TGL\CleanCode\CleanCodelAutomationTool\Record\GlobalMacroRecorder\bin\Debug\RecordVideo\GlobalHookDemo.pdb
-C:\TGL\CleanCode\CleanCodelAutomationTool\Record\GlobalMacroRecorder\bin\Debug\RecordVideo\GlobalHookDemo.XML
-C:\TGL\CleanCode\CleanCodelAutomationTool\globalhook_src\obj\Debug\GlobalHookDemo.Properties.Resources.resources

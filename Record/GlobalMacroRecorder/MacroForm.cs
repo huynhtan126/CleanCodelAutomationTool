@@ -31,7 +31,7 @@ namespace GlobalMacroRecorder
 {
     public partial class MacroForm : MetroFramework.Forms.MetroForm
     {
-        public string duongdanfolder = @"C:\Step2";
+        public string duongdanfolder = "C:\\Record";
         private string pathCurrentFile = "";
         private string pathTest = "";
         private string pathTestApp = "";

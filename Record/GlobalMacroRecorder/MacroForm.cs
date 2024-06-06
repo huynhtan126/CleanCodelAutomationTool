@@ -1339,5 +1339,91 @@ namespace GlobalMacroRecorder
         {
 
         }
+
+        private void metroButton4_Click_1(object sender, EventArgs e)
+        {
+            #region Xuat hien hop thoai mo file
+
+            OpenFileDialog openFileDialog1 = new OpenFileDialog
+            {
+                //InitialDirectory = @"E:\",
+                Title = "Browse Files",
+                CheckFileExists = true,
+                CheckPathExists = true,
+
+                DefaultExt = "xlsx",
+                Filter = "Excel files (*.xlsx)|*.xlsx",
+                FilterIndex = 2,
+                RestoreDirectory = true,
+
+                //ReadOnlyChecked = true
+                //ShowReadOnly = true
+            };
+            #endregion
+
+            if (openFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                var thongtinfile = openFileDialog1.FileName;
+                ExcelPackage packageMappping = new ExcelPackage(new FileInfo(thongtinfile));
+
+                #region Xuat hien hop thoai mo file
+
+                OpenFileDialog openFileDialog2 = new OpenFileDialog
+                {
+                    //InitialDirectory = @"E:\",
+                    Title = "Browse Files",
+                    CheckFileExists = true,
+                    CheckPathExists = true,
+
+                    DefaultExt = "xlsx",
+                    Filter = "Excel files (*.xlsx)|*.xlsx",
+                    FilterIndex = 2,
+                    RestoreDirectory = true,
+
+                    //ReadOnlyChecked = true
+                    //ShowReadOnly = true
+                };
+                #endregion
+                if (openFileDialog2.ShowDialog() == DialogResult.OK)
+                {
+                    var thongtinfile1 = openFileDialog2.FileName;
+                    ExcelPackage packageReal4 = new ExcelPackage(new FileInfo(thongtinfile1));
+                    // loop through the worksheet rows and columns
+
+                    var worksheets = packageMappping.Workbook.Worksheets;
+                    foreach (var worksheetMapping in worksheets)
+                    {              // get number of rows and columns in the sheet
+                        int rows = worksheetMapping.Dimension.Rows; // 20
+                        int columns = worksheetMapping.Dimension.Columns; // 7
+                        //if (worksheetMapping.Name.StartsWith("Tsugite") || worksheetMapping.Name.StartsWith(("Be-su")))
+                        {
+                            for (int i = 2; i <= rows; i++)
+                            {
+                                var key = worksheetMapping.Cells[i, 1];
+                                var value = worksheetMapping.Cells[i, 2].Text;
+
+                                var sheetReal4 = packageReal4.Workbook.Worksheets[1];
+                                int rowsReal4 = sheetReal4.Dimension.Rows; // 20
+                                int columnsReal4 = sheetReal4.Dimension.Columns; // 7
+
+                                for (int i4 = 2; i4 <= columnsReal4; i4++)
+                                {
+                                    var variable = sheetReal4.Cells[1, i4].Text;
+                                    var valueReal4 = sheetReal4.Cells[2, i4].Text;
+                                    if (valueReal4 != "" && value.Contains(variable))
+                                    {
+                                        value = value.Replace(variable, valueReal4);
+                                    }
+                                }
+                                worksheetMapping.Cells[i, 2].Value = value;
+                            }
+
+                        }
+                    }
+                    packageMappping.SaveAs(new FileInfo("C:\\Temp\\Report.xls"));
+                    Process.Start("C:\\Temp\\Report.xls");
+                }
+            }
+        }
     }
 }

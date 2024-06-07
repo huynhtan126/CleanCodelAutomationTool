@@ -73,12 +73,13 @@
             this.note = new System.Windows.Forms.CheckBox();
             this.todo = new System.Windows.Forms.CheckBox();
             this.removeComment = new MetroFramework.Controls.MetroButton();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.metroButton4 = new MetroFramework.Controls.MetroButton();
             this.Brower = new MetroFramework.Controls.MetroButton();
             this.PathfileorFolder = new System.Windows.Forms.TextBox();
             this.lbl_Status = new System.Windows.Forms.Label();
             this.programBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.metroButton4 = new MetroFramework.Controls.MetroButton();
+            this.cb_exportAV = new System.Windows.Forms.CheckBox();
             this.metroTabControl1.SuspendLayout();
             this.metroTabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
@@ -92,8 +93,8 @@
             this.metroTabPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.metroTabPage3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.programBindingSource)).BeginInit();
             this.tabPage1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.programBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // metroTabControl1
@@ -104,7 +105,7 @@
             this.metroTabControl1.Controls.Add(this.tabPage1);
             this.metroTabControl1.Location = new System.Drawing.Point(23, 116);
             this.metroTabControl1.Name = "metroTabControl1";
-            this.metroTabControl1.SelectedIndex = 3;
+            this.metroTabControl1.SelectedIndex = 0;
             this.metroTabControl1.Size = new System.Drawing.Size(500, 448);
             this.metroTabControl1.TabIndex = 3;
             this.metroTabControl1.UseSelectable = true;
@@ -149,13 +150,14 @@
             this.numericUpDown1.Size = new System.Drawing.Size(66, 20);
             this.numericUpDown1.TabIndex = 9;
             this.numericUpDown1.Value = new decimal(new int[] {
-            5,
+            1,
             0,
             0,
             0});
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.cb_exportAV);
             this.groupBox2.Controls.Add(this.cb_Manual_Split);
             this.groupBox2.Controls.Add(this.JoinButton);
             this.groupBox2.Controls.Add(this.pictureBox1);
@@ -622,6 +624,25 @@
             this.removeComment.UseSelectable = true;
             this.removeComment.Click += new System.EventHandler(this.removeComment_Click);
             // 
+            // tabPage1
+            // 
+            this.tabPage1.Controls.Add(this.metroButton4);
+            this.tabPage1.Location = new System.Drawing.Point(4, 38);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Size = new System.Drawing.Size(492, 406);
+            this.tabPage1.TabIndex = 3;
+            this.tabPage1.Text = "Check Mapping";
+            // 
+            // metroButton4
+            // 
+            this.metroButton4.Location = new System.Drawing.Point(202, 180);
+            this.metroButton4.Name = "metroButton4";
+            this.metroButton4.Size = new System.Drawing.Size(88, 46);
+            this.metroButton4.TabIndex = 4;
+            this.metroButton4.Text = "ReadMapping";
+            this.metroButton4.UseSelectable = true;
+            this.metroButton4.Click += new System.EventHandler(this.metroButton4_Click_1);
+            // 
             // Brower
             // 
             this.Brower.Location = new System.Drawing.Point(468, 88);
@@ -655,24 +676,16 @@
             // 
             this.programBindingSource.DataSource = typeof(GlobalMacroRecorder.Program);
             // 
-            // tabPage1
+            // cb_exportAV
             // 
-            this.tabPage1.Controls.Add(this.metroButton4);
-            this.tabPage1.Location = new System.Drawing.Point(4, 38);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Size = new System.Drawing.Size(492, 406);
-            this.tabPage1.TabIndex = 3;
-            this.tabPage1.Text = "Check Mapping";
-            // 
-            // metroButton4
-            // 
-            this.metroButton4.Location = new System.Drawing.Point(202, 180);
-            this.metroButton4.Name = "metroButton4";
-            this.metroButton4.Size = new System.Drawing.Size(88, 46);
-            this.metroButton4.TabIndex = 4;
-            this.metroButton4.Text = "ReadMapping";
-            this.metroButton4.UseSelectable = true;
-            this.metroButton4.Click += new System.EventHandler(this.metroButton4_Click_1);
+            this.cb_exportAV.AutoSize = true;
+            this.cb_exportAV.Location = new System.Drawing.Point(131, 11);
+            this.cb_exportAV.Name = "cb_exportAV";
+            this.cb_exportAV.Size = new System.Drawing.Size(73, 17);
+            this.cb_exportAV.TabIndex = 18;
+            this.cb_exportAV.Text = "Export avi";
+            this.cb_exportAV.UseVisualStyleBackColor = true;
+            this.cb_exportAV.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
             // 
             // MacroForm
             // 
@@ -708,8 +721,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.metroTabPage3.ResumeLayout(false);
             this.metroTabPage3.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.programBindingSource)).EndInit();
             this.tabPage1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.programBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -766,6 +779,7 @@
         private System.Windows.Forms.CheckBox cb_Manual_Split;
         private System.Windows.Forms.TabPage tabPage1;
         private MetroFramework.Controls.MetroButton metroButton4;
+        private System.Windows.Forms.CheckBox cb_exportAV;
     }
 }
 

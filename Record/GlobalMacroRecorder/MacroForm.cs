@@ -305,13 +305,18 @@ namespace GlobalMacroRecorder
                     this.events = docMacro;
                     var fileName = Path.GetFileNameWithoutExtension(pathCurrentFile);
                     Directory.CreateDirectory(duongdanfolder + "\\TestResult");
-                    var startInfo = new ProcessStartInfo();
-                    startInfo.FileName = "\"" + _pathRecordVideo + "\"";
-                    startInfo.Arguments = "\"" + duongdanfolder + "\\TestResult\\" + fileName + ".avi" + "\"";
-                    startInfo.Verb = "runas";
-                    startInfo.UseShellExecute = false;
-                    startInfo.CreateNoWindow = true;
-                    var process = Process.Start(startInfo);
+                    Process process = null;
+                    if (cb_exportAV.Checked)
+                    {
+                        var startInfo = new ProcessStartInfo();
+                        startInfo.FileName = "\"" + _pathRecordVideo + "\"";
+                        startInfo.Arguments = "\"" + duongdanfolder + "\\TestResult\\" + fileName + ".avi" + "\"";
+                        startInfo.Verb = "runas";
+                        startInfo.UseShellExecute = false;
+                        startInfo.CreateNoWindow = true;
+                        process = Process.Start(startInfo);
+                    }
+
                     List<MacroEvent> doneEvents = new List<MacroEvent>();
                     int eventIndex = -1;
                     foreach (MacroEvent macroEvent in events)
@@ -342,8 +347,10 @@ namespace GlobalMacroRecorder
                                 }
                                 ExportJsonSelectedEvents(remainEvents, fileName + "_Remain");
                             }
-
-                            process.Kill();
+                            if (cb_exportAV.Checked)
+                            {
+                                process.Kill();
+                            }
                             return;
                         }
                         if (_isDefaultSpeed)
@@ -413,7 +420,10 @@ namespace GlobalMacroRecorder
                         }
                         doneEvents.Add(macroEvent);
                     }
-                    process.Kill();
+                    if (cb_exportAV.Checked)
+                    {
+                        process.Kill();
+                    }
                 }
             }
             else
@@ -1408,7 +1418,7 @@ namespace GlobalMacroRecorder
 
                                 for (int i4 = 2; i4 <= columnsReal4; i4++)
                                 {
-                                    var variable = sheetReal4.Cells[1, i4].Text;
+                                    var variable = "[" + sheetReal4.Cells[1, i4].Text + "]";
                                     var valueReal4 = sheetReal4.Cells[2, i4].Text;
                                     if (valueReal4 != "" && value.Contains(variable))
                                     {
@@ -1420,10 +1430,16 @@ namespace GlobalMacroRecorder
 
                         }
                     }
+                    Directory.CreateDirectory("C:\\Temp\\");
                     packageMappping.SaveAs(new FileInfo("C:\\Temp\\Report.xls"));
                     Process.Start("C:\\Temp\\Report.xls");
                 }
             }
+        }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -104,7 +104,7 @@ namespace GlobalMacroRecorder
 
         void mouseHook_MouseDown(object sender, MouseEventArgs e)
         {
-
+            if (e.Button == MouseButtons.Middle) return;
             events.Add(
                 new MacroEvent(
                     MacroEventType.MouseDown,
@@ -118,7 +118,7 @@ namespace GlobalMacroRecorder
 
         void mouseHook_MouseUp(object sender, MouseEventArgs e)
         {
-
+            if (e.Button == MouseButtons.Middle) return;
             events.Add(
                 new MacroEvent(
                     MacroEventType.MouseUp,

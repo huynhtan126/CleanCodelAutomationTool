@@ -1349,7 +1349,7 @@ namespace GlobalMacroRecorder
         {
 
         }
-
+        //Check mapping 
         private void metroButton4_Click_1(object sender, EventArgs e)
         {
             #region Xuat hien hop thoai mo file
@@ -1426,6 +1426,7 @@ namespace GlobalMacroRecorder
                                     }
                                 }
                                 worksheetMapping.Cells[i, 2].Value = value;
+                                worksheetMapping.Cells[i, 4].Value = UtilCalculate.ComputeEquation(value);
                             }
 
                         }

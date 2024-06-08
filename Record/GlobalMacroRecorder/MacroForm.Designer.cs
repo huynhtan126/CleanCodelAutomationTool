@@ -34,6 +34,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.cb_exportAV = new System.Windows.Forms.CheckBox();
             this.cb_Manual_Split = new System.Windows.Forms.CheckBox();
             this.JoinButton = new MetroFramework.Controls.MetroButton();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
@@ -79,7 +80,6 @@
             this.PathfileorFolder = new System.Windows.Forms.TextBox();
             this.lbl_Status = new System.Windows.Forms.Label();
             this.programBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.cb_exportAV = new System.Windows.Forms.CheckBox();
             this.metroTabControl1.SuspendLayout();
             this.metroTabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
@@ -105,13 +105,14 @@
             this.metroTabControl1.Controls.Add(this.tabPage1);
             this.metroTabControl1.Location = new System.Drawing.Point(23, 116);
             this.metroTabControl1.Name = "metroTabControl1";
-            this.metroTabControl1.SelectedIndex = 0;
+            this.metroTabControl1.SelectedIndex = 3;
             this.metroTabControl1.Size = new System.Drawing.Size(500, 448);
             this.metroTabControl1.TabIndex = 3;
             this.metroTabControl1.UseSelectable = true;
             // 
             // metroTabPage1
             // 
+            this.metroTabPage1.Controls.Add(this.cb_exportAV);
             this.metroTabPage1.Controls.Add(this.label1);
             this.metroTabPage1.Controls.Add(this.numericUpDown1);
             this.metroTabPage1.Controls.Add(this.groupBox2);
@@ -157,7 +158,6 @@
             // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.cb_exportAV);
             this.groupBox2.Controls.Add(this.cb_Manual_Split);
             this.groupBox2.Controls.Add(this.JoinButton);
             this.groupBox2.Controls.Add(this.pictureBox1);
@@ -172,6 +172,17 @@
             this.groupBox2.TabIndex = 10;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Create test case";
+            // 
+            // cb_exportAV
+            // 
+            this.cb_exportAV.AutoSize = true;
+            this.cb_exportAV.Location = new System.Drawing.Point(18, 3);
+            this.cb_exportAV.Name = "cb_exportAV";
+            this.cb_exportAV.Size = new System.Drawing.Size(73, 17);
+            this.cb_exportAV.TabIndex = 18;
+            this.cb_exportAV.Text = "Export avi";
+            this.cb_exportAV.UseVisualStyleBackColor = true;
+            this.cb_exportAV.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
             // 
             // cb_Manual_Split
             // 
@@ -675,17 +686,6 @@
             // programBindingSource
             // 
             this.programBindingSource.DataSource = typeof(GlobalMacroRecorder.Program);
-            // 
-            // cb_exportAV
-            // 
-            this.cb_exportAV.AutoSize = true;
-            this.cb_exportAV.Location = new System.Drawing.Point(131, 11);
-            this.cb_exportAV.Name = "cb_exportAV";
-            this.cb_exportAV.Size = new System.Drawing.Size(73, 17);
-            this.cb_exportAV.TabIndex = 18;
-            this.cb_exportAV.Text = "Export avi";
-            this.cb_exportAV.UseVisualStyleBackColor = true;
-            this.cb_exportAV.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
             // 
             // MacroForm
             // 

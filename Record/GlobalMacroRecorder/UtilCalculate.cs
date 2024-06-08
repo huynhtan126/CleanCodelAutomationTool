@@ -10,11 +10,20 @@ namespace GlobalMacroRecorder
     {
         public static string ComputeEquation(string equation)
         {
-            Expression expression = new Expression(equation);
-            object result = expression.Evaluate();
-            if (!(expression.HasErrors()))
-                return result.ToString();
-            // "default return" is expected.
+            try
+            {
+                Expression expression = new Expression(equation);
+                object result = expression.Evaluate();
+                if (!(expression.HasErrors()))
+                    return result.ToString();
+                // "default return" is expected.
+            }
+            catch (Exception)
+            {
+
+                return equation;
+            }
+           
             return equation;
         }
     }

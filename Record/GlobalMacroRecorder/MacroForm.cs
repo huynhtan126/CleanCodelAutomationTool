@@ -1410,7 +1410,7 @@ namespace GlobalMacroRecorder
                             for (int i = 2; i <= rows; i++)
                             {
                                 var key = worksheetMapping.Cells[i, 1];
-                                var value = worksheetMapping.Cells[i, 2].Text;
+                                var value = worksheetMapping.Cells[i, 2].Text.Replace(" ", string.Empty);
 
                                 var sheetReal4 = packageReal4.Workbook.Worksheets[1];
                                 int rowsReal4 = sheetReal4.Dimension.Rows; // 20

@@ -1418,8 +1418,8 @@ namespace GlobalMacroRecorder
 
                                 for (int i4 = 2; i4 <= columnsReal4; i4++)
                                 {
-                                    var variable = "[" + sheetReal4.Cells[1, i4].Text + "]";
-                                    var valueReal4 = sheetReal4.Cells[2, i4].Text;
+                                    var variable = "[" + sheetReal4.Cells[1, i4].Text.Replace(" ", string.Empty) + "]";
+                                    var valueReal4 = sheetReal4.Cells[2, i4].Text.Replace(" ",string.Empty);
                                     if (valueReal4 != "" && value.Contains(variable))
                                     {
                                         value = value.Replace(variable, valueReal4);

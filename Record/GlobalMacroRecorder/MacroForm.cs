@@ -1425,7 +1425,7 @@ namespace GlobalMacroRecorder
                                         value = value.Replace(variable, valueReal4);
                                     }
                                 }
-                                value = value.Replace(" ", string.Empty);
+                                value = value.Replace(" ", string.Empty).Normalize();
                                 worksheetMapping.Cells[i, 2].Value = value;
                                 worksheetMapping.Cells[i, 4].Value = UtilCalculate.ComputeEquation(value);
                             }

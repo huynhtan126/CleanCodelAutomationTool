@@ -31,10 +31,10 @@
             this.components = new System.ComponentModel.Container();
             this.metroTabControl1 = new MetroFramework.Controls.MetroTabControl();
             this.metroTabPage1 = new MetroFramework.Controls.MetroTabPage();
+            this.cb_exportAV = new System.Windows.Forms.CheckBox();
             this.label1 = new System.Windows.Forms.Label();
             this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.cb_exportAV = new System.Windows.Forms.CheckBox();
             this.cb_Manual_Split = new System.Windows.Forms.CheckBox();
             this.JoinButton = new MetroFramework.Controls.MetroButton();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
@@ -129,6 +129,17 @@
             this.metroTabPage1.VerticalScrollbarHighlightOnWheel = false;
             this.metroTabPage1.VerticalScrollbarSize = 10;
             // 
+            // cb_exportAV
+            // 
+            this.cb_exportAV.AutoSize = true;
+            this.cb_exportAV.Location = new System.Drawing.Point(18, 3);
+            this.cb_exportAV.Name = "cb_exportAV";
+            this.cb_exportAV.Size = new System.Drawing.Size(73, 17);
+            this.cb_exportAV.TabIndex = 18;
+            this.cb_exportAV.Text = "Export avi";
+            this.cb_exportAV.UseVisualStyleBackColor = true;
+            this.cb_exportAV.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
+            // 
             // label1
             // 
             this.label1.AutoSize = true;
@@ -172,17 +183,6 @@
             this.groupBox2.TabIndex = 10;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Create test case";
-            // 
-            // cb_exportAV
-            // 
-            this.cb_exportAV.AutoSize = true;
-            this.cb_exportAV.Location = new System.Drawing.Point(18, 3);
-            this.cb_exportAV.Name = "cb_exportAV";
-            this.cb_exportAV.Size = new System.Drawing.Size(73, 17);
-            this.cb_exportAV.TabIndex = 18;
-            this.cb_exportAV.Text = "Export avi";
-            this.cb_exportAV.UseVisualStyleBackColor = true;
-            this.cb_exportAV.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
             // 
             // cb_Manual_Split
             // 

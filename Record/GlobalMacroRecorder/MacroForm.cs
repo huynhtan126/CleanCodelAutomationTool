@@ -1396,45 +1396,56 @@ namespace GlobalMacroRecorder
                 #endregion
                 if (openFileDialog2.ShowDialog() == DialogResult.OK)
                 {
-                    var thongtinfile1 = openFileDialog2.FileName;
-                    ExcelPackage packageReal4 = new ExcelPackage(new FileInfo(thongtinfile1));
+                    var thongtinfile1 = new FileInfo(openFileDialog2.FileName);
+                    ExcelPackage packageReal4 = new ExcelPackage(thongtinfile1);
                     // loop through the worksheet rows and columns
-
+                    var path = thongtinfile1.Directory + "\\Result";
+                    Directory.CreateDirectory(path);
                     var worksheets = packageMappping.Workbook.Worksheets;
-                    foreach (var worksheetMapping in worksheets)
-                    {              // get number of rows and columns in the sheet
-                        int rows = worksheetMapping.Dimension.Rows; // 20
-                        int columns = worksheetMapping.Dimension.Columns; // 7
-                        //if (worksheetMapping.Name.StartsWith("Tsugite") || worksheetMapping.Name.StartsWith(("Be-su")))
+                    var sheetReal4Col = packageReal4.Workbook.Worksheets;
+                    foreach (var sheetReal4 in sheetReal4Col)
+                    {
+                        //if (sheetReal4.Name.StartsWith("Tsugite") || sheetReal4.Name.StartsWith(("Be-su")))
                         {
-                            for (int i = 2; i <= rows; i++)
-                            {
-                                var key = worksheetMapping.Cells[i, 1];
-                                var value = worksheetMapping.Cells[i, 2].Text.Replace(" ", string.Empty);
-
-                                var sheetReal4 = packageReal4.Workbook.Worksheets[1];
-                                int rowsReal4 = sheetReal4.Dimension.Rows; // 20
-                                int columnsReal4 = sheetReal4.Dimension.Columns; // 7
-
-                                for (int i4 = 2; i4 <= columnsReal4; i4++)
+                            int rowsReal4 = sheetReal4.Dimension.Rows; // 20
+                            int columnsReal4 = sheetReal4.Dimension.Columns; // 7
+                            foreach (var worksheetMapping in worksheets)
+                            {              // get number of rows and columns in the sheet
+                                int rows = worksheetMapping.Dimension.Rows; // 20
+                                int columns = worksheetMapping.Dimension.Columns; // 7
+                                                                                  //if (worksheetMapping.Name.StartsWith("Tsugite") || worksheetMapping.Name.StartsWith(("Be-su")))
                                 {
-                                    var variable = "[" + sheetReal4.Cells[1, i4].Text.Replace(" ", string.Empty) + "]";
-                                    var valueReal4 = sheetReal4.Cells[2, i4].Text.Replace(" ",string.Empty);
-                                    if (valueReal4 != "" && value.Contains(variable))
+                                    for (int l = 2; l < rowsReal4; l++)
                                     {
-                                        value = value.Replace(variable, valueReal4);
+                                        var nameConnection = sheetReal4.Cells[l, 1].Text;
+                                        for (int i = 2; i <= rows; i++)
+                                        {
+                                            var key = worksheetMapping.Cells[i, 1];
+                                            var value = worksheetMapping.Cells[i, 2].Text.Replace(" ", string.Empty);
+
+                                            for (int i4 = 2; i4 <= columnsReal4; i4++)
+                                            {
+                                                var variable = "[" + sheetReal4.Cells[1, i4].Text.Replace(" ", string.Empty) + "]";
+                                                var valueReal4 = sheetReal4.Cells[l, i4].Text.Replace(" ", string.Empty);
+                                                if (valueReal4 != "" && value.Contains(variable))
+                                                {
+                                                    value = value.Replace(variable, valueReal4);
+                                                }
+                                            }
+                                            value = value.Replace(" ", string.Empty).Normalize();
+                                            worksheetMapping.Cells[i, 2].Value = value;
+                                            worksheetMapping.Cells[i, 4].Value = UtilCalculate.ComputeEquation(value);
+                                        }
+                                        packageMappping.SaveAs(new FileInfo(path +"\\"+ nameConnection + ".xls"));
                                     }
+
                                 }
-                                value = value.Replace(" ", string.Empty).Normalize();
-                                worksheetMapping.Cells[i, 2].Value = value;
-                                worksheetMapping.Cells[i, 4].Value = UtilCalculate.ComputeEquation(value);
                             }
 
                         }
+
+                        Process.Start(path);
                     }
-                    Directory.CreateDirectory("C:\\Temp\\");
-                    packageMappping.SaveAs(new FileInfo("C:\\Temp\\Report.xls"));
-                    Process.Start("C:\\Temp\\Report.xls");
                 }
             }
         }

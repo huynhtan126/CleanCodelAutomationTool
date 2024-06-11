@@ -1401,9 +1401,9 @@ namespace GlobalMacroRecorder
                     // loop through the worksheet rows and columns
                     var path = thongtinfile1.Directory + "\\Result";
                     Directory.CreateDirectory(path);
+                    var sheetReal4 = packageReal4.Workbook.Worksheets[1];
                     var worksheets = packageMappping.Workbook.Worksheets;
-                    var sheetReal4Col = packageReal4.Workbook.Worksheets;
-                    foreach (var sheetReal4 in sheetReal4Col)
+                    //foreach (var sheetReal4 in sheetReal4Col)
                     {
                         //if (sheetReal4.Name.StartsWith("Tsugite") || sheetReal4.Name.StartsWith(("Be-su")))
                         {
@@ -1413,7 +1413,7 @@ namespace GlobalMacroRecorder
                             {              // get number of rows and columns in the sheet
                                 int rows = worksheetMapping.Dimension.Rows; // 20
                                 int columns = worksheetMapping.Dimension.Columns; // 7
-                                                                                  //if (worksheetMapping.Name.StartsWith("Tsugite") || worksheetMapping.Name.StartsWith(("Be-su")))
+                                //if (worksheetMapping.Name.StartsWith("Tsugite") || worksheetMapping.Name.StartsWith(("Be-su")))
 
                                 for (int l = 2; l <= rowsReal4; l++)
                                 {
@@ -1449,8 +1449,8 @@ namespace GlobalMacroRecorder
                                             worksheetMapping.Cells[i, 2].Value = valueMapping;
                                             worksheetMapping.Cells[i, 4].Value = UtilCalculate.ComputeEquation(valueMapping);
                                         }
-                                        packageMappping.SaveAs(new FileInfo(path + "\\" + nameConnection + ".xlsx"));
                                     }
+                                    packageMappping.SaveAs(new FileInfo(path + "\\" + nameConnection + ".xlsx"));
 
                                 }
                             }

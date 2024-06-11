@@ -1420,7 +1420,8 @@ namespace GlobalMacroRecorder
                                     var nameConnection = sheetReal4.Cells[l, 1].Text;
                                     for (int i = 2; i <= rows; i++)
                                     {
-                                        var key = worksheetMapping.Cells[i, 1];
+                                        var key = worksheetMapping.Cells[i, 1].Text.Trim();
+                                        if (key == "") continue;
                                         var valueMapping = worksheetMapping.Cells[i, 2].Text.Replace(" ", string.Empty);
 
                                         for (int i4 = 2; i4 <= columnsReal4; i4++)

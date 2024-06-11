@@ -1414,29 +1414,42 @@ namespace GlobalMacroRecorder
                                 int rows = worksheetMapping.Dimension.Rows; // 20
                                 int columns = worksheetMapping.Dimension.Columns; // 7
                                                                                   //if (worksheetMapping.Name.StartsWith("Tsugite") || worksheetMapping.Name.StartsWith(("Be-su")))
-                                {
-                                    for (int l = 2; l < rowsReal4; l++)
-                                    {
-                                        var nameConnection = sheetReal4.Cells[l, 1].Text;
-                                        for (int i = 2; i <= rows; i++)
-                                        {
-                                            var key = worksheetMapping.Cells[i, 1];
-                                            var value = worksheetMapping.Cells[i, 2].Text.Replace(" ", string.Empty);
 
-                                            for (int i4 = 2; i4 <= columnsReal4; i4++)
-                                            {
-                                                var variable = "[" + sheetReal4.Cells[1, i4].Text.Replace(" ", string.Empty) + "]";
-                                                var valueReal4 = sheetReal4.Cells[l, i4].Text.Replace(" ", string.Empty);
-                                                if (valueReal4 != "" && value.Contains(variable))
+                                for (int l = 2; l < rowsReal4; l++)
+                                {
+                                    var nameConnection = sheetReal4.Cells[l, 1].Text;
+                                    for (int i = 2; i <= rows; i++)
+                                    {
+                                        var key = worksheetMapping.Cells[i, 1];
+                                        var valueMapping = worksheetMapping.Cells[i, 2].Text.Replace(" ", string.Empty);
+
+                                        for (int i4 = 2; i4 <= columnsReal4; i4++)
+                                        {
+                                            var variable = "[" + sheetReal4.Cells[1, i4].Text.Replace(" ", string.Empty) + "]";
+                                            var variableSplit1 = "[" + sheetReal4.Cells[1, i4].Text.Replace(" ", string.Empty) + "$x1]";
+                                            var valueReal4 = sheetReal4.Cells[l, i4].Text.Replace(" ", string.Empty);
+                                            if (valueReal4 != "")
+                                                switch (valueMapping)
                                                 {
-                                                    value = value.Replace(variable, valueReal4);
+                                                    case string n when n.Contains(variableSplit1):
+                                                        {
+                                                            valueReal4 = valueReal4.Split('x')[0];
+                                                            valueMapping = valueMapping.Replace(variableSplit1, valueReal4);
+                                                        }
+                                                        break;
+                                                    default:
+                                                        if (valueReal4 != "" && valueMapping.Contains(variable))
+                                                        {
+                                                            valueMapping = valueMapping.Replace(variable, valueReal4);
+                                                        }
+                                                        break;
+
                                                 }
-                                            }
-                                            value = value.Replace(" ", string.Empty).Normalize();
-                                            worksheetMapping.Cells[i, 2].Value = value;
-                                            worksheetMapping.Cells[i, 4].Value = UtilCalculate.ComputeEquation(value);
+                                            valueMapping = valueMapping.Replace(" ", string.Empty).Normalize();
+                                            worksheetMapping.Cells[i, 2].Value = valueMapping;
+                                            worksheetMapping.Cells[i, 4].Value = UtilCalculate.ComputeEquation(valueMapping);
                                         }
-                                        packageMappping.SaveAs(new FileInfo(path +"\\"+ nameConnection + ".xls"));
+                                        packageMappping.SaveAs(new FileInfo(path + "\\" + nameConnection + ".xlsx"));
                                     }
 
                                 }

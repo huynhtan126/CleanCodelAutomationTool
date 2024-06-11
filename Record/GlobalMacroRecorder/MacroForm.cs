@@ -1415,7 +1415,7 @@ namespace GlobalMacroRecorder
                                 int columns = worksheetMapping.Dimension.Columns; // 7
                                                                                   //if (worksheetMapping.Name.StartsWith("Tsugite") || worksheetMapping.Name.StartsWith(("Be-su")))
 
-                                for (int l = 2; l < rowsReal4; l++)
+                                for (int l = 2; l <= rowsReal4; l++)
                                 {
                                     var nameConnection = sheetReal4.Cells[l, 1].Text;
                                     for (int i = 2; i <= rows; i++)

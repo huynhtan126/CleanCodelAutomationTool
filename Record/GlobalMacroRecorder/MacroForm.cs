@@ -1428,6 +1428,7 @@ namespace GlobalMacroRecorder
                                         {
                                             var variable = "[" + sheetReal4.Cells[1, i4].Text.Replace(" ", string.Empty) + "]";
                                             var variableSplit1 = "[" + sheetReal4.Cells[1, i4].Text.Replace(" ", string.Empty) + "$x1]";
+                                            var variableSplitDash1 = "[" + sheetReal4.Cells[1, i4].Text.Replace(" ", string.Empty) + "$d1]";
                                             var valueReal4 = sheetReal4.Cells[l, i4].Text.Replace(" ", string.Empty);
                                             if (valueReal4 != "")
                                                 switch (valueMapping)
@@ -1436,6 +1437,12 @@ namespace GlobalMacroRecorder
                                                         {
                                                             valueReal4 = valueReal4.Split('x')[0];
                                                             valueMapping = valueMapping.Replace(variableSplit1, valueReal4);
+                                                        }
+                                                        break;
+                                                    case string n when n.Contains(variableSplitDash1):
+                                                        {
+                                                            valueReal4 = valueReal4.Split('-')[0];
+                                                            valueMapping = valueMapping.Replace(variableSplitDash1, valueReal4);
                                                         }
                                                         break;
                                                     default:

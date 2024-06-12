@@ -1456,7 +1456,7 @@ namespace GlobalMacroRecorder
                                                     case string n when n.Contains(variableNaShi):
                                                         {
 
-                                                            if (valueReal4.Contains("なし"))
+                                                            if (!valueReal4.Contains("なし"))
                                                             {
                                                                 valueReal4 = "true";
                                                             }

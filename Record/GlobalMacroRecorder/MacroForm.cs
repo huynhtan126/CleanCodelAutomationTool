@@ -104,7 +104,7 @@ namespace GlobalMacroRecorder
 
         void mouseHook_MouseDown(object sender, MouseEventArgs e)
         {
-
+            if (e.Button == MouseButtons.Middle) return;
             events.Add(
                 new MacroEvent(
                     MacroEventType.MouseDown,
@@ -118,7 +118,7 @@ namespace GlobalMacroRecorder
 
         void mouseHook_MouseUp(object sender, MouseEventArgs e)
         {
-
+            if (e.Button == MouseButtons.Middle) return;
             events.Add(
                 new MacroEvent(
                     MacroEventType.MouseUp,
@@ -305,13 +305,18 @@ namespace GlobalMacroRecorder
                     this.events = docMacro;
                     var fileName = Path.GetFileNameWithoutExtension(pathCurrentFile);
                     Directory.CreateDirectory(duongdanfolder + "\\TestResult");
-                    var startInfo = new ProcessStartInfo();
-                    startInfo.FileName = "\"" + _pathRecordVideo + "\"";
-                    startInfo.Arguments = "\"" + duongdanfolder + "\\TestResult\\" + fileName + ".avi" + "\"";
-                    startInfo.Verb = "runas";
-                    startInfo.UseShellExecute = false;
-                    startInfo.CreateNoWindow = true;
-                    var process = Process.Start(startInfo);
+                    Process process = null;
+                    if (cb_exportAV.Checked)
+                    {
+                        var startInfo = new ProcessStartInfo();
+                        startInfo.FileName = "\"" + _pathRecordVideo + "\"";
+                        startInfo.Arguments = "\"" + duongdanfolder + "\\TestResult\\" + fileName + ".avi" + "\"";
+                        startInfo.Verb = "runas";
+                        startInfo.UseShellExecute = false;
+                        startInfo.CreateNoWindow = true;
+                        process = Process.Start(startInfo);
+                    }
+
                     List<MacroEvent> doneEvents = new List<MacroEvent>();
                     int eventIndex = -1;
                     foreach (MacroEvent macroEvent in events)
@@ -342,8 +347,10 @@ namespace GlobalMacroRecorder
                                 }
                                 ExportJsonSelectedEvents(remainEvents, fileName + "_Remain");
                             }
-
-                            process.Kill();
+                            if (cb_exportAV.Checked)
+                            {
+                                process.Kill();
+                            }
                             return;
                         }
                         if (_isDefaultSpeed)
@@ -413,7 +420,10 @@ namespace GlobalMacroRecorder
                         }
                         doneEvents.Add(macroEvent);
                     }
-                    process.Kill();
+                    if (cb_exportAV.Checked)
+                    {
+                        process.Kill();
+                    }
                 }
             }
             else
@@ -1336,6 +1346,154 @@ namespace GlobalMacroRecorder
         }
 
         private void dataGridView2_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+        //Check mapping 
+        private void metroButton4_Click_1(object sender, EventArgs e)
+        {
+            #region Xuat hien hop thoai mo file
+
+            OpenFileDialog openFileDialog1 = new OpenFileDialog
+            {
+                //InitialDirectory = @"E:\",
+                Title = "Browse Files",
+                CheckFileExists = true,
+                CheckPathExists = true,
+
+                DefaultExt = "xlsx",
+                Filter = "Excel files (*.xlsx)|*.xlsx",
+                FilterIndex = 2,
+                RestoreDirectory = true,
+
+                //ReadOnlyChecked = true
+                //ShowReadOnly = true
+            };
+            #endregion
+
+            if (openFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                var thongtinfile = openFileDialog1.FileName;
+                ExcelPackage packageMappping = new ExcelPackage(new FileInfo(thongtinfile));
+
+                #region Xuat hien hop thoai mo file
+
+                OpenFileDialog openFileDialog2 = new OpenFileDialog
+                {
+                    //InitialDirectory = @"E:\",
+                    Title = "Browse Files",
+                    CheckFileExists = true,
+                    CheckPathExists = true,
+
+                    DefaultExt = "xlsx",
+                    Filter = "Excel files (*.xlsx)|*.xlsx",
+                    FilterIndex = 2,
+                    RestoreDirectory = true,
+
+                    //ReadOnlyChecked = true
+                    //ShowReadOnly = true
+                };
+                #endregion
+                if (openFileDialog2.ShowDialog() == DialogResult.OK)
+                {
+                    var thongtinfile1 = new FileInfo(openFileDialog2.FileName);
+                    ExcelPackage packageReal4 = new ExcelPackage(thongtinfile1);
+                    // loop through the worksheet rows and columns
+                    var path = thongtinfile1.Directory + "\\Result";
+                    Directory.CreateDirectory(path);
+                    var sheetReal4 = packageReal4.Workbook.Worksheets[1];
+                    var worksheets = packageMappping.Workbook.Worksheets;
+                    //foreach (var sheetReal4 in sheetReal4Col)
+                    {
+                        //if (sheetReal4.Name.StartsWith("Tsugite") || sheetReal4.Name.StartsWith(("Be-su")))
+                        {
+                            int rowsReal4 = sheetReal4.Dimension.Rows; // 20
+                            int columnsReal4 = sheetReal4.Dimension.Columns; // 7
+                            foreach (var worksheetMapping in worksheets)
+                            {              // get number of rows and columns in the sheet
+                                int rows = worksheetMapping.Dimension.Rows; // 20
+                                int columns = worksheetMapping.Dimension.Columns; // 7
+                                //if (worksheetMapping.Name.StartsWith("Tsugite") || worksheetMapping.Name.StartsWith(("Be-su")))
+
+                                for (int l = 2; l <= rowsReal4; l++)
+                                {
+                                    var nameConnection = sheetReal4.Cells[l, 1].Text;
+                                    for (int i = 2; i <= rows; i++)
+                                    {
+                                        var key = worksheetMapping.Cells[i, 1].Text.Trim();
+                                        if (key == "") continue;
+                                        var valueMapping = worksheetMapping.Cells[i, 2].Text.Replace(" ", string.Empty);
+
+                                        for (int i4 = 2; i4 <= columnsReal4; i4++)
+                                        {
+                                            var variable = "[" + sheetReal4.Cells[1, i4].Text.Replace(" ", string.Empty) + "]";
+                                            var variableSplit1 = "[" + sheetReal4.Cells[1, i4].Text.Replace(" ", string.Empty) + "$x1]";
+                                            var variableSplit3 = "[" + sheetReal4.Cells[1, i4].Text.Replace(" ", string.Empty) + "$x3]";
+                                            var variableSplitDash1 = "[" + sheetReal4.Cells[1, i4].Text.Replace(" ", string.Empty) + "$d1]";
+                                            var variableNaShi = "[" + sheetReal4.Cells[1, i4].Text.Replace(" ", string.Empty) + "$if]";
+                                            var valueReal4 = sheetReal4.Cells[l, i4].Text.Replace(" ", string.Empty);
+                                            if (valueReal4 != "")
+                                                switch (valueMapping)
+                                                {
+                                                    case string n when n.Contains(variableSplit1):
+                                                        {
+                                                            valueReal4 = valueReal4.Split('x')[0];
+                                                            valueMapping = valueMapping.Replace(variableSplit1, valueReal4);
+                                                        }
+                                                        break;
+                                                    case string n when n.Contains(variableSplit3):
+                                                        {
+                                                            valueReal4 = valueReal4.Split('x')[2];
+                                                            valueMapping = valueMapping.Replace(variableSplit3, valueReal4);
+                                                        }
+                                                        break;
+                                                    case string n when n.Contains(variableSplitDash1):
+                                                        {
+                                                            valueReal4 = valueReal4.Split('-')[0];
+                                                            valueMapping = valueMapping.Replace(variableSplitDash1, valueReal4);
+                                                        }
+                                                        break;
+                                                    case string n when n.Contains(variableNaShi):
+                                                        {
+
+                                                            if (!valueReal4.Contains("なし"))
+                                                            {
+                                                                valueReal4 = "true";
+                                                            }
+                                                            else
+                                                            {
+                                                                valueReal4 = "false";
+                                                            }
+                                                            valueMapping = valueMapping.Replace(variableNaShi, valueReal4);
+                                                        }
+                                                        break;
+                                                    default:
+                                                        if (valueReal4 != "" && valueMapping.Contains(variable))
+                                                        {
+                                                            valueMapping = valueMapping.Replace(variable, valueReal4);
+                                                        }
+                                                        break;
+
+                                                }
+                                            valueMapping = valueMapping.Replace(" ", string.Empty).Normalize();
+                                            worksheetMapping.Cells[i, 2].Value = valueMapping;
+                                            worksheetMapping.Cells[i, 4].Value = UtilCalculate.ComputeEquation(valueMapping);
+                                        }
+                                    }
+                                    packageMappping.SaveAs(new FileInfo(path + "\\" + nameConnection + ".xlsx"));
+
+                                }
+                            }
+
+                        }
+
+                        Process.Start(path);
+                    }
+                }
+            }
+        }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
 
         }

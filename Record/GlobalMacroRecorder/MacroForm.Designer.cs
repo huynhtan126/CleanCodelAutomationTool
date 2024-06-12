@@ -31,9 +31,11 @@
             this.components = new System.ComponentModel.Container();
             this.metroTabControl1 = new MetroFramework.Controls.MetroTabControl();
             this.metroTabPage1 = new MetroFramework.Controls.MetroTabPage();
+            this.cb_exportAV = new System.Windows.Forms.CheckBox();
             this.label1 = new System.Windows.Forms.Label();
             this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.cb_Manual_Split = new System.Windows.Forms.CheckBox();
             this.JoinButton = new MetroFramework.Controls.MetroButton();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.label3 = new System.Windows.Forms.Label();
@@ -72,10 +74,11 @@
             this.note = new System.Windows.Forms.CheckBox();
             this.todo = new System.Windows.Forms.CheckBox();
             this.removeComment = new MetroFramework.Controls.MetroButton();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.metroButton4 = new MetroFramework.Controls.MetroButton();
             this.Brower = new MetroFramework.Controls.MetroButton();
             this.PathfileorFolder = new System.Windows.Forms.TextBox();
             this.lbl_Status = new System.Windows.Forms.Label();
-            this.cb_Manual_Split = new System.Windows.Forms.CheckBox();
             this.programBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.metroTabControl1.SuspendLayout();
             this.metroTabPage1.SuspendLayout();
@@ -90,6 +93,7 @@
             this.metroTabPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.metroTabPage3.SuspendLayout();
+            this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.programBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
@@ -98,15 +102,17 @@
             this.metroTabControl1.Controls.Add(this.metroTabPage1);
             this.metroTabControl1.Controls.Add(this.metroTabPage2);
             this.metroTabControl1.Controls.Add(this.metroTabPage3);
+            this.metroTabControl1.Controls.Add(this.tabPage1);
             this.metroTabControl1.Location = new System.Drawing.Point(23, 116);
             this.metroTabControl1.Name = "metroTabControl1";
-            this.metroTabControl1.SelectedIndex = 0;
+            this.metroTabControl1.SelectedIndex = 3;
             this.metroTabControl1.Size = new System.Drawing.Size(500, 448);
             this.metroTabControl1.TabIndex = 3;
             this.metroTabControl1.UseSelectable = true;
             // 
             // metroTabPage1
             // 
+            this.metroTabPage1.Controls.Add(this.cb_exportAV);
             this.metroTabPage1.Controls.Add(this.label1);
             this.metroTabPage1.Controls.Add(this.numericUpDown1);
             this.metroTabPage1.Controls.Add(this.groupBox2);
@@ -122,6 +128,17 @@
             this.metroTabPage1.VerticalScrollbarBarColor = true;
             this.metroTabPage1.VerticalScrollbarHighlightOnWheel = false;
             this.metroTabPage1.VerticalScrollbarSize = 10;
+            // 
+            // cb_exportAV
+            // 
+            this.cb_exportAV.AutoSize = true;
+            this.cb_exportAV.Location = new System.Drawing.Point(18, 3);
+            this.cb_exportAV.Name = "cb_exportAV";
+            this.cb_exportAV.Size = new System.Drawing.Size(73, 17);
+            this.cb_exportAV.TabIndex = 18;
+            this.cb_exportAV.Text = "Export avi";
+            this.cb_exportAV.UseVisualStyleBackColor = true;
+            this.cb_exportAV.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
             // 
             // label1
             // 
@@ -145,7 +162,7 @@
             this.numericUpDown1.Size = new System.Drawing.Size(66, 20);
             this.numericUpDown1.TabIndex = 9;
             this.numericUpDown1.Value = new decimal(new int[] {
-            5,
+            1,
             0,
             0,
             0});
@@ -167,10 +184,20 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Create test case";
             // 
+            // cb_Manual_Split
+            // 
+            this.cb_Manual_Split.AutoSize = true;
+            this.cb_Manual_Split.Location = new System.Drawing.Point(269, 11);
+            this.cb_Manual_Split.Name = "cb_Manual_Split";
+            this.cb_Manual_Split.Size = new System.Drawing.Size(119, 17);
+            this.cb_Manual_Split.TabIndex = 17;
+            this.cb_Manual_Split.Text = "Manual Split by F12";
+            this.cb_Manual_Split.UseVisualStyleBackColor = true;
+            // 
             // JoinButton
             // 
             this.JoinButton.Location = new System.Drawing.Point(269, 223);
-            this.JoinButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.JoinButton.Margin = new System.Windows.Forms.Padding(2);
             this.JoinButton.Name = "JoinButton";
             this.JoinButton.Size = new System.Drawing.Size(208, 28);
             this.JoinButton.TabIndex = 13;
@@ -608,6 +635,25 @@
             this.removeComment.UseSelectable = true;
             this.removeComment.Click += new System.EventHandler(this.removeComment_Click);
             // 
+            // tabPage1
+            // 
+            this.tabPage1.Controls.Add(this.metroButton4);
+            this.tabPage1.Location = new System.Drawing.Point(4, 38);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Size = new System.Drawing.Size(492, 406);
+            this.tabPage1.TabIndex = 3;
+            this.tabPage1.Text = "Check Mapping";
+            // 
+            // metroButton4
+            // 
+            this.metroButton4.Location = new System.Drawing.Point(202, 180);
+            this.metroButton4.Name = "metroButton4";
+            this.metroButton4.Size = new System.Drawing.Size(88, 46);
+            this.metroButton4.TabIndex = 4;
+            this.metroButton4.Text = "ReadMapping";
+            this.metroButton4.UseSelectable = true;
+            this.metroButton4.Click += new System.EventHandler(this.metroButton4_Click_1);
+            // 
             // Brower
             // 
             this.Brower.Location = new System.Drawing.Point(468, 88);
@@ -636,16 +682,6 @@
             this.lbl_Status.Size = new System.Drawing.Size(16, 13);
             this.lbl_Status.TabIndex = 10;
             this.lbl_Status.Text = "...";
-            // 
-            // cb_Manual_Split
-            // 
-            this.cb_Manual_Split.AutoSize = true;
-            this.cb_Manual_Split.Location = new System.Drawing.Point(269, 11);
-            this.cb_Manual_Split.Name = "cb_Manual_Split";
-            this.cb_Manual_Split.Size = new System.Drawing.Size(119, 17);
-            this.cb_Manual_Split.TabIndex = 17;
-            this.cb_Manual_Split.Text = "Manual Split by F12";
-            this.cb_Manual_Split.UseVisualStyleBackColor = true;
             // 
             // programBindingSource
             // 
@@ -685,6 +721,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.metroTabPage3.ResumeLayout(false);
             this.metroTabPage3.PerformLayout();
+            this.tabPage1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.programBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -740,6 +777,9 @@
         private System.Windows.Forms.Label lbl_Status;
         private MetroFramework.Controls.MetroButton JoinButton;
         private System.Windows.Forms.CheckBox cb_Manual_Split;
+        private System.Windows.Forms.TabPage tabPage1;
+        private MetroFramework.Controls.MetroButton metroButton4;
+        private System.Windows.Forms.CheckBox cb_exportAV;
     }
 }
 

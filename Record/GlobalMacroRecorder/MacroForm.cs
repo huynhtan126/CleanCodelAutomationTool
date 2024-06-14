@@ -1430,6 +1430,7 @@ namespace GlobalMacroRecorder
                                             var variable = "[" + sheetReal4.Cells[1, i4].Text.Replace(" ", string.Empty) + "]";
                                             var variableSplit1 = "[" + sheetReal4.Cells[1, i4].Text.Replace(" ", string.Empty) + "$x1]";
                                             var variableSplit3 = "[" + sheetReal4.Cells[1, i4].Text.Replace(" ", string.Empty) + "$x3]";
+                                            var variableSplit4 = "[" + sheetReal4.Cells[1, i4].Text.Replace(" ", string.Empty) + "$x4]";
                                             var variableSplitDash1 = "[" + sheetReal4.Cells[1, i4].Text.Replace(" ", string.Empty) + "$d1]";
                                             var variableNaShi = "[" + sheetReal4.Cells[1, i4].Text.Replace(" ", string.Empty) + "$if]";
                                             var variableOptType = "[" + sheetReal4.Cells[1, i4].Text.Replace(" ", string.Empty) + "$d1$o1]";
@@ -1460,6 +1461,12 @@ namespace GlobalMacroRecorder
                                                         {
                                                             valueReal4 = valueReal4.Split('x')[2];
                                                             valueMapping = valueMapping.Replace(variableSplit3, valueReal4);
+                                                        }
+                                                        break;
+                                                    case string n when n.Contains(variableSplit4):
+                                                        {
+                                                            valueReal4 = valueReal4.Split('x')[3];
+                                                            valueMapping = valueMapping.Replace(variableSplit4, valueReal4);
                                                         }
                                                         break;
                                                     case string n when n.Contains(variableSplitDash1):

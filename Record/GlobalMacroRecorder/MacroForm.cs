@@ -1418,6 +1418,7 @@ namespace GlobalMacroRecorder
                                 for (int l = 2; l <= rowsReal4; l++)
                                 {
                                     var nameConnection = sheetReal4.Cells[l, 1].Text;
+                                    var keyOpt = "0";
                                     for (int i = 2; i <= rows; i++)
                                     {
                                         var key = worksheetMapping.Cells[i, 1].Text.Trim();
@@ -1431,20 +1432,34 @@ namespace GlobalMacroRecorder
                                             var variableSplit3 = "[" + sheetReal4.Cells[1, i4].Text.Replace(" ", string.Empty) + "$x3]";
                                             var variableSplitDash1 = "[" + sheetReal4.Cells[1, i4].Text.Replace(" ", string.Empty) + "$d1]";
                                             var variableNaShi = "[" + sheetReal4.Cells[1, i4].Text.Replace(" ", string.Empty) + "$if]";
+                                            var variableOptType = "[" + sheetReal4.Cells[1, i4].Text.Replace(" ", string.Empty) + "$d1$o1]";
+                                            var variableByType = "[" + sheetReal4.Cells[1, i4].Text.Replace(" ", string.Empty) + $"$b{keyOpt}]";
                                             var valueReal4 = sheetReal4.Cells[l, i4].Text.Replace(" ", string.Empty);
                                             if (valueReal4 != "")
                                                 switch (valueMapping)
                                                 {
+                                                    case string n when n.Contains(variableByType):
+                                                        {
+                                                            valueMapping = valueReal4;
+                                                        }
+                                                        break;
+                                                    case string n when n.Contains(variableOptType):
+                                                        {
+                                                            valueReal4 = valueReal4.Split('-')[0];
+                                                            keyOpt = valueReal4;
+                                                            valueMapping = valueMapping.Replace(variableOptType, valueReal4);
+                                                        }
+                                                        break;
                                                     case string n when n.Contains(variableSplit1):
                                                         {
                                                             valueReal4 = valueReal4.Split('x')[0];
                                                             valueMapping = valueMapping.Replace(variableSplit1, valueReal4);
                                                         }
                                                         break;
-                                                    case string n when n.Contains(variableSplit3):
+                                                    case string n when n.Contains(variableSplit1):
                                                         {
-                                                            valueReal4 = valueReal4.Split('x')[2];
-                                                            valueMapping = valueMapping.Replace(variableSplit3, valueReal4);
+                                                            valueReal4 = valueReal4.Split('x')[0];
+                                                            valueMapping = valueMapping.Replace(variableSplit1, valueReal4);
                                                         }
                                                         break;
                                                     case string n when n.Contains(variableSplitDash1):
@@ -1480,6 +1495,7 @@ namespace GlobalMacroRecorder
                                             worksheetMapping.Cells[i, 4].Value = UtilCalculate.ComputeEquation(valueMapping);
                                         }
                                     }
+
                                     packageMappping.SaveAs(new FileInfo(path + "\\" + nameConnection + ".xlsx"));
 
                                 }

@@ -1402,14 +1402,14 @@ namespace GlobalMacroRecorder
                     var path = thongtinfile1.Directory + "\\Result";
                     Directory.CreateDirectory(path);
                     var sheetReal4 = packageReal4.Workbook.Worksheets[1];
-                    var worksheets = packageMappping.Workbook.Worksheets;
+                    var worksheetMapping = packageMappping.Workbook.Worksheets[1];
                     //foreach (var sheetReal4 in sheetReal4Col)
                     {
                         //if (sheetReal4.Name.StartsWith("Tsugite") || sheetReal4.Name.StartsWith(("Be-su")))
                         {
                             int rowsReal4 = sheetReal4.Dimension.Rows; // 20
                             int columnsReal4 = sheetReal4.Dimension.Columns; // 7
-                            foreach (var worksheetMapping in worksheets)
+                            //foreach (var worksheetMapping in worksheets)
                             {              // get number of rows and columns in the sheet
                                 int rows = worksheetMapping.Dimension.Rows; // 20
                                 int columns = worksheetMapping.Dimension.Columns; // 7
@@ -1497,7 +1497,8 @@ namespace GlobalMacroRecorder
                                     }
 
                                     packageMappping.SaveAs(new FileInfo(path + "\\" + nameConnection + ".xlsx"));
-
+                                    packageMappping = new ExcelPackage(new FileInfo(thongtinfile));
+                                    worksheetMapping = packageMappping.Workbook.Worksheets[1];
                                 }
                             }
 

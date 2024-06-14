@@ -269,13 +269,13 @@ namespace GlobalMacroRecorder
                 File.Delete(pathTest);
 
                 WindowState = FormWindowState.Normal;
-                MessageBox.Show("Macro is cancel.");
+                lbl_Status.Text = "Macro is cancel.";
                 process.Kill();
                 return;
             }
             process.Kill();
             WindowState = FormWindowState.Normal;
-            MessageBox.Show("Macro is done.");
+            lbl_Status.Text ="Macro is done.";
 
         }
 
@@ -290,7 +290,7 @@ namespace GlobalMacroRecorder
                     {
                         if (check)
                         {
-                            MessageBox.Show("File not exist");
+                            lbl_Status.Text = "File not exist";
 
                         }
                         return;
@@ -333,7 +333,7 @@ namespace GlobalMacroRecorder
                             if (!cb_Manual_Split.Checked)
                             {
                                 File.Delete(pathTest);
-                                MessageBox.Show("Macro is cancel.");
+                                lbl_Status.Text = "Macro is cancel.";
                             }
                             else
                             {
@@ -432,7 +432,7 @@ namespace GlobalMacroRecorder
                 {
                     if (check)
                     {
-                        MessageBox.Show("File not exist");
+                        lbl_Status.Text = "File not exist";
 
                     }
                     return;
@@ -471,7 +471,7 @@ namespace GlobalMacroRecorder
                         if (!cb_Manual_Split.Checked)
                         {
                             File.Delete(pathTest);
-                            MessageBox.Show("Macro is cancel.");
+                            lbl_Status.Text = "Macro is cancel.";
                         }
                         else
                         {
@@ -727,7 +727,7 @@ namespace GlobalMacroRecorder
                             {
                                 File.Delete(pathTest);
                                 this.WindowState = FormWindowState.Normal;
-                                MessageBox.Show("Macro is cancel.");
+                                lbl_Status.Text = "Macro is cancel.";
                                 process.Kill();
                                 return;
                             }

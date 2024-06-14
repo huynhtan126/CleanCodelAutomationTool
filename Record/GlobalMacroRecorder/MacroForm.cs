@@ -1456,10 +1456,10 @@ namespace GlobalMacroRecorder
                                                             valueMapping = valueMapping.Replace(variableSplit1, valueReal4);
                                                         }
                                                         break;
-                                                    case string n when n.Contains(variableSplit1):
+                                                    case string n when n.Contains(variableSplit3):
                                                         {
-                                                            valueReal4 = valueReal4.Split('x')[0];
-                                                            valueMapping = valueMapping.Replace(variableSplit1, valueReal4);
+                                                            valueReal4 = valueReal4.Split('x')[2];
+                                                            valueMapping = valueMapping.Replace(variableSplit3, valueReal4);
                                                         }
                                                         break;
                                                     case string n when n.Contains(variableSplitDash1):

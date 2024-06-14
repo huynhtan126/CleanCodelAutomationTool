@@ -1403,6 +1403,15 @@ namespace GlobalMacroRecorder
                     Directory.CreateDirectory(path);
                     var sheetReal4 = packageReal4.Workbook.Worksheets[1];
                     var worksheetMapping = packageMappping.Workbook.Worksheets[1];
+
+                    foreach(var sheetMapping in packageMappping.Workbook.Worksheets)
+                    {
+                        if (sheetMapping.Name == sheetReal4.Name)
+                        {
+                            worksheetMapping = sheetMapping;
+                        }
+                    }
+
                     //foreach (var sheetReal4 in sheetReal4Col)
                     {
                         //if (sheetReal4.Name.StartsWith("Tsugite") || sheetReal4.Name.StartsWith(("Be-su")))
@@ -1417,6 +1426,7 @@ namespace GlobalMacroRecorder
 
                                 for (int l = 2; l <= rowsReal4; l++)
                                 {
+                                    worksheetMapping.Name = worksheetMapping.Name.Split('_')[0];
                                     var nameConnection = sheetReal4.Cells[l, 1].Text;
                                     var keyOpt = "0";
                                     for (int i = 2; i <= rows; i++)
@@ -1428,6 +1438,7 @@ namespace GlobalMacroRecorder
                                         for (int i4 = 2; i4 <= columnsReal4; i4++)
                                         {
                                             var variable = "[" + sheetReal4.Cells[1, i4].Text.Replace(" ", string.Empty) + "]";
+                                            var variableConvertNum = sheetReal4.Cells[1, i4].Text.Replace(" ", string.Empty) + "$c";
                                             var variableSplit1 = "[" + sheetReal4.Cells[1, i4].Text.Replace(" ", string.Empty) + "$x1]";
                                             var variableSplit3 = "[" + sheetReal4.Cells[1, i4].Text.Replace(" ", string.Empty) + "$x3]";
                                             var variableSplitDash1 = "[" + sheetReal4.Cells[1, i4].Text.Replace(" ", string.Empty) + "$d1]";
@@ -1438,6 +1449,18 @@ namespace GlobalMacroRecorder
                                             if (valueReal4 != "")
                                                 switch (valueMapping)
                                                 {
+                                                    case string n when n.Contains(variableConvertNum):
+                                                        {
+                                                            if (double.TryParse(valueReal4, out _))
+                                                            {
+                                                                valueMapping = valueReal4;
+                                                            }
+                                                            else
+                                                            {
+                                                                valueMapping = valueMapping.Replace("]", string.Empty).Split("$c".ToCharArray()).Last();
+                                                            }
+                                                        }
+                                                        break;
                                                     case string n when n.Contains(variableByType):
                                                         {
                                                             valueMapping = valueReal4;

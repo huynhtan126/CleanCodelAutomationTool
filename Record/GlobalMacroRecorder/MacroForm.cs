@@ -1428,7 +1428,7 @@ namespace GlobalMacroRecorder
                                         {
                                             var variable = "[" + sheetReal4.Cells[1, i4].Text.Replace(" ", string.Empty) + "]";
                                             var variableSplit1 = "[" + sheetReal4.Cells[1, i4].Text.Replace(" ", string.Empty) + "$x1]";
-                                            var variableSplit1Plus = "[" + sheetReal4.Cells[1, i4].Text.Replace(" ", string.Empty) + "$x1+]";
+                                            var variableSplit1Plus = "[" + sheetReal4.Cells[1, i4].Text.Replace(" ", string.Empty) + "$x1d]";
                                             var variableSplit3 = "[" + sheetReal4.Cells[1, i4].Text.Replace(" ", string.Empty) + "$x3]";
                                             var variableSplit4 = "[" + sheetReal4.Cells[1, i4].Text.Replace(" ", string.Empty) + "$x4]";
                                             var variableSplitDash1 = "[" + sheetReal4.Cells[1, i4].Text.Replace(" ", string.Empty) + "$d1]";

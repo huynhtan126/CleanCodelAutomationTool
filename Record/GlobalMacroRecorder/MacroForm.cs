@@ -1506,7 +1506,7 @@ namespace GlobalMacroRecorder
                                                 }
                                             valueMapping = valueMapping.Replace(" ", string.Empty).Normalize();
                                             worksheetMapping.Cells[i, 2].Value = valueMapping;
-                                            worksheetMapping.Cells[i, 4].Value = UtilCalculate.ComputeEquation(valueMapping);
+                                            worksheetMapping.Cells[i, 4].Value = UtilCalculate.ComputeEquation(valueMapping, checkPlus);
                                         }
                                     }
 

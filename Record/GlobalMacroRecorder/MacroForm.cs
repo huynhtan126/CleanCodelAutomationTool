@@ -1461,7 +1461,7 @@ namespace GlobalMacroRecorder
                                                         {
                                                             checkPlus = true;
                                                             valueReal4 = valueReal4.Split('x')[0];
-                                                            valueMapping = valueMapping.Replace(variableSplit1, valueReal4);
+                                                            valueMapping = valueMapping.Replace(variableSplit1Plus, valueReal4);
                                                         }
                                                         break;
                                                     case string n when n.Contains(variableSplit3):

@@ -104,7 +104,7 @@ namespace GlobalMacroRecorder
 
         void mouseHook_MouseDown(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Middle) return;
+            //if (e.Button == MouseButtons.Middle) return;
             events.Add(
                 new MacroEvent(
                     MacroEventType.MouseDown,
@@ -118,7 +118,7 @@ namespace GlobalMacroRecorder
 
         void mouseHook_MouseUp(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Middle) return;
+            //if (e.Button == MouseButtons.Middle) return;
             events.Add(
                 new MacroEvent(
                     MacroEventType.MouseUp,
@@ -269,13 +269,13 @@ namespace GlobalMacroRecorder
                 File.Delete(pathTest);
 
                 WindowState = FormWindowState.Normal;
-                MessageBox.Show("Macro is cancel.");
+                lbl_Status.Text = "Macro is cancel.";
                 process.Kill();
                 return;
             }
             process.Kill();
             WindowState = FormWindowState.Normal;
-            MessageBox.Show("Macro is done.");
+            lbl_Status.Text ="Macro is done.";
 
         }
 
@@ -290,7 +290,7 @@ namespace GlobalMacroRecorder
                     {
                         if (check)
                         {
-                            MessageBox.Show("File not exist");
+                            lbl_Status.Text = "File not exist";
 
                         }
                         return;
@@ -333,7 +333,7 @@ namespace GlobalMacroRecorder
                             if (!cb_Manual_Split.Checked)
                             {
                                 File.Delete(pathTest);
-                                MessageBox.Show("Macro is cancel.");
+                                lbl_Status.Text = "Macro is cancel.";
                             }
                             else
                             {
@@ -432,7 +432,7 @@ namespace GlobalMacroRecorder
                 {
                     if (check)
                     {
-                        MessageBox.Show("File not exist");
+                        lbl_Status.Text = "File not exist";
 
                     }
                     return;
@@ -471,7 +471,7 @@ namespace GlobalMacroRecorder
                         if (!cb_Manual_Split.Checked)
                         {
                             File.Delete(pathTest);
-                            MessageBox.Show("Macro is cancel.");
+                            lbl_Status.Text = "Macro is cancel.";
                         }
                         else
                         {
@@ -727,7 +727,7 @@ namespace GlobalMacroRecorder
                             {
                                 File.Delete(pathTest);
                                 this.WindowState = FormWindowState.Normal;
-                                MessageBox.Show("Macro is cancel.");
+                                lbl_Status.Text = "Macro is cancel.";
                                 process.Kill();
                                 return;
                             }
@@ -919,7 +919,6 @@ namespace GlobalMacroRecorder
                             writer.Write(vanban);
                         }
                     }
-
                     catch (Exception ex)
                     {
                         System.Windows.MessageBox.Show(ex.ToString());
@@ -1434,13 +1433,15 @@ namespace GlobalMacroRecorder
                                         var key = worksheetMapping.Cells[i, 1].Text.Trim();
                                         if (key == "") continue;
                                         var valueMapping = worksheetMapping.Cells[i, 2].Text.Replace(" ", string.Empty);
-
+                                        var checkPlus = false;
                                         for (int i4 = 2; i4 <= columnsReal4; i4++)
                                         {
                                             var variable = "[" + sheetReal4.Cells[1, i4].Text.Replace(" ", string.Empty) + "]";
                                             var variableConvertNum = sheetReal4.Cells[1, i4].Text.Replace(" ", string.Empty) + "$c";
                                             var variableSplit1 = "[" + sheetReal4.Cells[1, i4].Text.Replace(" ", string.Empty) + "$x1]";
+                                            var variableSplit1Plus = "[" + sheetReal4.Cells[1, i4].Text.Replace(" ", string.Empty) + "$x1d]";
                                             var variableSplit3 = "[" + sheetReal4.Cells[1, i4].Text.Replace(" ", string.Empty) + "$x3]";
+                                            var variableSplit4 = "[" + sheetReal4.Cells[1, i4].Text.Replace(" ", string.Empty) + "$x4]";
                                             var variableSplitDash1 = "[" + sheetReal4.Cells[1, i4].Text.Replace(" ", string.Empty) + "$d1]";
                                             var variableNaShi = "[" + sheetReal4.Cells[1, i4].Text.Replace(" ", string.Empty) + "$if]";
                                             var variableOptType = "[" + sheetReal4.Cells[1, i4].Text.Replace(" ", string.Empty) + "$d1$o1]";
@@ -1479,10 +1480,23 @@ namespace GlobalMacroRecorder
                                                             valueMapping = valueMapping.Replace(variableSplit1, valueReal4);
                                                         }
                                                         break;
-                                                    case string n when n.Contains(variableSplit1):
+                                                    case string n when n.Contains(variableSplit1Plus):
                                                         {
+                                                            checkPlus = true;
                                                             valueReal4 = valueReal4.Split('x')[0];
-                                                            valueMapping = valueMapping.Replace(variableSplit1, valueReal4);
+                                                            valueMapping = valueMapping.Replace(variableSplit1Plus, valueReal4);
+                                                        }
+                                                        break;
+                                                    case string n when n.Contains(variableSplit3):
+                                                        {
+                                                            valueReal4 = valueReal4.Split('x')[2];
+                                                            valueMapping = valueMapping.Replace(variableSplit3, valueReal4);
+                                                        }
+                                                        break;
+                                                    case string n when n.Contains(variableSplit4):
+                                                        {
+                                                            valueReal4 = valueReal4.Split('x')[3];
+                                                            valueMapping = valueMapping.Replace(variableSplit4, valueReal4);
                                                         }
                                                         break;
                                                     case string n when n.Contains(variableSplitDash1):
@@ -1515,7 +1529,7 @@ namespace GlobalMacroRecorder
                                                 }
                                             valueMapping = valueMapping.Replace(" ", string.Empty).Normalize();
                                             worksheetMapping.Cells[i, 2].Value = valueMapping;
-                                            worksheetMapping.Cells[i, 4].Value = UtilCalculate.ComputeEquation(valueMapping);
+                                            worksheetMapping.Cells[i, 4].Value = UtilCalculate.ComputeEquation(valueMapping, checkPlus);
                                         }
                                     }
 

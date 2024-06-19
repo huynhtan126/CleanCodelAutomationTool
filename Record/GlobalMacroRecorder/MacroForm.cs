@@ -919,7 +919,6 @@ namespace GlobalMacroRecorder
                             writer.Write(vanban);
                         }
                     }
-
                     catch (Exception ex)
                     {
                         System.Windows.MessageBox.Show(ex.ToString());
@@ -1424,11 +1423,12 @@ namespace GlobalMacroRecorder
                                         var key = worksheetMapping.Cells[i, 1].Text.Trim();
                                         if (key == "") continue;
                                         var valueMapping = worksheetMapping.Cells[i, 2].Text.Replace(" ", string.Empty);
-
+                                        var checkPlus = false;
                                         for (int i4 = 2; i4 <= columnsReal4; i4++)
                                         {
                                             var variable = "[" + sheetReal4.Cells[1, i4].Text.Replace(" ", string.Empty) + "]";
                                             var variableSplit1 = "[" + sheetReal4.Cells[1, i4].Text.Replace(" ", string.Empty) + "$x1]";
+                                            var variableSplit1Plus = "[" + sheetReal4.Cells[1, i4].Text.Replace(" ", string.Empty) + "$x1+]";
                                             var variableSplit3 = "[" + sheetReal4.Cells[1, i4].Text.Replace(" ", string.Empty) + "$x3]";
                                             var variableSplit4 = "[" + sheetReal4.Cells[1, i4].Text.Replace(" ", string.Empty) + "$x4]";
                                             var variableSplitDash1 = "[" + sheetReal4.Cells[1, i4].Text.Replace(" ", string.Empty) + "$d1]";
@@ -1453,6 +1453,13 @@ namespace GlobalMacroRecorder
                                                         break;
                                                     case string n when n.Contains(variableSplit1):
                                                         {
+                                                            valueReal4 = valueReal4.Split('x')[0];
+                                                            valueMapping = valueMapping.Replace(variableSplit1, valueReal4);
+                                                        }
+                                                        break;
+                                                    case string n when n.Contains(variableSplit1Plus):
+                                                        {
+                                                            checkPlus = true;
                                                             valueReal4 = valueReal4.Split('x')[0];
                                                             valueMapping = valueMapping.Replace(variableSplit1, valueReal4);
                                                         }

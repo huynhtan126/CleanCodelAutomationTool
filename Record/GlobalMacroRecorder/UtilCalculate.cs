@@ -23,6 +23,7 @@ namespace GlobalMacroRecorder
                         if(checkPlus<0)
                         {
                             checkPlus = 0;
+                            return checkPlus.ToString();
                         }    
                     }
                     return result.ToString();

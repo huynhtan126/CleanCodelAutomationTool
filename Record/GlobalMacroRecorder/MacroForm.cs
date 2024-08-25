@@ -4,28 +4,16 @@ using MouseKeyboardLibrary;
 using Newtonsoft.Json;
 using OfficeOpenXml;
 using OfficeOpenXml.Drawing;
-using OfficeOpenXml.FormulaParsing;
-using OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
-using System.Globalization;
 using System.IO;
-using System.IO.Packaging;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Runtime.InteropServices.ComTypes;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
-using System.Windows.Threading;
-using System.Xml.Linq;
-using Timer = System.Windows.Forms.Timer;
 
 namespace GlobalMacroRecorder
 {
@@ -1549,6 +1537,42 @@ namespace GlobalMacroRecorder
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
+
+        }
+
+        private void autoReport_Click(object sender, EventArgs e)
+        {
+            liststring = new List<ResItem>();
+            var filess = GetFiles(TypeFile.cs_cpp_h);
+            //foreach (FileInfo file in filess)
+            {
+                var file = new FileInfo("C:\\TGL\\NewCAD\\SOURCE_\\newcad\\NewCadCpp\\OdDbShearJoint.cpp");
+                var filePath = file.FullName;
+                string fileContent = File.ReadAllText(filePath);
+                var pattern =  @"OdResult""(.*?)""void";
+                //var pattern = @"""(.*?)""";
+                MatchCollection matches = Regex.Matches(fileContent, pattern);
+                string modifiedContent = fileContent;
+                foreach (Match match in matches)
+                {
+                    try
+                    {
+                        var replacementString = match.Groups[0].Value.Replace(_prefixContent + @"""", string.Empty);
+                        replacementString = replacementString.Replace(@" ", string.Empty);
+                        replacementString = Regex.Replace(replacementString, "[^a-zA-Z0-9]", "");
+                        var rex = new ResItem { NameInSource = _prefixContent + "\"{" + string.Format(formula.Text, ResourceName.Text + replacementString) + "}\"", StringContent = match.Groups[0].Value, NameinResx = replacementString };
+                        if (!liststring.Any(x => x.StringContent == rex.StringContent))
+                        {
+                            liststring.Add(rex);
+                        }
+                    }
+                    catch (Exception)
+                    {
+                    }
+                }
+            }
+            MessageBox.Show(string.Format("Get string {0} files succesful", filess.Count()));
+            ShowDataGrid();
 
         }
     }

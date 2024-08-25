@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RecordVideo", "..\RecordVid
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GlobalHookDemo", "..\globalhook_src\GlobalHookDemo.csproj", "{F52AA97E-180A-40ED-8F2B-09080171D6C7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReadReport", "..\ReadReport\ReadReport.csproj", "{08C49BFE-F0F6-4D1A-A6BF-9A64320E1123}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{F52AA97E-180A-40ED-8F2B-09080171D6C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F52AA97E-180A-40ED-8F2B-09080171D6C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F52AA97E-180A-40ED-8F2B-09080171D6C7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{08C49BFE-F0F6-4D1A-A6BF-9A64320E1123}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{08C49BFE-F0F6-4D1A-A6BF-9A64320E1123}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{08C49BFE-F0F6-4D1A-A6BF-9A64320E1123}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{08C49BFE-F0F6-4D1A-A6BF-9A64320E1123}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

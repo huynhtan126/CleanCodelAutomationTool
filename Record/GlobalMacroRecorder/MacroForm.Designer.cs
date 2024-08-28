@@ -109,10 +109,10 @@ namespace GlobalMacroRecorder
             // 
             // metroTabControl1
             // 
+            this.metroTabControl1.Controls.Add(this.metroTabPage4);
             this.metroTabControl1.Controls.Add(this.metroTabPage1);
             this.metroTabControl1.Controls.Add(this.metroTabPage2);
             this.metroTabControl1.Controls.Add(this.metroTabPage3);
-            this.metroTabControl1.Controls.Add(this.metroTabPage4);
             this.metroTabControl1.Location = new System.Drawing.Point(23, 116);
             this.metroTabControl1.Name = "metroTabControl1";
             this.metroTabControl1.SelectedIndex = 3;
@@ -207,7 +207,7 @@ namespace GlobalMacroRecorder
             // JoinButton
             // 
             this.JoinButton.Location = new System.Drawing.Point(269, 223);
-            this.JoinButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.JoinButton.Margin = new System.Windows.Forms.Padding(2);
             this.JoinButton.Name = "JoinButton";
             this.JoinButton.Size = new System.Drawing.Size(208, 28);
             this.JoinButton.TabIndex = 13;
@@ -670,7 +670,7 @@ namespace GlobalMacroRecorder
             // 
             // metroButton7
             // 
-            this.metroButton7.Location = new System.Drawing.Point(362, 252);
+            this.metroButton7.Location = new System.Drawing.Point(367, 173);
             this.metroButton7.Name = "metroButton7";
             this.metroButton7.Size = new System.Drawing.Size(122, 31);
             this.metroButton7.TabIndex = 16;
@@ -681,16 +681,16 @@ namespace GlobalMacroRecorder
             // metroLabel4
             // 
             this.metroLabel4.AutoSize = true;
-            this.metroLabel4.Location = new System.Drawing.Point(4, 197);
+            this.metroLabel4.Location = new System.Drawing.Point(0, 125);
             this.metroLabel4.Name = "metroLabel4";
-            this.metroLabel4.Size = new System.Drawing.Size(153, 19);
+            this.metroLabel4.Size = new System.Drawing.Size(91, 19);
             this.metroLabel4.TabIndex = 15;
-            this.metroLabel4.Text = "Target to Replace Folder";
+            this.metroLabel4.Text = "Folder Source";
             // 
             // metroLabel3
             // 
             this.metroLabel3.AutoSize = true;
-            this.metroLabel3.Location = new System.Drawing.Point(4, 72);
+            this.metroLabel3.Location = new System.Drawing.Point(0, 69);
             this.metroLabel3.Name = "metroLabel3";
             this.metroLabel3.Size = new System.Drawing.Size(139, 19);
             this.metroLabel3.TabIndex = 14;
@@ -698,7 +698,7 @@ namespace GlobalMacroRecorder
             // 
             // metroButton6
             // 
-            this.metroButton6.Location = new System.Drawing.Point(442, 215);
+            this.metroButton6.Location = new System.Drawing.Point(441, 147);
             this.metroButton6.Name = "metroButton6";
             this.metroButton6.Size = new System.Drawing.Size(42, 18);
             this.metroButton6.TabIndex = 12;
@@ -708,7 +708,7 @@ namespace GlobalMacroRecorder
             // 
             // TargetToReplaceFolder
             // 
-            this.TargetToReplaceFolder.Location = new System.Drawing.Point(4, 215);
+            this.TargetToReplaceFolder.Location = new System.Drawing.Point(3, 147);
             this.TargetToReplaceFolder.Name = "TargetToReplaceFolder";
             this.TargetToReplaceFolder.Size = new System.Drawing.Size(432, 20);
             this.TargetToReplaceFolder.TabIndex = 13;
@@ -734,9 +734,9 @@ namespace GlobalMacroRecorder
             // 
             // autoReport
             // 
-            this.autoReport.Location = new System.Drawing.Point(362, 117);
+            this.autoReport.Location = new System.Drawing.Point(233, 173);
             this.autoReport.Name = "autoReport";
-            this.autoReport.Size = new System.Drawing.Size(122, 27);
+            this.autoReport.Size = new System.Drawing.Size(130, 31);
             this.autoReport.TabIndex = 5;
             this.autoReport.Text = "Save DwgIn";
             this.autoReport.UseSelectable = true;
@@ -744,7 +744,7 @@ namespace GlobalMacroRecorder
             // 
             // metroButton4
             // 
-            this.metroButton4.Location = new System.Drawing.Point(0, 12);
+            this.metroButton4.Location = new System.Drawing.Point(0, 13);
             this.metroButton4.Name = "metroButton4";
             this.metroButton4.Size = new System.Drawing.Size(88, 46);
             this.metroButton4.TabIndex = 4;

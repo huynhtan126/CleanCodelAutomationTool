@@ -263,7 +263,7 @@ namespace GlobalMacroRecorder
             }
             process.Kill();
             WindowState = FormWindowState.Normal;
-            lbl_Status.Text ="Macro is done.";
+            lbl_Status.Text = "Macro is done.";
 
         }
 
@@ -1391,7 +1391,7 @@ namespace GlobalMacroRecorder
                     var sheetReal4 = packageReal4.Workbook.Worksheets[1];
                     var worksheetMapping = packageMappping.Workbook.Worksheets[1];
 
-                    foreach(var sheetMapping in packageMappping.Workbook.Worksheets)
+                    foreach (var sheetMapping in packageMappping.Workbook.Worksheets)
                     {
                         if (sheetMapping.Name == sheetReal4.Name)
                         {
@@ -1549,7 +1549,7 @@ namespace GlobalMacroRecorder
                 var file = new FileInfo("C:\\TGL\\NewCAD\\SOURCE_\\newcad\\NewCadCpp\\OdDbBrace.cpp");
                 var filePath = file.FullName;
                 string fileContent = File.ReadAllText(filePath);
-               // var pattern = @"^OdResult OdDbBrace::dwgInFields.*void$";
+                // var pattern = @"^OdResult OdDbBrace::dwgInFields.*void$";
                 string pattern = @"^OdResult OdDbBrace::dwgInFields.*}$";
                 //^OdResult OdDbBrace::dwgInFields.* p$
                 //var pattern = @"""(.*?)""";
@@ -1599,7 +1599,7 @@ namespace GlobalMacroRecorder
             }
             File.WriteAllText(hardcodeTest, matchResults[0]);
         }
-        private void getFunction(string filePath, DateTime dt)
+        private void getFunction(string filePath, DateTime dt, string folder)
         {
             int startIndex = filePath.LastIndexOf('\\');
             int endIndex = filePath.LastIndexOf(".cpp");
@@ -1609,10 +1609,10 @@ namespace GlobalMacroRecorder
             //Regex regex = new Regex(@"\bdwgInFields\s*\([^)]*\)\s*\{(?:[^{}]|\{(?:[^{}]|\{[^{}]*\})*\})*\}");
             Regex regex = new Regex(@"\bdwgInFields\s*\([^)]*\)\s*\{(?:[^{}]*|\{(?:[^{}]*|\{(?:[^{}]*|\{[^{}]*\})*\})*\})*\}");
             MatchCollection mc = regex.Matches(allText);
-            if(mc.Count == 1) 
+            if (mc.Count == 1)
             {
-                string savePath = ".\\SavedFunctions\\" + dt.ToString("MMddyy_HHmm") + "\\";
-                if(!Directory.Exists(savePath))
+                string savePath = folder + "\\" + dt.ToString("MMddyy_HHmm") + "\\SavedFunctions\\";
+                if (!Directory.Exists(savePath))
                 {
                     Directory.CreateDirectory(savePath);
                 }
@@ -1620,7 +1620,7 @@ namespace GlobalMacroRecorder
             }
             else
             {
-                string errorPath = ".\\ErrorFiles\\" + dt.ToString("MMddyy_HHmm") + "\\";
+                string errorPath = folder+"\\"+dt.ToString("MMddyy_HHmm") + "\\ErrorFiles\\" ;
                 if (!Directory.Exists(errorPath))
                 {
                     Directory.CreateDirectory(errorPath);
@@ -1633,17 +1633,18 @@ namespace GlobalMacroRecorder
             //using (var fbd = new FolderBrowserDialog())
             //{
             //    DialogResult result = fbd.ShowDialog();
-                DateTime dt = DateTime.Now;
+            DateTime dt = DateTime.Now;
             //    if (result == DialogResult.OK && !string.IsNullOrEmpty(fbd.SelectedPath))
             //    {
-                    string[] files = Directory.GetFiles(SavedFunctionFolder.Text);
-                    foreach(string file in files)
-                    {
-                        if(file.Contains("OdDb") && file.Contains(".cpp"))
-                        {
-                            getFunction(file, dt);
-                        }
-                    }
+            string[] files = Directory.GetFiles(TargetToReplaceFolder.Text);
+            foreach (string file in files)
+            {
+                if (file.Contains("OdDb") && file.Contains(".cpp"))
+                {
+                    getFunction(file, dt, SavedFunctionFolder.Text);
+                }
+            }
+            Process.Start(SavedFunctionFolder.Text+"\\"+ dt.ToString("MMddyy_HHmm"));
             //    }
             //}
         }
@@ -1652,18 +1653,18 @@ namespace GlobalMacroRecorder
             Regex regex = new Regex(@"\b\:\:dwgInFields\s*\([^)]*\)\s*\{(?:[^{}]*|\{(?:[^{}]*|\{(?:[^{}]*|\{[^{}]*\})*\})*\})*\}");
 
             string[] files = Directory.GetFiles(SavedFunctionFolder.Text);
-            foreach(string filePath in files)
+            foreach (string filePath in files)
             {
                 int startIndex = filePath.LastIndexOf('\\');
                 string fileName = filePath.Substring(startIndex + 1);
                 string content = File.ReadAllText(filePath);
 
                 string fileToReplacePath = TargetToReplaceFolder.Text + "\\" + fileName + ".cpp";
-                if(File.Exists(fileToReplacePath))
+                if (File.Exists(fileToReplacePath))
                 {
                     string replaceContent = File.ReadAllText(fileToReplacePath);
                     var listMatch = regex.Matches(replaceContent);
-                    if(listMatch.Count > 0)
+                    if (listMatch.Count > 0)
                     {
                         string replaceText = listMatch[0].Value.Substring(2);
                         replaceContent = replaceContent.Replace(replaceText, content);

@@ -1580,5 +1580,120 @@ namespace GlobalMacroRecorder
             ShowDataGrid();
 
         }
+        private void testing(object sender, EventArgs e)
+        {
+            //Regex regex = new Regex(@"\bdwgInFields\s*\([^)]*\)\s*\{(?:[^{}]|\{(?:[^{}]|\{[^{}]*\})*\})*\}");
+            Regex regex = new Regex(@"\bdwgInFields\s*\([^)]*\)\s*\{(?:[^{}]*|\{(?:[^{}]*|\{(?:[^{}]*|\{[^{}]*\})*\})*\})*\}");
+
+            string hardcodePath = @"C:\Users\MSI_i7\Desktop\OdDbTopColumn.cpp";
+            string hardcodeTest = @"C:\Users\MSI_i7\Desktop\TestOdDbTopColumn.cpp";
+            string allText = File.ReadAllText(hardcodePath);
+
+            MatchCollection mc = regex.Matches(allText);
+            List<string> matchResults = new List<string>();
+            MessageBox.Show(mc.Count.ToString());
+            foreach (Match match in mc)
+            {
+                matchResults.Add(match.Value);
+                MessageBox.Show(match.Value);
+            }
+            File.WriteAllText(hardcodeTest, matchResults[0]);
+        }
+        private void getFunction(string filePath, DateTime dt)
+        {
+            int startIndex = filePath.LastIndexOf('\\');
+            int endIndex = filePath.LastIndexOf(".cpp");
+            string fileName = filePath.Substring(startIndex, endIndex - startIndex);
+
+            string allText = File.ReadAllText(filePath);
+            //Regex regex = new Regex(@"\bdwgInFields\s*\([^)]*\)\s*\{(?:[^{}]|\{(?:[^{}]|\{[^{}]*\})*\})*\}");
+            Regex regex = new Regex(@"\bdwgInFields\s*\([^)]*\)\s*\{(?:[^{}]*|\{(?:[^{}]*|\{(?:[^{}]*|\{[^{}]*\})*\})*\})*\}");
+            MatchCollection mc = regex.Matches(allText);
+            if(mc.Count == 1) 
+            {
+                string savePath = ".\\SavedFunctions\\" + dt.ToString("MMddyy_HHmm") + "\\";
+                if(!Directory.Exists(savePath))
+                {
+                    Directory.CreateDirectory(savePath);
+                }
+                File.WriteAllText(savePath + fileName, mc[0].Value);
+            }
+            else
+            {
+                string errorPath = ".\\ErrorFiles\\" + dt.ToString("MMddyy_HHmm") + "\\";
+                if (!Directory.Exists(errorPath))
+                {
+                    Directory.CreateDirectory(errorPath);
+                }
+                File.WriteAllText(errorPath + fileName, string.Empty);
+            }
+        }
+        private void extractFunction(object sender, EventArgs e)
+        {
+            //using (var fbd = new FolderBrowserDialog())
+            //{
+            //    DialogResult result = fbd.ShowDialog();
+                DateTime dt = DateTime.Now;
+            //    if (result == DialogResult.OK && !string.IsNullOrEmpty(fbd.SelectedPath))
+            //    {
+                    string[] files = Directory.GetFiles(SavedFunctionFolder.Text);
+                    foreach(string file in files)
+                    {
+                        if(file.Contains("OdDb") && file.Contains(".cpp"))
+                        {
+                            getFunction(file, dt);
+                        }
+                    }
+            //    }
+            //}
+        }
+        private void pasteFunction(object sender, EventArgs e)
+        {
+            Regex regex = new Regex(@"\b\:\:dwgInFields\s*\([^)]*\)\s*\{(?:[^{}]*|\{(?:[^{}]*|\{(?:[^{}]*|\{[^{}]*\})*\})*\})*\}");
+
+            string[] files = Directory.GetFiles(SavedFunctionFolder.Text);
+            foreach(string filePath in files)
+            {
+                int startIndex = filePath.LastIndexOf('\\');
+                string fileName = filePath.Substring(startIndex + 1);
+                string content = File.ReadAllText(filePath);
+
+                string fileToReplacePath = TargetToReplaceFolder.Text + "\\" + fileName + ".cpp";
+                if(File.Exists(fileToReplacePath))
+                {
+                    string replaceContent = File.ReadAllText(fileToReplacePath);
+                    var listMatch = regex.Matches(replaceContent);
+                    if(listMatch.Count > 0)
+                    {
+                        string replaceText = listMatch[0].Value.Substring(2);
+                        replaceContent = replaceContent.Replace(replaceText, content);
+
+                        File.WriteAllText(fileToReplacePath, replaceContent);
+                    }
+                }
+            }
+        }
+        private void metroButton5_Click(object sender, EventArgs e)
+        {
+            using (var fbd = new FolderBrowserDialog())
+            {
+                DialogResult result = fbd.ShowDialog();
+                if (result == DialogResult.OK && !string.IsNullOrEmpty(fbd.SelectedPath))
+                {
+                    SavedFunctionFolder.Text = fbd.SelectedPath;
+                }
+            }
+        }
+        private void metroButton6_Click(object sender, EventArgs e)
+        {
+            using (var fbd = new FolderBrowserDialog())
+            {
+                DialogResult result = fbd.ShowDialog();
+                if (result == DialogResult.OK && !string.IsNullOrEmpty(fbd.SelectedPath))
+                {
+                    TargetToReplaceFolder.Text = fbd.SelectedPath;
+                }
+            }
+        }
     }
 }

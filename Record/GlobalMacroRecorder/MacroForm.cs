@@ -1546,12 +1546,17 @@ namespace GlobalMacroRecorder
             var filess = GetFiles(TypeFile.cs_cpp_h);
             //foreach (FileInfo file in filess)
             {
-                var file = new FileInfo("C:\\TGL\\NewCAD\\SOURCE_\\newcad\\NewCadCpp\\OdDbShearJoint.cpp");
+                var file = new FileInfo("C:\\TGL\\NewCAD\\SOURCE_\\newcad\\NewCadCpp\\OdDbBrace.cpp");
                 var filePath = file.FullName;
                 string fileContent = File.ReadAllText(filePath);
-                var pattern =  @"OdResult""(.*?)""void";
+               // var pattern = @"^OdResult OdDbBrace::dwgInFields.*void$";
+                string pattern = @"^OdResult OdDbBrace::dwgInFields.*}$";
+                //^OdResult OdDbBrace::dwgInFields.* p$
                 //var pattern = @"""(.*?)""";
-                MatchCollection matches = Regex.Matches(fileContent, pattern);
+                //MatchCollection matches = Regex.Matches(fileContent, pattern);
+                MatchCollection matches = Regex.Matches(fileContent, pattern, RegexOptions.Multiline);
+                var matches1 = Regex.Match(fileContent, pattern, RegexOptions.Multiline);
+
                 string modifiedContent = fileContent;
                 foreach (Match match in matches)
                 {

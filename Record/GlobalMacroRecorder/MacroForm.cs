@@ -4,28 +4,16 @@ using MouseKeyboardLibrary;
 using Newtonsoft.Json;
 using OfficeOpenXml;
 using OfficeOpenXml.Drawing;
-using OfficeOpenXml.FormulaParsing;
-using OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
-using System.Globalization;
 using System.IO;
-using System.IO.Packaging;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Runtime.InteropServices.ComTypes;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
-using System.Windows.Threading;
-using System.Xml.Linq;
-using Timer = System.Windows.Forms.Timer;
 
 namespace GlobalMacroRecorder
 {
@@ -104,7 +92,7 @@ namespace GlobalMacroRecorder
 
         void mouseHook_MouseDown(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Middle) return;
+            //if (e.Button == MouseButtons.Middle) return;
             events.Add(
                 new MacroEvent(
                     MacroEventType.MouseDown,
@@ -118,7 +106,7 @@ namespace GlobalMacroRecorder
 
         void mouseHook_MouseUp(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Middle) return;
+            //if (e.Button == MouseButtons.Middle) return;
             events.Add(
                 new MacroEvent(
                     MacroEventType.MouseUp,
@@ -269,13 +257,13 @@ namespace GlobalMacroRecorder
                 File.Delete(pathTest);
 
                 WindowState = FormWindowState.Normal;
-                MessageBox.Show("Macro is cancel.");
+                lbl_Status.Text = "Macro is cancel.";
                 process.Kill();
                 return;
             }
             process.Kill();
             WindowState = FormWindowState.Normal;
-            MessageBox.Show("Macro is done.");
+            lbl_Status.Text = "Macro is done.";
 
         }
 
@@ -290,7 +278,7 @@ namespace GlobalMacroRecorder
                     {
                         if (check)
                         {
-                            MessageBox.Show("File not exist");
+                            lbl_Status.Text = "File not exist";
 
                         }
                         return;
@@ -333,7 +321,7 @@ namespace GlobalMacroRecorder
                             if (!cb_Manual_Split.Checked)
                             {
                                 File.Delete(pathTest);
-                                MessageBox.Show("Macro is cancel.");
+                                lbl_Status.Text = "Macro is cancel.";
                             }
                             else
                             {
@@ -432,7 +420,7 @@ namespace GlobalMacroRecorder
                 {
                     if (check)
                     {
-                        MessageBox.Show("File not exist");
+                        lbl_Status.Text = "File not exist";
 
                     }
                     return;
@@ -471,7 +459,7 @@ namespace GlobalMacroRecorder
                         if (!cb_Manual_Split.Checked)
                         {
                             File.Delete(pathTest);
-                            MessageBox.Show("Macro is cancel.");
+                            lbl_Status.Text = "Macro is cancel.";
                         }
                         else
                         {
@@ -727,7 +715,7 @@ namespace GlobalMacroRecorder
                             {
                                 File.Delete(pathTest);
                                 this.WindowState = FormWindowState.Normal;
-                                MessageBox.Show("Macro is cancel.");
+                                lbl_Status.Text = "Macro is cancel.";
                                 process.Kill();
                                 return;
                             }
@@ -919,7 +907,6 @@ namespace GlobalMacroRecorder
                             writer.Write(vanban);
                         }
                     }
-
                     catch (Exception ex)
                     {
                         System.Windows.MessageBox.Show(ex.ToString());
@@ -1402,14 +1389,23 @@ namespace GlobalMacroRecorder
                     var path = thongtinfile1.Directory + "\\Result";
                     Directory.CreateDirectory(path);
                     var sheetReal4 = packageReal4.Workbook.Worksheets[1];
-                    var worksheets = packageMappping.Workbook.Worksheets;
+                    var worksheetMapping = packageMappping.Workbook.Worksheets[1];
+
+                    foreach (var sheetMapping in packageMappping.Workbook.Worksheets)
+                    {
+                        if (sheetMapping.Name == sheetReal4.Name)
+                        {
+                            worksheetMapping = sheetMapping;
+                        }
+                    }
+
                     //foreach (var sheetReal4 in sheetReal4Col)
                     {
                         //if (sheetReal4.Name.StartsWith("Tsugite") || sheetReal4.Name.StartsWith(("Be-su")))
                         {
                             int rowsReal4 = sheetReal4.Dimension.Rows; // 20
                             int columnsReal4 = sheetReal4.Dimension.Columns; // 7
-                            foreach (var worksheetMapping in worksheets)
+                            //foreach (var worksheetMapping in worksheets)
                             {              // get number of rows and columns in the sheet
                                 int rows = worksheetMapping.Dimension.Rows; // 20
                                 int columns = worksheetMapping.Dimension.Columns; // 7
@@ -1417,34 +1413,78 @@ namespace GlobalMacroRecorder
 
                                 for (int l = 2; l <= rowsReal4; l++)
                                 {
+                                    worksheetMapping.Name = worksheetMapping.Name.Split('_')[0];
                                     var nameConnection = sheetReal4.Cells[l, 1].Text;
+                                    var keyOpt = "0";
                                     for (int i = 2; i <= rows; i++)
                                     {
                                         var key = worksheetMapping.Cells[i, 1].Text.Trim();
                                         if (key == "") continue;
                                         var valueMapping = worksheetMapping.Cells[i, 2].Text.Replace(" ", string.Empty);
-
+                                        var checkPlus = false;
                                         for (int i4 = 2; i4 <= columnsReal4; i4++)
                                         {
                                             var variable = "[" + sheetReal4.Cells[1, i4].Text.Replace(" ", string.Empty) + "]";
+                                            var variableConvertNum = sheetReal4.Cells[1, i4].Text.Replace(" ", string.Empty) + "$c";
                                             var variableSplit1 = "[" + sheetReal4.Cells[1, i4].Text.Replace(" ", string.Empty) + "$x1]";
+                                            var variableSplit1Plus = "[" + sheetReal4.Cells[1, i4].Text.Replace(" ", string.Empty) + "$x1d]";
                                             var variableSplit3 = "[" + sheetReal4.Cells[1, i4].Text.Replace(" ", string.Empty) + "$x3]";
+                                            var variableSplit4 = "[" + sheetReal4.Cells[1, i4].Text.Replace(" ", string.Empty) + "$x4]";
                                             var variableSplitDash1 = "[" + sheetReal4.Cells[1, i4].Text.Replace(" ", string.Empty) + "$d1]";
                                             var variableNaShi = "[" + sheetReal4.Cells[1, i4].Text.Replace(" ", string.Empty) + "$if]";
+                                            var variableOptType = "[" + sheetReal4.Cells[1, i4].Text.Replace(" ", string.Empty) + "$d1$o1]";
+                                            var variableByType = "[" + sheetReal4.Cells[1, i4].Text.Replace(" ", string.Empty) + $"$b{keyOpt}]";
                                             var valueReal4 = sheetReal4.Cells[l, i4].Text.Replace(" ", string.Empty);
                                             if (valueReal4 != "")
                                                 switch (valueMapping)
                                                 {
+                                                    case string n when n.Contains(variableConvertNum):
+                                                        {
+                                                            if (double.TryParse(valueReal4, out _))
+                                                            {
+                                                                valueMapping = valueReal4;
+                                                            }
+                                                            else
+                                                            {
+                                                                valueMapping = valueMapping.Replace("]", string.Empty).Split("$c".ToCharArray()).Last();
+                                                            }
+                                                        }
+                                                        break;
+                                                    case string n when n.Contains(variableByType):
+                                                        {
+                                                            valueMapping = valueReal4;
+                                                        }
+                                                        break;
+                                                    case string n when n.Contains(variableOptType):
+                                                        {
+                                                            valueReal4 = valueReal4.Split('-')[0];
+                                                            keyOpt = valueReal4;
+                                                            valueMapping = valueMapping.Replace(variableOptType, valueReal4);
+                                                        }
+                                                        break;
                                                     case string n when n.Contains(variableSplit1):
                                                         {
                                                             valueReal4 = valueReal4.Split('x')[0];
                                                             valueMapping = valueMapping.Replace(variableSplit1, valueReal4);
                                                         }
                                                         break;
+                                                    case string n when n.Contains(variableSplit1Plus):
+                                                        {
+                                                            checkPlus = true;
+                                                            valueReal4 = valueReal4.Split('x')[0];
+                                                            valueMapping = valueMapping.Replace(variableSplit1Plus, valueReal4);
+                                                        }
+                                                        break;
                                                     case string n when n.Contains(variableSplit3):
                                                         {
                                                             valueReal4 = valueReal4.Split('x')[2];
                                                             valueMapping = valueMapping.Replace(variableSplit3, valueReal4);
+                                                        }
+                                                        break;
+                                                    case string n when n.Contains(variableSplit4):
+                                                        {
+                                                            valueReal4 = valueReal4.Split('x')[3];
+                                                            valueMapping = valueMapping.Replace(variableSplit4, valueReal4);
                                                         }
                                                         break;
                                                     case string n when n.Contains(variableSplitDash1):
@@ -1477,11 +1517,13 @@ namespace GlobalMacroRecorder
                                                 }
                                             valueMapping = valueMapping.Replace(" ", string.Empty).Normalize();
                                             worksheetMapping.Cells[i, 2].Value = valueMapping;
-                                            worksheetMapping.Cells[i, 4].Value = UtilCalculate.ComputeEquation(valueMapping);
+                                            worksheetMapping.Cells[i, 4].Value = UtilCalculate.ComputeEquation(valueMapping, checkPlus);
                                         }
                                     }
-                                    packageMappping.SaveAs(new FileInfo(path + "\\" + nameConnection + ".xlsx"));
 
+                                    packageMappping.SaveAs(new FileInfo(path + "\\" + nameConnection + ".xlsx"));
+                                    packageMappping = new ExcelPackage(new FileInfo(thongtinfile));
+                                    worksheetMapping = packageMappping.Workbook.Worksheets[1];
                                 }
                             }
 
@@ -1496,6 +1538,163 @@ namespace GlobalMacroRecorder
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void autoReport_Click(object sender, EventArgs e)
+        {
+            liststring = new List<ResItem>();
+            var filess = GetFiles(TypeFile.cs_cpp_h);
+            //foreach (FileInfo file in filess)
+            {
+                var file = new FileInfo("C:\\TGL\\NewCAD\\SOURCE_\\newcad\\NewCadCpp\\OdDbBrace.cpp");
+                var filePath = file.FullName;
+                string fileContent = File.ReadAllText(filePath);
+                // var pattern = @"^OdResult OdDbBrace::dwgInFields.*void$";
+                string pattern = @"^OdResult OdDbBrace::dwgInFields.*}$";
+                //^OdResult OdDbBrace::dwgInFields.* p$
+                //var pattern = @"""(.*?)""";
+                //MatchCollection matches = Regex.Matches(fileContent, pattern);
+                MatchCollection matches = Regex.Matches(fileContent, pattern, RegexOptions.Multiline);
+                var matches1 = Regex.Match(fileContent, pattern, RegexOptions.Multiline);
+
+                string modifiedContent = fileContent;
+                foreach (Match match in matches)
+                {
+                    try
+                    {
+                        var replacementString = match.Groups[0].Value.Replace(_prefixContent + @"""", string.Empty);
+                        replacementString = replacementString.Replace(@" ", string.Empty);
+                        replacementString = Regex.Replace(replacementString, "[^a-zA-Z0-9]", "");
+                        var rex = new ResItem { NameInSource = _prefixContent + "\"{" + string.Format(formula.Text, ResourceName.Text + replacementString) + "}\"", StringContent = match.Groups[0].Value, NameinResx = replacementString };
+                        if (!liststring.Any(x => x.StringContent == rex.StringContent))
+                        {
+                            liststring.Add(rex);
+                        }
+                    }
+                    catch (Exception)
+                    {
+                    }
+                }
+            }
+            MessageBox.Show(string.Format("Get string {0} files succesful", filess.Count()));
+            ShowDataGrid();
+
+        }
+        private void testing(object sender, EventArgs e)
+        {
+            //Regex regex = new Regex(@"\bdwgInFields\s*\([^)]*\)\s*\{(?:[^{}]|\{(?:[^{}]|\{[^{}]*\})*\})*\}");
+            Regex regex = new Regex(@"\bdwgInFields\s*\([^)]*\)\s*\{(?:[^{}]*|\{(?:[^{}]*|\{(?:[^{}]*|\{[^{}]*\})*\})*\})*\}");
+
+            string hardcodePath = @"C:\Users\MSI_i7\Desktop\OdDbTopColumn.cpp";
+            string hardcodeTest = @"C:\Users\MSI_i7\Desktop\TestOdDbTopColumn.cpp";
+            string allText = File.ReadAllText(hardcodePath);
+
+            MatchCollection mc = regex.Matches(allText);
+            List<string> matchResults = new List<string>();
+            MessageBox.Show(mc.Count.ToString());
+            foreach (Match match in mc)
+            {
+                matchResults.Add(match.Value);
+                MessageBox.Show(match.Value);
+            }
+            File.WriteAllText(hardcodeTest, matchResults[0]);
+        }
+        private void getFunction(string filePath, DateTime dt, string folder)
+        {
+            int startIndex = filePath.LastIndexOf('\\');
+            int endIndex = filePath.LastIndexOf(".cpp");
+            string fileName = filePath.Substring(startIndex, endIndex - startIndex);
+
+            string allText = File.ReadAllText(filePath);
+            //Regex regex = new Regex(@"\bdwgInFields\s*\([^)]*\)\s*\{(?:[^{}]|\{(?:[^{}]|\{[^{}]*\})*\})*\}");
+            Regex regex = new Regex(@"\bdwgInFields\s*\([^)]*\)\s*\{(?:[^{}]*|\{(?:[^{}]*|\{(?:[^{}]*|\{[^{}]*\})*\})*\})*\}");
+            MatchCollection mc = regex.Matches(allText);
+            if (mc.Count == 1)
+            {
+                string savePath = folder + "\\" + dt.ToString("MMddyy_HHmm") + "\\SavedFunctions\\";
+                if (!Directory.Exists(savePath))
+                {
+                    Directory.CreateDirectory(savePath);
+                }
+                File.WriteAllText(savePath + fileName, mc[0].Value);
+            }
+            else
+            {
+                string errorPath = folder+"\\"+dt.ToString("MMddyy_HHmm") + "\\ErrorFiles\\" ;
+                if (!Directory.Exists(errorPath))
+                {
+                    Directory.CreateDirectory(errorPath);
+                }
+                File.WriteAllText(errorPath + fileName, string.Empty);
+            }
+        }
+        private void extractFunction(object sender, EventArgs e)
+        {
+            //using (var fbd = new FolderBrowserDialog())
+            //{
+            //    DialogResult result = fbd.ShowDialog();
+            DateTime dt = DateTime.Now;
+            //    if (result == DialogResult.OK && !string.IsNullOrEmpty(fbd.SelectedPath))
+            //    {
+            string[] files = Directory.GetFiles(TargetToReplaceFolder.Text);
+            foreach (string file in files)
+            {
+                if (file.Contains("OdDb") && file.Contains(".cpp"))
+                {
+                    getFunction(file, dt, SavedFunctionFolder.Text);
+                }
+            }
+            Process.Start(SavedFunctionFolder.Text+"\\"+ dt.ToString("MMddyy_HHmm"));
+            //    }
+            //}
+        }
+        private void pasteFunction(object sender, EventArgs e)
+        {
+            Regex regex = new Regex(@"\b\:\:dwgInFields\s*\([^)]*\)\s*\{(?:[^{}]*|\{(?:[^{}]*|\{(?:[^{}]*|\{[^{}]*\})*\})*\})*\}");
+
+            string[] files = Directory.GetFiles(SavedFunctionFolder.Text);
+            foreach (string filePath in files)
+            {
+                int startIndex = filePath.LastIndexOf('\\');
+                string fileName = filePath.Substring(startIndex + 1);
+                string content = File.ReadAllText(filePath);
+
+                string fileToReplacePath = TargetToReplaceFolder.Text + "\\" + fileName + ".cpp";
+                if (File.Exists(fileToReplacePath))
+                {
+                    string replaceContent = File.ReadAllText(fileToReplacePath);
+                    var listMatch = regex.Matches(replaceContent);
+                    if (listMatch.Count > 0)
+                    {
+                        string replaceText = listMatch[0].Value.Substring(2);
+                        replaceContent = replaceContent.Replace(replaceText, content);
+
+                        File.WriteAllText(fileToReplacePath, replaceContent);
+                    }
+                }
+            }
+        }
+        private void metroButton5_Click(object sender, EventArgs e)
+        {
+            using (var fbd = new FolderBrowserDialog())
+            {
+                DialogResult result = fbd.ShowDialog();
+                if (result == DialogResult.OK && !string.IsNullOrEmpty(fbd.SelectedPath))
+                {
+                    SavedFunctionFolder.Text = fbd.SelectedPath;
+                }
+            }
+        }
+        private void metroButton6_Click(object sender, EventArgs e)
+        {
+            using (var fbd = new FolderBrowserDialog())
+            {
+                DialogResult result = fbd.ShowDialog();
+                if (result == DialogResult.OK && !string.IsNullOrEmpty(fbd.SelectedPath))
+                {
+                    TargetToReplaceFolder.Text = fbd.SelectedPath;
+                }
+            }
         }
     }
 }

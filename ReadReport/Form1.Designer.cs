@@ -48,6 +48,11 @@
             // min
             // 
             this.min.Location = new System.Drawing.Point(105, 12);
+            this.min.Maximum = new decimal(new int[] {
+            999999999,
+            0,
+            0,
+            0});
             this.min.Name = "min";
             this.min.Size = new System.Drawing.Size(57, 20);
             this.min.TabIndex = 1;
@@ -61,7 +66,7 @@
             // 
             this.max.Location = new System.Drawing.Point(105, 38);
             this.max.Maximum = new decimal(new int[] {
-            1000,
+            999999999,
             0,
             0,
             0});
@@ -69,7 +74,7 @@
             this.max.Size = new System.Drawing.Size(57, 20);
             this.max.TabIndex = 2;
             this.max.Value = new decimal(new int[] {
-            500,
+            10,
             0,
             0,
             0});

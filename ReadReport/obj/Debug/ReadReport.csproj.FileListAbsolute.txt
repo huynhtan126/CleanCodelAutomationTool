@@ -18,3 +18,4 @@ C:\TGL\CleanCode\CleanCodelAutomationTool\ReadReport\obj\Debug\ReadReport.exe
 C:\TGL\CleanCode\CleanCodelAutomationTool\ReadReport\obj\Debug\ReadReport.pdb
 C:\TGL\CleanCode\CleanCodelAutomationTool\ReadReport\bin\Debug\EPPlus.dll
 C:\TGL\CleanCode\CleanCodelAutomationTool\ReadReport\bin\Debug\EPPlus.xml
+C:\TGL\CleanCode\CleanCodelAutomationTool\ReadReport\bin\Debug\TemplateReport\TemplateReport.xlsx

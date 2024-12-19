@@ -32,6 +32,16 @@ namespace GlobalMacroRecorder
         {
             this.components = new System.ComponentModel.Container();
             this.metroTabControl1 = new MetroFramework.Controls.MetroTabControl();
+            this.metroTabPage4 = new MetroFramework.Controls.MetroTabPage();
+            this.metroButton7 = new MetroFramework.Controls.MetroButton();
+            this.metroLabel4 = new MetroFramework.Controls.MetroLabel();
+            this.metroLabel3 = new MetroFramework.Controls.MetroLabel();
+            this.metroButton6 = new MetroFramework.Controls.MetroButton();
+            this.TargetToReplaceFolder = new System.Windows.Forms.TextBox();
+            this.metroButton5 = new MetroFramework.Controls.MetroButton();
+            this.SavedFunctionFolder = new System.Windows.Forms.TextBox();
+            this.autoReport = new MetroFramework.Controls.MetroButton();
+            this.metroButton4 = new MetroFramework.Controls.MetroButton();
             this.metroTabPage1 = new MetroFramework.Controls.MetroTabPage();
             this.cb_exportAV = new System.Windows.Forms.CheckBox();
             this.label1 = new System.Windows.Forms.Label();
@@ -76,21 +86,13 @@ namespace GlobalMacroRecorder
             this.note = new System.Windows.Forms.CheckBox();
             this.todo = new System.Windows.Forms.CheckBox();
             this.removeComment = new MetroFramework.Controls.MetroButton();
-            this.metroTabPage4 = new MetroFramework.Controls.MetroTabPage();
-            this.metroButton7 = new MetroFramework.Controls.MetroButton();
-            this.metroLabel4 = new MetroFramework.Controls.MetroLabel();
-            this.metroLabel3 = new MetroFramework.Controls.MetroLabel();
-            this.metroButton6 = new MetroFramework.Controls.MetroButton();
-            this.TargetToReplaceFolder = new System.Windows.Forms.TextBox();
-            this.metroButton5 = new MetroFramework.Controls.MetroButton();
-            this.SavedFunctionFolder = new System.Windows.Forms.TextBox();
-            this.autoReport = new MetroFramework.Controls.MetroButton();
-            this.metroButton4 = new MetroFramework.Controls.MetroButton();
             this.Brower = new MetroFramework.Controls.MetroButton();
             this.PathfileorFolder = new System.Windows.Forms.TextBox();
             this.lbl_Status = new System.Windows.Forms.Label();
             this.programBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.btn_replace = new MetroFramework.Controls.MetroButton();
             this.metroTabControl1.SuspendLayout();
+            this.metroTabPage4.SuspendLayout();
             this.metroTabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.groupBox2.SuspendLayout();
@@ -103,22 +105,129 @@ namespace GlobalMacroRecorder
             this.metroTabPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.metroTabPage3.SuspendLayout();
-            this.metroTabPage4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.programBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // metroTabControl1
             // 
+            this.metroTabControl1.Controls.Add(this.metroTabPage3);
             this.metroTabControl1.Controls.Add(this.metroTabPage4);
             this.metroTabControl1.Controls.Add(this.metroTabPage1);
             this.metroTabControl1.Controls.Add(this.metroTabPage2);
-            this.metroTabControl1.Controls.Add(this.metroTabPage3);
             this.metroTabControl1.Location = new System.Drawing.Point(23, 116);
             this.metroTabControl1.Name = "metroTabControl1";
-            this.metroTabControl1.SelectedIndex = 3;
+            this.metroTabControl1.SelectedIndex = 0;
             this.metroTabControl1.Size = new System.Drawing.Size(500, 448);
             this.metroTabControl1.TabIndex = 3;
             this.metroTabControl1.UseSelectable = true;
+            // 
+            // metroTabPage4
+            // 
+            this.metroTabPage4.Controls.Add(this.btn_replace);
+            this.metroTabPage4.Controls.Add(this.metroButton7);
+            this.metroTabPage4.Controls.Add(this.metroLabel4);
+            this.metroTabPage4.Controls.Add(this.metroLabel3);
+            this.metroTabPage4.Controls.Add(this.metroButton6);
+            this.metroTabPage4.Controls.Add(this.TargetToReplaceFolder);
+            this.metroTabPage4.Controls.Add(this.metroButton5);
+            this.metroTabPage4.Controls.Add(this.SavedFunctionFolder);
+            this.metroTabPage4.Controls.Add(this.autoReport);
+            this.metroTabPage4.Controls.Add(this.metroButton4);
+            this.metroTabPage4.HorizontalScrollbarBarColor = true;
+            this.metroTabPage4.HorizontalScrollbarHighlightOnWheel = false;
+            this.metroTabPage4.HorizontalScrollbarSize = 10;
+            this.metroTabPage4.Location = new System.Drawing.Point(4, 38);
+            this.metroTabPage4.Name = "metroTabPage4";
+            this.metroTabPage4.Size = new System.Drawing.Size(492, 406);
+            this.metroTabPage4.TabIndex = 4;
+            this.metroTabPage4.Text = "NewCAD Support";
+            this.metroTabPage4.VerticalScrollbarBarColor = true;
+            this.metroTabPage4.VerticalScrollbarHighlightOnWheel = false;
+            this.metroTabPage4.VerticalScrollbarSize = 10;
+            // 
+            // metroButton7
+            // 
+            this.metroButton7.Location = new System.Drawing.Point(367, 173);
+            this.metroButton7.Name = "metroButton7";
+            this.metroButton7.Size = new System.Drawing.Size(122, 31);
+            this.metroButton7.TabIndex = 16;
+            this.metroButton7.Text = "Replace Function";
+            this.metroButton7.UseSelectable = true;
+            this.metroButton7.Click += new System.EventHandler(this.pasteFunction);
+            // 
+            // metroLabel4
+            // 
+            this.metroLabel4.AutoSize = true;
+            this.metroLabel4.Location = new System.Drawing.Point(0, 125);
+            this.metroLabel4.Name = "metroLabel4";
+            this.metroLabel4.Size = new System.Drawing.Size(91, 19);
+            this.metroLabel4.TabIndex = 15;
+            this.metroLabel4.Text = "Folder Source";
+            // 
+            // metroLabel3
+            // 
+            this.metroLabel3.AutoSize = true;
+            this.metroLabel3.Location = new System.Drawing.Point(0, 69);
+            this.metroLabel3.Name = "metroLabel3";
+            this.metroLabel3.Size = new System.Drawing.Size(139, 19);
+            this.metroLabel3.TabIndex = 14;
+            this.metroLabel3.Text = "Saved Function Folder";
+            // 
+            // metroButton6
+            // 
+            this.metroButton6.Location = new System.Drawing.Point(441, 147);
+            this.metroButton6.Name = "metroButton6";
+            this.metroButton6.Size = new System.Drawing.Size(42, 18);
+            this.metroButton6.TabIndex = 12;
+            this.metroButton6.Text = "...";
+            this.metroButton6.UseSelectable = true;
+            this.metroButton6.Click += new System.EventHandler(this.metroButton6_Click);
+            // 
+            // TargetToReplaceFolder
+            // 
+            this.TargetToReplaceFolder.Location = new System.Drawing.Point(3, 147);
+            this.TargetToReplaceFolder.Name = "TargetToReplaceFolder";
+            this.TargetToReplaceFolder.Size = new System.Drawing.Size(432, 20);
+            this.TargetToReplaceFolder.TabIndex = 13;
+            this.TargetToReplaceFolder.Text = "D:\\stuff\\CleanCodelAutomationTool\\CleanCode";
+            // 
+            // metroButton5
+            // 
+            this.metroButton5.Location = new System.Drawing.Point(442, 91);
+            this.metroButton5.Name = "metroButton5";
+            this.metroButton5.Size = new System.Drawing.Size(42, 18);
+            this.metroButton5.TabIndex = 11;
+            this.metroButton5.Text = "...";
+            this.metroButton5.UseSelectable = true;
+            this.metroButton5.Click += new System.EventHandler(this.metroButton5_Click);
+            // 
+            // SavedFunctionFolder
+            // 
+            this.SavedFunctionFolder.Location = new System.Drawing.Point(4, 91);
+            this.SavedFunctionFolder.Name = "SavedFunctionFolder";
+            this.SavedFunctionFolder.Size = new System.Drawing.Size(432, 20);
+            this.SavedFunctionFolder.TabIndex = 11;
+            this.SavedFunctionFolder.Text = "D:\\stuff\\CleanCodelAutomationTool\\CleanCode";
+            // 
+            // autoReport
+            // 
+            this.autoReport.Location = new System.Drawing.Point(233, 173);
+            this.autoReport.Name = "autoReport";
+            this.autoReport.Size = new System.Drawing.Size(130, 31);
+            this.autoReport.TabIndex = 5;
+            this.autoReport.Text = "Save DwgIn";
+            this.autoReport.UseSelectable = true;
+            this.autoReport.Click += new System.EventHandler(this.extractFunction);
+            // 
+            // metroButton4
+            // 
+            this.metroButton4.Location = new System.Drawing.Point(0, 13);
+            this.metroButton4.Name = "metroButton4";
+            this.metroButton4.Size = new System.Drawing.Size(88, 46);
+            this.metroButton4.TabIndex = 4;
+            this.metroButton4.Text = "ReadMapping";
+            this.metroButton4.UseSelectable = true;
+            this.metroButton4.Click += new System.EventHandler(this.metroButton4_Click_1);
             // 
             // metroTabPage1
             // 
@@ -645,113 +754,6 @@ namespace GlobalMacroRecorder
             this.removeComment.UseSelectable = true;
             this.removeComment.Click += new System.EventHandler(this.removeComment_Click);
             // 
-            // metroTabPage4
-            // 
-            this.metroTabPage4.Controls.Add(this.metroButton7);
-            this.metroTabPage4.Controls.Add(this.metroLabel4);
-            this.metroTabPage4.Controls.Add(this.metroLabel3);
-            this.metroTabPage4.Controls.Add(this.metroButton6);
-            this.metroTabPage4.Controls.Add(this.TargetToReplaceFolder);
-            this.metroTabPage4.Controls.Add(this.metroButton5);
-            this.metroTabPage4.Controls.Add(this.SavedFunctionFolder);
-            this.metroTabPage4.Controls.Add(this.autoReport);
-            this.metroTabPage4.Controls.Add(this.metroButton4);
-            this.metroTabPage4.HorizontalScrollbarBarColor = true;
-            this.metroTabPage4.HorizontalScrollbarHighlightOnWheel = false;
-            this.metroTabPage4.HorizontalScrollbarSize = 10;
-            this.metroTabPage4.Location = new System.Drawing.Point(4, 38);
-            this.metroTabPage4.Name = "metroTabPage4";
-            this.metroTabPage4.Size = new System.Drawing.Size(492, 406);
-            this.metroTabPage4.TabIndex = 4;
-            this.metroTabPage4.Text = "NewCAD Support";
-            this.metroTabPage4.VerticalScrollbarBarColor = true;
-            this.metroTabPage4.VerticalScrollbarHighlightOnWheel = false;
-            this.metroTabPage4.VerticalScrollbarSize = 10;
-            // 
-            // metroButton7
-            // 
-            this.metroButton7.Location = new System.Drawing.Point(367, 173);
-            this.metroButton7.Name = "metroButton7";
-            this.metroButton7.Size = new System.Drawing.Size(122, 31);
-            this.metroButton7.TabIndex = 16;
-            this.metroButton7.Text = "Replace Function";
-            this.metroButton7.UseSelectable = true;
-            this.metroButton7.Click += new System.EventHandler(this.pasteFunction);
-            // 
-            // metroLabel4
-            // 
-            this.metroLabel4.AutoSize = true;
-            this.metroLabel4.Location = new System.Drawing.Point(0, 125);
-            this.metroLabel4.Name = "metroLabel4";
-            this.metroLabel4.Size = new System.Drawing.Size(91, 19);
-            this.metroLabel4.TabIndex = 15;
-            this.metroLabel4.Text = "Folder Source";
-            // 
-            // metroLabel3
-            // 
-            this.metroLabel3.AutoSize = true;
-            this.metroLabel3.Location = new System.Drawing.Point(0, 69);
-            this.metroLabel3.Name = "metroLabel3";
-            this.metroLabel3.Size = new System.Drawing.Size(139, 19);
-            this.metroLabel3.TabIndex = 14;
-            this.metroLabel3.Text = "Saved Function Folder";
-            // 
-            // metroButton6
-            // 
-            this.metroButton6.Location = new System.Drawing.Point(441, 147);
-            this.metroButton6.Name = "metroButton6";
-            this.metroButton6.Size = new System.Drawing.Size(42, 18);
-            this.metroButton6.TabIndex = 12;
-            this.metroButton6.Text = "...";
-            this.metroButton6.UseSelectable = true;
-            this.metroButton6.Click += new System.EventHandler(this.metroButton6_Click);
-            // 
-            // TargetToReplaceFolder
-            // 
-            this.TargetToReplaceFolder.Location = new System.Drawing.Point(3, 147);
-            this.TargetToReplaceFolder.Name = "TargetToReplaceFolder";
-            this.TargetToReplaceFolder.Size = new System.Drawing.Size(432, 20);
-            this.TargetToReplaceFolder.TabIndex = 13;
-            this.TargetToReplaceFolder.Text = "D:\\stuff\\CleanCodelAutomationTool\\CleanCode";
-            // 
-            // metroButton5
-            // 
-            this.metroButton5.Location = new System.Drawing.Point(442, 91);
-            this.metroButton5.Name = "metroButton5";
-            this.metroButton5.Size = new System.Drawing.Size(42, 18);
-            this.metroButton5.TabIndex = 11;
-            this.metroButton5.Text = "...";
-            this.metroButton5.UseSelectable = true;
-            this.metroButton5.Click += new System.EventHandler(this.metroButton5_Click);
-            // 
-            // SavedFunctionFolder
-            // 
-            this.SavedFunctionFolder.Location = new System.Drawing.Point(4, 91);
-            this.SavedFunctionFolder.Name = "SavedFunctionFolder";
-            this.SavedFunctionFolder.Size = new System.Drawing.Size(432, 20);
-            this.SavedFunctionFolder.TabIndex = 11;
-            this.SavedFunctionFolder.Text = "D:\\stuff\\CleanCodelAutomationTool\\CleanCode";
-            // 
-            // autoReport
-            // 
-            this.autoReport.Location = new System.Drawing.Point(233, 173);
-            this.autoReport.Name = "autoReport";
-            this.autoReport.Size = new System.Drawing.Size(130, 31);
-            this.autoReport.TabIndex = 5;
-            this.autoReport.Text = "Save DwgIn";
-            this.autoReport.UseSelectable = true;
-            this.autoReport.Click += new System.EventHandler(this.extractFunction);
-            // 
-            // metroButton4
-            // 
-            this.metroButton4.Location = new System.Drawing.Point(0, 13);
-            this.metroButton4.Name = "metroButton4";
-            this.metroButton4.Size = new System.Drawing.Size(88, 46);
-            this.metroButton4.TabIndex = 4;
-            this.metroButton4.Text = "ReadMapping";
-            this.metroButton4.UseSelectable = true;
-            this.metroButton4.Click += new System.EventHandler(this.metroButton4_Click_1);
-            // 
             // Brower
             // 
             this.Brower.Location = new System.Drawing.Point(468, 88);
@@ -785,6 +787,16 @@ namespace GlobalMacroRecorder
             // 
             this.programBindingSource.DataSource = typeof(GlobalMacroRecorder.Program);
             // 
+            // btn_replace
+            // 
+            this.btn_replace.Location = new System.Drawing.Point(233, 210);
+            this.btn_replace.Name = "btn_replace";
+            this.btn_replace.Size = new System.Drawing.Size(256, 31);
+            this.btn_replace.TabIndex = 17;
+            this.btn_replace.Text = "Replace Autocad DwgOut";
+            this.btn_replace.UseSelectable = true;
+            this.btn_replace.Click += new System.EventHandler(this.btn_replace_Click);
+            // 
             // MacroForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -801,6 +813,8 @@ namespace GlobalMacroRecorder
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MacroForm_FormClosed);
             this.Load += new System.EventHandler(this.MacroForm_Load);
             this.metroTabControl1.ResumeLayout(false);
+            this.metroTabPage4.ResumeLayout(false);
+            this.metroTabPage4.PerformLayout();
             this.metroTabPage1.ResumeLayout(false);
             this.metroTabPage1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
@@ -819,8 +833,6 @@ namespace GlobalMacroRecorder
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.metroTabPage3.ResumeLayout(false);
             this.metroTabPage3.PerformLayout();
-            this.metroTabPage4.ResumeLayout(false);
-            this.metroTabPage4.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.programBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -887,6 +899,7 @@ namespace GlobalMacroRecorder
         private MetroFramework.Controls.MetroLabel metroLabel4;
         private MetroFramework.Controls.MetroLabel metroLabel3;
         private MetroFramework.Controls.MetroButton metroButton7;
+        private MetroFramework.Controls.MetroButton btn_replace;
     }
 }
 

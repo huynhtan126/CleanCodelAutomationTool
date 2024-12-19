@@ -105,7 +105,7 @@
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('..\CleanCode\packages\Selenium.WebDriver.4.23.0\build\Selenium.WebDriver.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\CleanCode\packages\Selenium.WebDriver.4.23.0\build\Selenium.WebDriver.targets'))" />
-    <Error Condition="!Exists('..\CleanCode\packages\Selenium.WebDriver.ChromeDriver.128.0.6613.8400\build\Selenium.WebDriver.ChromeDriver.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\CleanCode\packages\Selenium.WebDriver.ChromeDriver.128.0.6613.8400\build\Selenium.WebDriver.ChromeDriver.targets'))" />
+    <Error Condition="!Exists('..\CleanCode\packages\Selenium.WebDriver.ChromeDriver.131.0.6778.20400\build\Selenium.WebDriver.ChromeDriver.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\CleanCode\packages\Selenium.WebDriver.ChromeDriver.131.0.6778.20400\build\Selenium.WebDriver.ChromeDriver.targets'))" />
   </Target>
-  <Import Project="..\CleanCode\packages\Selenium.WebDriver.ChromeDriver.128.0.6613.8400\build\Selenium.WebDriver.ChromeDriver.targets" Condition="Exists('..\CleanCode\packages\Selenium.WebDriver.ChromeDriver.128.0.6613.8400\build\Selenium.WebDriver.ChromeDriver.targets')" />
+  <Import Project="..\CleanCode\packages\Selenium.WebDriver.ChromeDriver.131.0.6778.20400\build\Selenium.WebDriver.ChromeDriver.targets" Condition="Exists('..\CleanCode\packages\Selenium.WebDriver.ChromeDriver.131.0.6778.20400\build\Selenium.WebDriver.ChromeDriver.targets')" />
 </Project>

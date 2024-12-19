@@ -11,6 +11,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
@@ -1620,7 +1621,7 @@ namespace GlobalMacroRecorder
             }
             else
             {
-                string errorPath = folder+"\\"+dt.ToString("MMddyy_HHmm") + "\\ErrorFiles\\" ;
+                string errorPath = folder + "\\" + dt.ToString("MMddyy_HHmm") + "\\ErrorFiles\\";
                 if (!Directory.Exists(errorPath))
                 {
                     Directory.CreateDirectory(errorPath);
@@ -1644,7 +1645,7 @@ namespace GlobalMacroRecorder
                     getFunction(file, dt, SavedFunctionFolder.Text);
                 }
             }
-            Process.Start(SavedFunctionFolder.Text+"\\"+ dt.ToString("MMddyy_HHmm"));
+            Process.Start(SavedFunctionFolder.Text + "\\" + dt.ToString("MMddyy_HHmm"));
             //    }
             //}
         }
@@ -1693,6 +1694,37 @@ namespace GlobalMacroRecorder
                 if (result == DialogResult.OK && !string.IsNullOrEmpty(fbd.SelectedPath))
                 {
                     TargetToReplaceFolder.Text = fbd.SelectedPath;
+                }
+            }
+        }
+
+        private void btn_replace_Click(object sender, EventArgs e)
+        {
+            Regex regex = new Regex(@"\b\:\:dwgOutFields\s*\([^)]*\)\s*[^)]*\{(?:[^{}]*|\{(?:[^{}]*|\{(?:[^{}]*|\{[^{}]*\})*\})*\})*\}");
+
+            //string[] files = Directory.GetFiles(SavedFunctionFolder.Text);
+            //foreach (string fileToReplacePath in files)
+            {
+                string fileToReplacePath = "C:\\TGL\\NewCAD\\SOURCE_\\newcad\\NewCadCpp\\OdDbBasePlate.cpp";
+                //int startIndex = filePath.LastIndexOf('\\');
+                //string fileName = filePath.Substring(startIndex + 1);
+                //var fileInfor = new FileInfo(fileToReplacePath);
+                string fileName = Path.GetFileNameWithoutExtension(fileToReplacePath);
+                //string fileToReplacePath = TargetToReplaceFolder.Text + "\\" + fileName + ".cpp";
+                if (File.Exists(fileToReplacePath))
+                {
+                    string replaceContent = File.ReadAllText(fileToReplacePath);
+                    var listMatch = regex.Matches(replaceContent);
+                    if (listMatch.Count > 0)
+                    {
+                        string replaceText = fileName + "::"+listMatch[0].Value.Substring(2);
+                        var index = replaceText.LastIndexOf('}');
+                        replaceText = replaceText.Substring(0, index-1);
+                        string newContent = /*"#if defined Ares || ODA\r\nvoid\r\n#elif defined AutoCad\r\nOdResult\r\n#endif\n" + */replaceText + "#if defined AutoCad\r\n\treturn OdResult::eOk;\r\n#endif";
+                        replaceContent = replaceContent.Replace(replaceText, newContent);
+
+                        File.WriteAllText(fileToReplacePath, replaceContent);
+                    }
                 }
             }
         }

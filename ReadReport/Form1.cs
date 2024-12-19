@@ -63,6 +63,18 @@ namespace ReadReport
                         worksheet.Cells[hangTangdan + 1, 1].Value = cotTangdan;
                         cotTangdan++;
                         var danhSachLabel = json.labels;
+                        try
+                        {
+                            if (json.author_id.ToString() != "230")
+                            {
+                                continue;
+                            }
+
+                        }
+                        catch (Exception ex)
+                        {
+                            continue;
+                        }
                         #region Cot thu 2 
 
                         //lay ra crash bug
@@ -140,7 +152,25 @@ namespace ReadReport
                         worksheet.Cells[hangTangdan + 1, 10].Value = json.created_at.ToShortDateString();
                         #endregion
                         #region Cot thu 11
-                        worksheet.Cells[hangTangdan + 1, 11].Value = "Bảo Thoa";
+                        //worksheet.Cells[hangTangdan + 1, 11].Value = "Bảo Thoa";
+                        var creator = "Unknow";
+                        try
+                        {
+                            if (json.author_id.ToString() == "73")
+                            {
+                                creator = "Bảo Thoa";
+                            }
+                            if (json.author_id.ToString() == "230")
+                            {
+                                creator = "Khải Hoàn";
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+
+                        }
+
+                        worksheet.Cells[hangTangdan + 1, 11].Value = creator;
                         #endregion
                         #region Cot thu 12
                         worksheet.Cells[hangTangdan + 1, 12].Value = "Huỳnh Tân";
@@ -195,7 +225,7 @@ namespace ReadReport
         private void Form1_Load(object sender, EventArgs e)
         {
             min.Select();
-           
+
         }
     }
 }

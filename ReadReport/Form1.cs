@@ -63,18 +63,18 @@ namespace ReadReport
                         worksheet.Cells[hangTangdan + 1, 1].Value = cotTangdan;
                         cotTangdan++;
                         var danhSachLabel = json.labels;
-                        try
-                        {
-                            if (json.author_id.ToString() != "230")
-                            {
-                                continue;
-                            }
+                        //try
+                        //{
+                        //    if (json.author_id.ToString() != "230")
+                        //    {
+                        //        continue;
+                        //    }
 
-                        }
-                        catch (Exception ex)
-                        {
-                            continue;
-                        }
+                        //}
+                        //catch (Exception ex)
+                        //{
+                        //    continue;
+                        //}
                         #region Cot thu 2 
 
                         //lay ra crash bug
@@ -191,6 +191,16 @@ namespace ReadReport
                         if (split.Count() > 1) // nếu có root cause
                         {
                             worksheet.Cells[hangTangdan + 1, 17].Value = "Root " + split[1];
+                        }
+                        #endregion
+                        #region Cot thu 18
+                        {
+
+                            var listConectionlabel1 = danhSachLabel.Where(x => x.title.ToString().ToUpper().Contains("CLIENT")).ToList();
+                            if (listConectionlabel1.Count > 0) // neu co
+                            {
+                                worksheet.Cells[hangTangdan + 1, 18].Value = listConectionlabel1[0].title;
+                            }
                         }
                         #endregion
                         ////File.WriteAllText("C:\\TGL\\394.html", driver.PageSource);

@@ -47,3 +47,9 @@ Record/GlobalMacroRecorder/obj/Debug/DesignTimeResolveAssemblyReferences.cache
 /CleanCode/.vs
 *.cache
 /CleanCode/.vs
+/ReadReport/obj
+/ReadReport/bin
+/CleanCode/packages
+/ReadReport/bin/Debug
+/ReadReport/bin/Debug
+/ReadReport/obj

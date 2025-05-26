@@ -3,6 +3,7 @@ using OfficeOpenXml;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using Selenium;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -30,10 +31,25 @@ namespace ReadReport
         {
             ChromeOptions options = new ChromeOptions();
             //options.AddArguments("user-data-dir=/path/to/your/custom/profile");
-            options.AddArguments("--user-data-dir=C:\\Users\\huynh\\AppData\\Local\\Google\\Chrome\\User Data");
-            options.AddArguments("--profile-directory=Profile 1");
-            using (var driver = new ChromeDriver(options))
+            //options.setBinary(getChromeLocation());
+            //options.AddArguments("--remote-debugging-port=3456");
+            //options.AddArguments("--user-data-dir=C:\\Users\\huynh\\AppData\\Local\\Google\\Chrome\\User Data");
+            options.AddArguments("--user-data-dir=C:\\Users\\huynh\\AppData\\Local\\Chromium\\User Data");
+            options.AddArguments("--profile-directory=Profile 2");
+
+            //DefaultSelenium selenium = new DefaultSelenium("localhost", 4444, "*custom path/to/chromium", "www.google.com");
+            //ChromeOptions options = new ChromeOptions();
+            var chromeBrowserPath = @"C:\Users\huynh\AppData\Local\Chromium\Application\chrome.exe";
+            options.BinaryLocation = chromeBrowserPath; // This tells ChromeDriver where to find Chrome browser
+
+            ChromeDriverService service = ChromeDriverService.CreateDefaultService();
+            // You generally don't need to set the port manually unless troubleshooting specific issues
+            // service.Port = 3546;
+
+            //selenium.Start();
+            using (var driver = new ChromeDriver(service, options))
             {
+      
                 var minvalue = int.Parse(min.Value.ToString());
                 var maxvalue = int.Parse(max.Value.ToString());
                 var pathfolder = System.Reflection.Assembly.GetExecutingAssembly().Location;
@@ -65,7 +81,7 @@ namespace ReadReport
                         var danhSachLabel = json.labels;
                         //try
                         //{
-                        //    if (json.author_id.ToString() != "230")
+                        //    if (json.author_id.ToString() != "73")
                         //    {
                         //        continue;
                         //    }

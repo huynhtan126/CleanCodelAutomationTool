@@ -49,7 +49,7 @@ namespace ReadReport
             //selenium.Start();
             using (var driver = new ChromeDriver(service, options))
             {
-      
+
                 var minvalue = int.Parse(min.Value.ToString());
                 var maxvalue = int.Parse(max.Value.ToString());
                 var pathfolder = System.Reflection.Assembly.GetExecutingAssembly().Location;
@@ -79,18 +79,41 @@ namespace ReadReport
                         worksheet.Cells[hangTangdan + 1, 1].Value = cotTangdan;
                         cotTangdan++;
                         var danhSachLabel = json.labels;
-                        //try
-                        //{
-                        //    if (json.author_id.ToString() != "73")
-                        //    {
-                        //        continue;
-                        //    }
+                        if (!radioButton1.Checked)
+                        {
 
-                        //}
-                        //catch (Exception ex)
-                        //{
-                        //    continue;
-                        //}
+                            if (radioButton2.Checked)
+                            {
+                                try
+                                {
+                                    if (json.author_id.ToString() != "73")
+                                    {
+                                        continue;
+                                    }
+
+                                }
+                                catch (Exception ex)
+                                {
+                                    continue;
+                                }
+                            }
+                            if (radioButton3.Checked)
+                            {
+                                try
+                                {
+                                    if (json.author_id.ToString() != "230")
+                                    {
+                                        continue;
+                                    }
+
+                                }
+                                catch (Exception ex)
+                                {
+                                    continue;
+                                }
+                            }
+
+                        }
                         #region Cot thu 2 
 
                         //lay ra crash bug

@@ -34,12 +34,13 @@ namespace ReadReport
             //options.setBinary(getChromeLocation());
             //options.AddArguments("--remote-debugging-port=3456");
             //options.AddArguments("--user-data-dir=C:\\Users\\huynh\\AppData\\Local\\Google\\Chrome\\User Data");
-            options.AddArguments("--user-data-dir=C:\\Users\\huynh\\AppData\\Local\\Chromium\\User Data");
+            string localAppDataPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+            options.AddArguments("--user-data-dir="+ localAppDataPath+"\\Chromium\\User Data");
             options.AddArguments("--profile-directory=Profile 2");
 
             //DefaultSelenium selenium = new DefaultSelenium("localhost", 4444, "*custom path/to/chromium", "www.google.com");
             //ChromeOptions options = new ChromeOptions();
-            var chromeBrowserPath = @"C:\Users\huynh\AppData\Local\Chromium\Application\chrome.exe";
+            var chromeBrowserPath = localAppDataPath+ @"\Chromium\Application\chrome.exe";
             options.BinaryLocation = chromeBrowserPath; // This tells ChromeDriver where to find Chrome browser
 
             ChromeDriverService service = ChromeDriverService.CreateDefaultService();

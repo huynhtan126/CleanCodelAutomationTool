@@ -68,6 +68,8 @@ namespace ReadReport
                 var hangTangdan = 10;
                 for (int i = minvalue; i <= maxvalue; i++)
                 {
+                        worksheet.Cells[hangTangdan + 1, 1].Value = cotTangdan;
+                        cotTangdan++;
                     try
                     {
                         var pathIssue = "https://gitlab.tgl-cloud.com/PrimaSolutions/newcadgrp/newcad/-/issues/" + i;
@@ -76,8 +78,6 @@ namespace ReadReport
                      ".json");
                         var json_content = driver.FindElement(By.CssSelector("body > pre")).Text;
                         var json = JsonConvert.DeserializeObject<Root>(json_content);
-                        worksheet.Cells[hangTangdan + 1, 1].Value = cotTangdan;
-                        cotTangdan++;
                         var danhSachLabel = json.labels;
                         if (!radioButton1.Checked)
                         {
@@ -170,7 +170,7 @@ namespace ReadReport
                         worksheet.Cells[hangTangdan + 1, 6].Value = "Functional";
                         #endregion
                         #region Cot thu 7
-                        var listStatus = danhSachLabel.Where(x => x.title.ToString().Contains("_Done") || x.title.ToString().Contains("_Root")).ToList();
+                        var listStatus = danhSachLabel.Where(x => x.title.ToString().Contains("_Done") || x.title.ToString().Contains("_Root")||x.title.ToString().Contains("_Request")).ToList();
                         if (listStatus.Count > 0)
                         {
                             worksheet.Cells[hangTangdan + 1, 7].Value = "Closed";
@@ -240,6 +240,40 @@ namespace ReadReport
                             {
                                 worksheet.Cells[hangTangdan + 1, 18].Value = listConectionlabel1[0].title;
                             }
+                        }
+                        #endregion
+                        #region Cot thu 19
+                        {
+                            var listPlan = danhSachLabel.Where(x => x.title.ToString().ToUpper().Contains("PLAN")).ToList();
+                            if (listPlan.Count > 0)
+                            {
+                                worksheet.Cells[hangTangdan + 1, 19].Value = listPlan[0].title;
+                            }
+
+                        }
+                        {
+                            var listPlan = danhSachLabel.Where(x => x.title.ToString().ToUpper().Contains("KH")).ToList();
+                            if (listPlan.Count > 0)
+                            {
+                                worksheet.Cells[hangTangdan + 1, 19].Value = listPlan[0].title;
+                            }
+
+                        }
+                        {
+                            var listPlan = danhSachLabel.Where(x => x.title.ToString().ToUpper().Contains("ARES")).ToList();
+                            if (listPlan.Count > 0)
+                            {
+                                worksheet.Cells[hangTangdan + 1, 19].Value = listPlan[0].title;
+                            }
+
+                        }
+                        {
+                            var listPlan = danhSachLabel.Where(x => x.title.ToString().ToUpper().Contains("WAIT FOR CUS")).ToList();
+                            if (listPlan.Count > 0)
+                            {
+                                worksheet.Cells[hangTangdan + 1, 19].Value = listPlan[0].title;
+                            }
+
                         }
                         #endregion
                         ////File.WriteAllText("C:\\TGL\\394.html", driver.PageSource);

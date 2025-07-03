@@ -1,0 +1,1 @@
+https://chatbot-api.tgl-cloud.com/api/v1/chat/chat/full

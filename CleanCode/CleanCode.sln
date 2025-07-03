@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GlobalHookDemo", "..\global
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReadReport", "..\ReadReport\ReadReport.csproj", "{08C49BFE-F0F6-4D1A-A6BF-9A64320E1123}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AUTOTESTJSON", "..\AUTOTESTJSON\AUTOTESTJSON.csproj", "{BE4346FF-932A-437B-8D36-8D1280467DF0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{08C49BFE-F0F6-4D1A-A6BF-9A64320E1123}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{08C49BFE-F0F6-4D1A-A6BF-9A64320E1123}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{08C49BFE-F0F6-4D1A-A6BF-9A64320E1123}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BE4346FF-932A-437B-8D36-8D1280467DF0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BE4346FF-932A-437B-8D36-8D1280467DF0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BE4346FF-932A-437B-8D36-8D1280467DF0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BE4346FF-932A-437B-8D36-8D1280467DF0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

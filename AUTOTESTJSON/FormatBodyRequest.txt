@@ -1,1 +1,1 @@
-{"question":"$$J0","thread_id":"$$J1","project":"$$J2"}
+{"question":"$$J0","project":"$$J1"}

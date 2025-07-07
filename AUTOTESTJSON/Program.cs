@@ -4,6 +4,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Data;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -63,173 +64,237 @@ namespace AUTOTESTJSON
 
         public class ChatApiClient
         {
+            public static async Task Main(string[] args)
+            {
+                Console.WriteLine("1- Update All Test Case");
+                Console.WriteLine("2- Test All Test Case");
+                Console.WriteLine("3- Get ExpectedJson specific row");
+                Console.WriteLine("Enter option to run");
+
+                StringBuilder numericInput = new StringBuilder();
+                ConsoleKeyInfo keyInfo;
+
+                do
+                {
+                    keyInfo = Console.ReadKey(true); // Read key without displaying it
+
+                    // Check if the key is a digit (0-9)
+                    if (char.IsDigit(keyInfo.KeyChar))
+                    {
+                        numericInput.Append(keyInfo.KeyChar);
+                        Console.Write(keyInfo.KeyChar); // Display the digit back to the console
+                    }
+                    // Handle Backspace
+                    else if (keyInfo.Key == ConsoleKey.Backspace && numericInput.Length > 0)
+                    {
+                        numericInput.Remove(numericInput.Length - 1, 1);
+                        Console.Write("\b \b"); // Move cursor back, overwrite with space, move back again
+                    }
+                    // Ignore other keys except Enter
+                } while (keyInfo.Key != ConsoleKey.Enter);
+
+                Console.WriteLine();
+                var number = 3;
+                if (numericInput.Length > 0)
+                {
+                    if (int.TryParse(numericInput.ToString(), out number))
+                    {
+                        //Console.WriteLine($"You entered the number: {number}");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Error: Could not parse the entered number.");
+                        Console.WriteLine("\nPress any key to exit.");
+                        Console.ReadKey(true);
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("No number was entered.");
+                    Console.WriteLine("\nPress any key to exit.");
+                    Console.ReadKey(true);
+                }
+
+                switch (number)
+                {
+                    case 1:
+                        UpdateAllTestCase();
+                        break;
+                    case 2:
+                        TestAllTestCase();
+                        break;
+                    case 3:
+                        UpdateSpecificTC();
+                        break;
+                }
+                Console.ReadKey();
+            }
             #region Get expected json Input number
+            public static async Task UpdateSpecificTC()
+            {
+                Console.WriteLine("Enter a row number excel to update expected json");
 
-            //public static async Task Main(string[] args)
-            //{
-            //    Console.WriteLine("Enter a row number excel to update expected json");
+                StringBuilder numericInput = new StringBuilder();
+                ConsoleKeyInfo keyInfo;
 
-            //    StringBuilder numericInput = new StringBuilder();
-            //    ConsoleKeyInfo keyInfo;
+                do
+                {
+                    keyInfo = Console.ReadKey(true); // Read key without displaying it
 
-            //    do
-            //    {
-            //        keyInfo = Console.ReadKey(true); // Read key without displaying it
+                    // Check if the key is a digit (0-9)
+                    if (char.IsDigit(keyInfo.KeyChar))
+                    {
+                        numericInput.Append(keyInfo.KeyChar);
+                        Console.Write(keyInfo.KeyChar); // Display the digit back to the console
+                    }
+                    // Handle Backspace
+                    else if (keyInfo.Key == ConsoleKey.Backspace && numericInput.Length > 0)
+                    {
+                        numericInput.Remove(numericInput.Length - 1, 1);
+                        Console.Write("\b \b"); // Move cursor back, overwrite with space, move back again
+                    }
+                    // Ignore other keys except Enter
+                } while (keyInfo.Key != ConsoleKey.Enter);
 
-            //        // Check if the key is a digit (0-9)
-            //        if (char.IsDigit(keyInfo.KeyChar))
-            //        {
-            //            numericInput.Append(keyInfo.KeyChar);
-            //            Console.Write(keyInfo.KeyChar); // Display the digit back to the console
-            //        }
-            //        // Handle Backspace
-            //        else if (keyInfo.Key == ConsoleKey.Backspace && numericInput.Length > 0)
-            //        {
-            //            numericInput.Remove(numericInput.Length - 1, 1);
-            //            Console.Write("\b \b"); // Move cursor back, overwrite with space, move back again
-            //        }
-            //        // Ignore other keys except Enter
-            //    } while (keyInfo.Key != ConsoleKey.Enter);
-
-            //    Console.WriteLine();
-            //    var number = 3;
-            //    if (numericInput.Length > 0)
-            //    {
-            //        if (int.TryParse(numericInput.ToString(), out number))
-            //        {
-            //            //Console.WriteLine($"You entered the number: {number}");
-            //        }
-            //        else
-            //        {
-            //            Console.WriteLine("Error: Could not parse the entered number.");
-            //            Console.WriteLine("\nPress any key to exit.");
-            //            Console.ReadKey(true);
-            //        }
-            //    }
-            //    else
-            //    {
-            //        Console.WriteLine("No number was entered.");
-            //        Console.WriteLine("\nPress any key to exit.");
-            //        Console.ReadKey(true);
-            //    }
-
-
-            //    var minvalue = number;
-            //    var hangTangdan = number - 1;
-            //    #region Initail
-
-            //    var pathfolder = System.Reflection.Assembly.GetExecutingAssembly().Location;
-
-            //    var fileor = new FileInfo(pathfolder);
-            //    pathfolder = fileor.Directory.ToString();
-            //    var thongtinfile = pathfolder + "\\TemplateReport.xlsx";
-            //    string FileApiUrl = pathfolder + "\\URLTest.txt";
-            //    var apiUrl = File.ReadAllText(FileApiUrl).Trim();
-
-            //    var folderJson = pathfolder + @"\ExpectJSON\AiHolding\AiCad-sf\";
-
-            //    #endregion
-
-            //    if (!File.Exists(thongtinfile)) { Console.WriteLine("Not found template file."); Console.ReadKey(); return; }
-            //    ExcelPackage package = new ExcelPackage(new FileInfo(thongtinfile));
-            //    ExcelWorksheet worksheet = package.Workbook.Worksheets.FirstOrDefault();
-
-            //    // get number of rows and columns in the sheet
-            //    var maxvalue = worksheet.Dimension.Rows;
-            //    var previousNumber = "unknow";
-            //    for (int i = minvalue; i <= minvalue; i++)
-            //    {
-            //        try
-            //        {
-            //            hangTangdan++;
-            //            var IsPass = worksheet.Cells[hangTangdan, 12].Value.ToString();
-            //            if (IsPass != "Pass") continue;
-            //            var TCNumber = worksheet.Cells[hangTangdan, 2].Value;
-            //            if (TCNumber != null)
-            //            {
-            //                previousNumber = TCNumber.ToString();
-
-            //            }
-            //            else
-            //            {
-            //                Console.ReadKey();
-            //                continue;
-            //            }
+                Console.WriteLine();
+                var number = 3;
+                if (numericInput.Length > 0)
+                {
+                    if (int.TryParse(numericInput.ToString(), out number))
+                    {
+                        //Console.WriteLine($"You entered the number: {number}");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Error: Could not parse the entered number.");
+                        Console.WriteLine("\nPress any key to exit.");
+                        Console.ReadKey(true);
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("No number was entered.");
+                    Console.WriteLine("\nPress any key to exit.");
+                    Console.ReadKey(true);
+                }
 
 
+                var minvalue = number;
+                var hangTangdan = number - 1;
+                #region Initail
 
-            //            var testCaseName = "TC" + previousNumber;
+                var pathfolder = System.Reflection.Assembly.GetExecutingAssembly().Location;
 
-            //            var question = worksheet.Cells[hangTangdan, 4].Value?.ToString();
-            //            var listRequest = new List<string>();
-            //            listRequest.Add(question);
-            //            //listRequest.Add("fe9e982f-fbf0-41c3-90c2-da103767f7e1");
-            //            listRequest.Add("AiHoldings");
+                var fileor = new FileInfo(pathfolder);
+                pathfolder = fileor.Directory.ToString();
+                var thongtinfile = pathfolder + "\\TemplateReport.xlsx";
+                string FileApiUrl = pathfolder + "\\URLTest.txt";
+                var apiUrl = File.ReadAllText(FileApiUrl).Trim();
 
-            //            //string requestBody = "{\"question\":\"" + question + "\",\"thread_id\":\"fe9e982f-fbf0-41c3-90c2-da103767f7e1\",\"project\":\"AiHoldings\"}";
+                var folderJson = pathfolder + @"\ExpectJSON\";
 
-            //            string requestBody = File.ReadAllText(pathfolder + "\\FormatBodyRequest.txt");
-            //            for (int j = 0; j < listRequest.Count; j++)
-            //            {
-            //                requestBody = requestBody.Replace("$$J" + j, listRequest[j]);
+                #endregion
 
-            //            }
-            //            var jsonExpect = folderJson + testCaseName + ".json";
+                if (!File.Exists(thongtinfile)) { Console.WriteLine("Not found template file."); Console.ReadKey(); return; }
+                ExcelPackage package = new ExcelPackage(new FileInfo(thongtinfile));
+                ExcelWorksheet worksheet = package.Workbook.Worksheets.FirstOrDefault();
 
+                // get number of rows and columns in the sheet
+                var maxvalue = worksheet.Dimension.Rows;
+                var previousNumber = "unknow";
+                for (int i = minvalue; i <= minvalue; i++)
+                {
+                    try
+                    {
+                        hangTangdan++;
+                        var IsPass = worksheet.Cells[hangTangdan, 12].Value.ToString();
+                        if (IsPass != "Pass") continue;
+                        var TCNumber = worksheet.Cells[hangTangdan, 2].Value;
+                        if (TCNumber != null)
+                        {
+                            previousNumber = TCNumber.ToString();
 
-            //            using (HttpClient client = new HttpClient())
-            //            {
-            //                try
-            //                {
-            //                    StringContent content = new StringContent(requestBody, Encoding.UTF8, "application/json");
-
-            //                    // Send POST request
-            //                    HttpResponseMessage response = await client.PostAsync(apiUrl, content);
-
-            //                    // Ensure the request was successful
-            //                    response.EnsureSuccessStatusCode();
-
-            //                    // Read the entire response as a string
-            //                    string apiResponseString = await response.Content.ReadAsStringAsync();
-
-
-            //                    // Parse JSON from API
-            //                    JsonDocument apiJsonDocument = JsonDocument.Parse(apiResponseString);
-            //                    JsonElement apiRoot = apiJsonDocument.RootElement;
-            //                    File.WriteAllText(jsonExpect, apiRoot.GetRawText().Trim());
-            //                    Console.WriteLine(jsonExpect);
-            //                    Process.Start(jsonExpect);
-
-            //                }
-            //                catch (HttpRequestException e)
-            //                {
-            //                    Console.WriteLine(testCaseName + $" HTTP Error: {e.Message}");
-            //                }
-            //                catch (System.Text.Json.JsonException e)
-            //                {
-            //                    Console.WriteLine(testCaseName + $" JSON Parsing Error: {e.Message}");
-            //                }
-            //                catch (Exception e)
-            //                {
-            //                    Console.WriteLine(testCaseName + $" An error occurred: {e.Message}");
-            //                }
-            //                finally
-            //                {
-            //                    //Console.ReadKey();
-            //                }
-            //            }
-            //        }
-            //        catch (Exception EX)
-            //        {
+                        }
+                        else
+                        {
+                            Console.ReadKey();
+                            continue;
+                        }
 
 
-            //        }
 
-            //        Console.ReadKey();
-            //    }
+                        var testCaseName = "TC" + previousNumber;
+
+                        var question = worksheet.Cells[hangTangdan, 4].Value?.ToString();
+                        var listRequest = new List<string>();
+                        listRequest.Add(question);
+                        //listRequest.Add("fe9e982f-fbf0-41c3-90c2-da103767f7e1");
+                        listRequest.Add("AiHoldings");
+
+                        //string requestBody = "{\"question\":\"" + question + "\",\"thread_id\":\"fe9e982f-fbf0-41c3-90c2-da103767f7e1\",\"project\":\"AiHoldings\"}";
+
+                        string requestBody = File.ReadAllText(pathfolder + "\\FormatBodyRequest.txt");
+                        for (int j = 0; j < listRequest.Count; j++)
+                        {
+                            requestBody = requestBody.Replace("$$J" + j, listRequest[j]);
+
+                        }
+                        var jsonExpect = folderJson + testCaseName + ".json";
 
 
-            //}
+                        using (HttpClient client = new HttpClient())
+                        {
+                            try
+                            {
+                                StringContent content = new StringContent(requestBody, Encoding.UTF8, "application/json");
+
+                                // Send POST request
+                                HttpResponseMessage response = await client.PostAsync(apiUrl, content);
+
+                                // Ensure the request was successful
+                                response.EnsureSuccessStatusCode();
+
+                                // Read the entire response as a string
+                                string apiResponseString = await response.Content.ReadAsStringAsync();
+
+
+                                // Parse JSON from API
+                                JsonDocument apiJsonDocument = JsonDocument.Parse(apiResponseString);
+                                JsonElement apiRoot = apiJsonDocument.RootElement;
+                                File.WriteAllText(jsonExpect, apiRoot.GetRawText().Trim());
+                                Console.WriteLine(jsonExpect);
+                                Process.Start(jsonExpect);
+
+                            }
+                            catch (HttpRequestException e)
+                            {
+                                Console.WriteLine(testCaseName + $" HTTP Error: {e.Message}");
+                            }
+                            catch (System.Text.Json.JsonException e)
+                            {
+                                Console.WriteLine(testCaseName + $" JSON Parsing Error: {e.Message}");
+                            }
+                            catch (Exception e)
+                            {
+                                Console.WriteLine(testCaseName + $" An error occurred: {e.Message}");
+                            }
+                            finally
+                            {
+                                //Console.ReadKey();
+                            }
+                        }
+                    }
+                    catch (Exception EX)
+                    {
+
+
+                    }
+
+                    Console.ReadKey();
+                }
+
+
+            }
             #endregion
             #region test 1 work 
             //public static async Task Main(string[] args)
@@ -429,8 +494,9 @@ namespace AUTOTESTJSON
             //}
             #endregion
             #region test all execute multi thread
-            public static async Task Main(string[] args)
+            public static async Task TestAllTestCase()
             {
+                
                 var minvalue = 3;
                 // Use a ConcurrentBag to collect results from parallel tasks safely
                 ConcurrentBag<bool> testResults = new ConcurrentBag<bool>();
@@ -450,10 +516,12 @@ namespace AUTOTESTJSON
                 }
                 var apiUrl = File.ReadAllText(FileApiUrl).Trim();
 
-                var folderJson = Path.Combine(pathfolder, @"ExpectJSON\AiHolding\AiCad-sf");
-                if (!Directory.Exists(folderJson))
+                var folderJsonExpect = Path.Combine(pathfolder, @"ExpectJSON");
+                var folderJsonActual = Path.Combine(pathfolder, @"ActualJSON");
+                Directory.CreateDirectory(folderJsonActual);
+                if (!Directory.Exists(folderJsonExpect))
                 {
-                    Console.WriteLine($"Error: Expected JSON folder not found at {folderJson}. Please ensure it exists.");
+                    Console.WriteLine($"Error: Expected JSON folder not found at {folderJsonExpect}. Please ensure it exists.");
                     Console.ReadKey(); // Pause to see error
                     return;
                 }
@@ -485,7 +553,7 @@ namespace AUTOTESTJSON
                     var testCaseColumnNumber = 2;
                     var listAllTest = new List<Tuple<string, int>>();
 
-                    listAllTest.Add(new Tuple<string, int> ("",3));
+                    listAllTest.Add(new Tuple<string, int>("", 3));
 
 
                     for (int k = minvalue; k <= maxvalue; k = k + 10)
@@ -514,7 +582,7 @@ namespace AUTOTESTJSON
                             }
                             var previousNumber = TCNumberRaw.ToString(); // This becomes the actual TCNumber
                             var testCaseName = "TC" + previousNumber; // Construct test case name
-                    
+
                             var question = worksheet.Cells[currentRow, 4].Value?.ToString();
 
                             if (string.IsNullOrWhiteSpace(question))
@@ -524,7 +592,8 @@ namespace AUTOTESTJSON
                             }
 
                             // Define the path for the expected JSON for this test case
-                            var jsonExpectFilePath = Path.Combine(folderJson, $"{testCaseName}.json");
+                            var jsonExpectFilePath = Path.Combine(folderJsonExpect, $"{testCaseName}.json");
+                            var jsonActualFilePath = Path.Combine(folderJsonActual, $"{testCaseName}.json");
 
                             if (!File.Exists(jsonExpectFilePath))
                             {
@@ -533,7 +602,7 @@ namespace AUTOTESTJSON
                             }
 
                             string predefinedJsonString = File.ReadAllText(jsonExpectFilePath).Trim();
-                            var jsonExpect = folderJson + testCaseName + ".json";
+                            var jsonExpect = folderJsonExpect + testCaseName + ".json";
 
                             var listRequest = new List<string>();
                             listRequest.Add(question);
@@ -546,7 +615,7 @@ namespace AUTOTESTJSON
                                 requestBody = requestBody.Replace("$$J" + j, listRequest[j]);
 
                             }
-                            // Add the task to the list
+
                             apiCallTasks.Add(Task.Run(async () => // Task.Run moves the async operation to a ThreadPool thread
                             {
                                 using (HttpClient client = new HttpClient())
@@ -565,6 +634,10 @@ namespace AUTOTESTJSON
 
                                         // Perform comparison and add result to concurrent bag
                                         bool testPassed = StringComparer.CompareAndShowDifferencesWithZip(apiRoot.GetRawText().Trim(), predefinedJsonString, testCaseName);
+                                        if (!testPassed)
+                                        {
+                                            File.WriteAllText(jsonActualFilePath, apiRoot.GetRawText().Trim());
+                                        }
                                         testResults.Add(testPassed);
                                     }
                                     catch (HttpRequestException e)
@@ -611,6 +684,7 @@ namespace AUTOTESTJSON
                     Console.WriteLine($"Total tests run: {testResults.Count}");
                     Console.ForegroundColor = isTotalTestPassed ? ConsoleColor.Green : ConsoleColor.Red;
                     Console.WriteLine($"Overall Test Result: {(isTotalTestPassed ? "PASSED" : "FAILED")}");
+                    if (!isTotalTestPassed) Console.WriteLine($"Please compare file fail in path {folderJsonActual}");
                     Console.ResetColor();
                     Console.WriteLine("------------------------------------");
                 }
@@ -630,225 +704,228 @@ namespace AUTOTESTJSON
             }
             #endregion
             #region Get all execute json multi thread
-            //public static async Task Main(string[] args)
-            //{
-            //    var minvalue = 3;
-            //    // Use a ConcurrentBag to collect results from parallel tasks safely
-            //    ConcurrentBag<bool> testResults = new ConcurrentBag<bool>();
 
-            //    #region Initial Setup
-            //    var pathfolder = System.Reflection.Assembly.GetExecutingAssembly().Location;
-            //    var fileor = new FileInfo(pathfolder);
-            //    pathfolder = fileor.Directory.ToString();
-            //    var thongtinfile = Path.Combine(pathfolder, "TemplateReport.xlsx");
-            //    string FileApiUrl = Path.Combine(pathfolder, "URLTest.txt");
+            public static async Task UpdateAllTestCase()
+            { 
+                var minvalue = 3;
+                // Use a ConcurrentBag to collect results from parallel tasks safely
+                ConcurrentBag<bool> testResults = new ConcurrentBag<bool>();
 
-            //    if (!File.Exists(FileApiUrl))
-            //    {
-            //        Console.WriteLine($"Error: URLTest.txt not found at {FileApiUrl}. Please create it with the API URL.");
-            //        Console.ReadKey(); // Pause to see error
-            //        return;
-            //    }
-            //    var apiUrl = File.ReadAllText(FileApiUrl).Trim();
+                #region Initial Setup
+                var pathfolder = System.Reflection.Assembly.GetExecutingAssembly().Location;
+              
+                pathfolder = Path.GetDirectoryName(pathfolder);
 
-            //    var folderJson = Path.Combine(pathfolder, @"ExpectJSON\AiHolding\AiCad-sf");
-            //    if (!Directory.Exists(folderJson))
-            //    {
-            //        Console.WriteLine($"Error: Expected JSON folder not found at {folderJson}. Please ensure it exists.");
-            //        Console.ReadKey(); // Pause to see error
-            //        return;
-            //    }
-            //    #endregion
+             
+                var thongtinfile = Path.Combine(pathfolder, "TemplateReport.xlsx");
+                string FileApiUrl = Path.Combine(pathfolder, "URLTest.txt");
 
-            //    if (!File.Exists(thongtinfile))
-            //    {
-            //        Console.WriteLine("Not found template file.");
-            //        Console.ReadKey(); // Pause to see error
-            //        return;
-            //    }
+                if (!File.Exists(FileApiUrl))
+                {
+                    Console.WriteLine($"Error: URLTest.txt not found at {FileApiUrl}. Please create it with the API URL.");
+                    Console.ReadKey(); // Pause to see error
+                    return;
+                }
+                var apiUrl = File.ReadAllText(FileApiUrl).Trim();
 
-            //    ExcelPackage package = null;
-            //    ExcelWorksheet worksheet = null;
+                var folderJson = Path.Combine(pathfolder, @"ExpectJSON");
+                if (!Directory.Exists(folderJson))
+                {
+                    Console.WriteLine($"Error: Expected JSON folder not found at {folderJson}. Please ensure it exists.");
+                    Console.ReadKey(); // Pause to see error
+                    return;
+                }
+                #endregion
 
-            //    try
-            //    {
-            //        package = new ExcelPackage(new FileInfo(thongtinfile));
-            //        worksheet = package.Workbook.Worksheets.FirstOrDefault();
+                if (!File.Exists(thongtinfile))
+                {
+                    Console.WriteLine("Not found template file.");
+                    Console.ReadKey(); // Pause to see error
+                    return;
+                }
 
-            //        if (worksheet == null)
-            //        {
-            //            Console.WriteLine("Error: No worksheet found in TemplateReport.xlsx.");
-            //            Console.ReadKey(); // Pause to see error
-            //            return;
-            //        }
+                ExcelPackage package = null;
+                ExcelWorksheet worksheet = null;
 
-            //        var maxvalue = worksheet.Dimension.Rows;
+                try
+                {
+                    package = new ExcelPackage(new FileInfo(thongtinfile));
+                    worksheet = package.Workbook.Worksheets.FirstOrDefault();
 
-            //        // List to hold all the tasks for parallel execution
-                    
+                    if (worksheet == null)
+                    {
+                        Console.WriteLine("Error: No worksheet found in TemplateReport.xlsx.");
+                        Console.ReadKey(); // Pause to see error
+                        return;
+                    }
 
+                    var maxvalue = worksheet.Dimension.Rows;
 
-            //        for (int k = minvalue; k <= maxvalue; k=k+10)
-            //        {
-            //            Console.WriteLine($"Starting {k } potential API calls in parallel...");
-            //            List<Task> apiCallTasks = new List<Task>();
-            //            for (int i = k; i <= k+10; i++)
-            //            {
-            //                // Capture loop variable for closure (crucial for async loops)
-            //                int currentRow = i;
-
-            //                // Read values from Excel. Use null-conditional operator and null-coalescing for robustness.
-            //                // Note: hangTangdan was incremented inside the loop. To match its behavior, if TCNumber
-            //                // is read from Cells[hangTangdan, 2] and hangTangdan started at 2 and incremented immediately,
-            //                // then for the first iteration (i=3), hangTangdan becomes 3, meaning Cells[3,2] is read.
-            //                // We'll adjust `currentRow` to reflect the actual row being processed.
-            //                // In your original code, `hangTangdan` starts at 2, then `hangTangdan++` makes it 3.
-            //                // So, `worksheet.Cells[hangTangdan, 2].Value` corresponds to `worksheet.Cells[currentRow, 2].Value` where `currentRow` starts at `minvalue`.
-            //                // Let's ensure we are reading from `currentRow` directly to avoid confusion.
-
-            //                var TCNumberRaw = worksheet.Cells[currentRow, 2].Value;
-            //                if (TCNumberRaw == null)
-            //                {
-            //                    Console.WriteLine($"Skipping row {currentRow}: TCNumber (column B) is empty.");
-            //                    continue; // Skip this row if TCNumber is null
-            //                }
-            //                var previousNumber = TCNumberRaw.ToString(); // This becomes the actual TCNumber
-            //                var testCaseName = "TC" + previousNumber; // Construct test case name
-            //                var question = worksheet.Cells[currentRow, 4].Value?.ToString();
-            //                var IsPass = worksheet.Cells[currentRow, 12].Value?.ToString();
-
-            //                if (IsPass != "Pass")
-            //                {
-            //                    continue;
-            //                }
-
-            //                if (string.IsNullOrWhiteSpace(question))
-            //                {
-            //                    Console.WriteLine($"Skipping row {currentRow}: Question (column D) is empty.");
-            //                    continue; // Skip if question is empty
-            //                }
+                    // List to hold all the tasks for parallel execution
 
 
 
-            //                if (string.IsNullOrWhiteSpace(question))
-            //                {
-            //                    Console.WriteLine($"Skipping row {currentRow}: Question (column D) is empty.");
-            //                    continue; // Skip if question is empty
-            //                }
+                    for (int k = minvalue; k <= maxvalue; k = k + 10)
+                    {
+                        Console.WriteLine($"Starting {k} potential API calls in parallel...");
+                        List<Task> apiCallTasks = new List<Task>();
+                        for (int i = k; i <= k + 10; i++)
+                        {
+                            // Capture loop variable for closure (crucial for async loops)
+                            int currentRow = i;
 
-            //                // Define the path for the expected JSON for this test case
-            //                var jsonExpectFilePath = Path.Combine(folderJson, $"{testCaseName}.json");
+                            // Read values from Excel. Use null-conditional operator and null-coalescing for robustness.
+                            // Note: hangTangdan was incremented inside the loop. To match its behavior, if TCNumber
+                            // is read from Cells[hangTangdan, 2] and hangTangdan started at 2 and incremented immediately,
+                            // then for the first iteration (i=3), hangTangdan becomes 3, meaning Cells[3,2] is read.
+                            // We'll adjust `currentRow` to reflect the actual row being processed.
+                            // In your original code, `hangTangdan` starts at 2, then `hangTangdan++` makes it 3.
+                            // So, `worksheet.Cells[hangTangdan, 2].Value` corresponds to `worksheet.Cells[currentRow, 2].Value` where `currentRow` starts at `minvalue`.
+                            // Let's ensure we are reading from `currentRow` directly to avoid confusion.
 
-            //                //if (!File.Exists(jsonExpectFilePath))
-            //                //{
-            //                //    Console.WriteLine($"Skipping row {currentRow} ({testCaseName}): Expected JSON file not found at {jsonExpectFilePath}.");
-            //                //    continue; // Skip if expected JSON file is missing
-            //                //}
+                            var TCNumberRaw = worksheet.Cells[currentRow, 2].Value;
+                            if (TCNumberRaw == null)
+                            {
+                                Console.WriteLine($"Skipping row {currentRow}: TCNumber (column B) is empty.");
+                                continue; // Skip this row if TCNumber is null
+                            }
+                            var previousNumber = TCNumberRaw.ToString(); // This becomes the actual TCNumber
+                            var testCaseName = "TC" + previousNumber; // Construct test case name
+                            var question = worksheet.Cells[currentRow, 4].Value?.ToString();
+                            var IsPass = worksheet.Cells[currentRow, 12].Value?.ToString();
 
-            //                //string predefinedJsonString = File.ReadAllText(jsonExpectFilePath).Trim();
-            //                //var jsonExpect = folderJson + testCaseName + ".json";
+                            if (IsPass != "Pass")
+                            {
+                                continue;
+                            }
 
-            //                var listRequest = new List<string>();
-            //                listRequest.Add(question);
-            //                //listRequest.Add("fe9e982f-fbf0-41c3-90c2-da103767f7e1");
-            //                listRequest.Add("AiHoldings");
-
-            //                string requestBody = File.ReadAllText(pathfolder + "\\FormatBodyRequest.txt");
-            //                for (int j = 0; j < listRequest.Count; j++)
-            //                {
-            //                    requestBody = requestBody.Replace("$$J" + j, listRequest[j]);
-
-            //                }
-            //                // Add the task to the list
-            //                apiCallTasks.Add(Task.Run(async () => // Task.Run moves the async operation to a ThreadPool thread
-            //                {
-            //                    using (HttpClient client = new HttpClient())
-            //                    {
-            //                        try
-            //                        {
-            //                            StringContent content = new StringContent(requestBody, Encoding.UTF8, "application/json");
-
-            //                            HttpResponseMessage response = await client.PostAsync(apiUrl, content);
-            //                            response.EnsureSuccessStatusCode(); // Throws if status code is not 2xx
-
-            //                            string apiResponseString = await response.Content.ReadAsStringAsync();
-
-            //                            JsonDocument apiJsonDocument = JsonDocument.Parse(apiResponseString);
-            //                            JsonElement apiRoot = apiJsonDocument.RootElement;
-            //                            File.WriteAllText(jsonExpectFilePath, apiRoot.GetRawText().Trim());
-            //                            Console.WriteLine(jsonExpectFilePath);
-            //                            testResults.Add(true);
-
-            //                            // Perform comparison and add result to concurrent bag
-            //                            //bool testPassed = StringComparer.CompareAndShowDifferencesWithZip(apiRoot.GetRawText().Trim(), predefinedJsonString, testCaseName);
-            //                            //testResults.Add(testPassed);
-            //                        }
-            //                        catch (HttpRequestException e)
-            //                        {
-            //                            lock (Console.Out)
-            //                            {
-            //                                Console.ForegroundColor = ConsoleColor.Red;
-            //                                Console.WriteLine($"HTTP Error for {testCaseName} (Row {currentRow}): {e.Message}");
-            //                                Console.ResetColor();
-            //                            }
-            //                            testResults.Add(false); // Mark as failed due to HTTP error
-            //                        }
-            //                        catch (System.Text.Json.JsonException e)
-            //                        {
-            //                            lock (Console.Out)
-            //                            {
-            //                                Console.ForegroundColor = ConsoleColor.Red;
-            //                                Console.WriteLine($"JSON Parsing Error for {testCaseName} (Row {currentRow}): {e.Message}");
-            //                                Console.ResetColor();
-            //                            }
-            //                            testResults.Add(false); // Mark as failed due to JSON parsing error
-            //                        }
-            //                        catch (Exception e)
-            //                        {
-            //                            lock (Console.Out)
-            //                            {
-            //                                Console.ForegroundColor = ConsoleColor.Red;
-            //                                Console.WriteLine($"An unexpected error occurred for {testCaseName} (Row {currentRow}): {e.Message}");
-            //                                Console.ResetColor();
-            //                            }
-            //                            testResults.Add(false); // Mark as failed due to other error
-            //                        }
-            //                    }
-            //                }));
-            //            }
-
-            //            // Wait for all tasks to complete
-            //            await Task.WhenAll(apiCallTasks);
+                            if (string.IsNullOrWhiteSpace(question))
+                            {
+                                Console.WriteLine($"Skipping row {currentRow}: Question (column D) is empty.");
+                                continue; // Skip if question is empty
+                            }
 
 
-            //        }
-            //        // Iterate through rows and create tasks for each API call
-     
 
-            //        // Determine overall test result
-            //        bool isTotalTestPassed = testResults.All(result => result == true);
+                            if (string.IsNullOrWhiteSpace(question))
+                            {
+                                Console.WriteLine($"Skipping row {currentRow}: Question (column D) is empty.");
+                                continue; // Skip if question is empty
+                            }
 
-            //        Console.WriteLine("\n------------------------------------");
-            //        Console.WriteLine($"Total tests run: {testResults.Count}");
-            //        Console.ForegroundColor = isTotalTestPassed ? ConsoleColor.Green : ConsoleColor.Red;
-            //        Console.WriteLine($"Overall Test Result: {(isTotalTestPassed ? "PASSED" : "FAILED")}");
-            //        Console.ResetColor();
-            //        Console.WriteLine("------------------------------------");
-            //    }
-            //    catch (Exception ex)
-            //    {
-            //        Console.ForegroundColor = ConsoleColor.Red;
-            //        Console.WriteLine($"\nAn unhandled error occurred in Main execution: {ex.Message}");
-            //        Console.WriteLine(ex.StackTrace);
-            //        Console.ResetColor();
-            //    }
-            //    finally
-            //    {
-            //        package?.Dispose(); // Dispose the ExcelPackage to release the file
-            //        Console.WriteLine("\nPress any key to exit.");
-            //        Console.ReadKey(); // Keep this one at the very end to pause the console.
-            //    }
-            //}
+                            // Define the path for the expected JSON for this test case
+                            var jsonExpectFilePath = Path.Combine(folderJson, $"{testCaseName}.json");
+
+                            //if (!File.Exists(jsonExpectFilePath))
+                            //{
+                            //    Console.WriteLine($"Skipping row {currentRow} ({testCaseName}): Expected JSON file not found at {jsonExpectFilePath}.");
+                            //    continue; // Skip if expected JSON file is missing
+                            //}
+
+                            //string predefinedJsonString = File.ReadAllText(jsonExpectFilePath).Trim();
+                            //var jsonExpect = folderJson + testCaseName + ".json";
+
+                            var listRequest = new List<string>();
+                            listRequest.Add(question);
+                            //listRequest.Add("fe9e982f-fbf0-41c3-90c2-da103767f7e1");
+                            listRequest.Add("AiHoldings");
+
+                            string requestBody = File.ReadAllText(pathfolder + "\\FormatBodyRequest.txt");
+                            for (int j = 0; j < listRequest.Count; j++)
+                            {
+                                requestBody = requestBody.Replace("$$J" + j, listRequest[j]);
+
+                            }
+                            // Add the task to the list
+                            apiCallTasks.Add(Task.Run(async () => // Task.Run moves the async operation to a ThreadPool thread
+                            {
+                                using (HttpClient client = new HttpClient())
+                                {
+                                    try
+                                    {
+                                        StringContent content = new StringContent(requestBody, Encoding.UTF8, "application/json");
+
+                                        HttpResponseMessage response = await client.PostAsync(apiUrl, content);
+                                        response.EnsureSuccessStatusCode(); // Throws if status code is not 2xx
+
+                                        string apiResponseString = await response.Content.ReadAsStringAsync();
+
+                                        JsonDocument apiJsonDocument = JsonDocument.Parse(apiResponseString);
+                                        JsonElement apiRoot = apiJsonDocument.RootElement;
+                                        File.WriteAllText(jsonExpectFilePath, apiRoot.GetRawText().Trim());
+                                        Console.WriteLine(jsonExpectFilePath);
+                                        testResults.Add(true);
+
+                                        // Perform comparison and add result to concurrent bag
+                                        //bool testPassed = StringComparer.CompareAndShowDifferencesWithZip(apiRoot.GetRawText().Trim(), predefinedJsonString, testCaseName);
+                                        //testResults.Add(testPassed);
+                                    }
+                                    catch (HttpRequestException e)
+                                    {
+                                        lock (Console.Out)
+                                        {
+                                            Console.ForegroundColor = ConsoleColor.Red;
+                                            Console.WriteLine($"HTTP Error for {testCaseName} (Row {currentRow}): {e.Message}");
+                                            Console.ResetColor();
+                                        }
+                                        testResults.Add(false); // Mark as failed due to HTTP error
+                                    }
+                                    catch (System.Text.Json.JsonException e)
+                                    {
+                                        lock (Console.Out)
+                                        {
+                                            Console.ForegroundColor = ConsoleColor.Red;
+                                            Console.WriteLine($"JSON Parsing Error for {testCaseName} (Row {currentRow}): {e.Message}");
+                                            Console.ResetColor();
+                                        }
+                                        testResults.Add(false); // Mark as failed due to JSON parsing error
+                                    }
+                                    catch (Exception e)
+                                    {
+                                        lock (Console.Out)
+                                        {
+                                            Console.ForegroundColor = ConsoleColor.Red;
+                                            Console.WriteLine($"An unexpected error occurred for {testCaseName} (Row {currentRow}): {e.Message}");
+                                            Console.ResetColor();
+                                        }
+                                        testResults.Add(false); // Mark as failed due to other error
+                                    }
+                                }
+                            }));
+                        }
+
+                        // Wait for all tasks to complete
+                        await Task.WhenAll(apiCallTasks);
+
+
+                    }
+                    // Iterate through rows and create tasks for each API call
+
+
+                    // Determine overall test result
+                    bool isTotalTestPassed = testResults.All(result => result == true);
+
+                    Console.WriteLine("\n------------------------------------");
+                    Console.WriteLine($"Total tests run: {testResults.Count}");
+                    Console.ForegroundColor = isTotalTestPassed ? ConsoleColor.Green : ConsoleColor.Red;
+                    Console.WriteLine($"Update test case: {(isTotalTestPassed ? "PASSED" : "FAILED")}");
+                    Console.ResetColor();
+                    Console.WriteLine("------------------------------------");
+                }
+                catch (Exception ex)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine($"\nAn unhandled error occurred in Main execution: {ex.Message}");
+                    Console.WriteLine(ex.StackTrace);
+                    Console.ResetColor();
+                }
+                finally
+                {
+                    package?.Dispose(); // Dispose the ExcelPackage to release the file
+                    Console.WriteLine("\nPress any key to exit.");
+                    Console.ReadKey(); // Keep this one at the very end to pause the console.
+                }
+            }
             #endregion
         }
 
@@ -970,8 +1047,8 @@ namespace AUTOTESTJSON
                     foreach (var diff in differences)
                     {
                         Console.WriteLine(testCaseName + $"  Index {diff.Index}: '{diff.Char1}' (String 1) vs '{diff.Char2}' (String 2)");
-                    }
                         return false;
+                    }
                 }
 
                 if (s1.Length != s2.Length)

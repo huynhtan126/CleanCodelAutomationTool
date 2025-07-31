@@ -1,4 +1,5 @@
-﻿using OfficeOpenXml;
+﻿using Newtonsoft.Json.Linq;
+using OfficeOpenXml;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Information;
 using System;
 using System.Collections.Concurrent;
@@ -64,6 +65,30 @@ namespace AUTOTESTJSON
 
         public class ChatApiClient
         {
+            public static void Main1(string[] args)
+            {
+                string string1 = "Hello, World!";
+                string string2 = "Helllo, Wold!";
+
+                double percentageDiff = GetDifferencePercentage(string1, string2);
+                Console.WriteLine($"The percentage difference between '{string1}' and '{string2}' is: {percentageDiff:F2}%");
+
+                string string3 = "apple";
+                string string4 = "aple";
+                percentageDiff = GetDifferencePercentage(string3, string4);
+                Console.WriteLine($"The percentage difference between '{string3}' and '{string4}' is: {percentageDiff:F2}%");
+
+                string string5 = "test";
+                string string6 = "test";
+                percentageDiff = GetDifferencePercentage(string5, string6);
+                Console.WriteLine($"The percentage difference between '{string5}' and '{string6}' is: {percentageDiff:F2}%");
+
+                string string7 = "";
+                string string8 = "abc";
+                percentageDiff = GetDifferencePercentage(string7, string8);
+                Console.WriteLine($"The percentage difference between '{string7}' and '{string8}' is: {percentageDiff:F2}%");
+                Console.ReadLine();
+            }
             public static async Task Main(string[] args)
             {
                 Console.WriteLine("1- Update All Test Case");
@@ -496,7 +521,7 @@ namespace AUTOTESTJSON
             #region test all execute multi thread
             public static async Task TestAllTestCase()
             {
-                
+
                 var minvalue = 3;
                 // Use a ConcurrentBag to collect results from parallel tasks safely
                 ConcurrentBag<bool> testResults = new ConcurrentBag<bool>();
@@ -633,7 +658,13 @@ namespace AUTOTESTJSON
                                         JsonElement apiRoot = apiJsonDocument.RootElement;
 
                                         // Perform comparison and add result to concurrent bag
-                                        bool testPassed = StringComparer.CompareAndShowDifferencesWithZip(apiRoot.GetRawText().Trim(), predefinedJsonString, testCaseName);
+                                        //bool testPassed = StringComparer.CompareAndShowDifferencesWithZip(apiRoot.GetRawText().Trim(), predefinedJsonString, testCaseName);
+                                        //bool testPassed = StringComparer.CompareAndShowDifferencesWithZip(, predefinedJsonString, testCaseName);
+
+                                        //var percent = CalculateLevenshteinDistance(apiRoot.GetRawText().Trim().Replace(" ",string.Empty), predefinedJsonString); ;
+                                        var percent = GetJaccardPercentageDifference(apiRoot.GetRawText().Trim().Replace(" ",string.Empty), predefinedJsonString.Replace(" ", string.Empty)); ;
+                                        Console.WriteLine(testCaseName + " % " + percent);
+                                        var testPassed = percent < 0;
                                         if (!testPassed)
                                         {
                                             File.WriteAllText(jsonActualFilePath, apiRoot.GetRawText().Trim());
@@ -687,6 +718,7 @@ namespace AUTOTESTJSON
                     if (!isTotalTestPassed) Console.WriteLine($"Please compare file fail in path {folderJsonActual}");
                     Console.ResetColor();
                     Console.WriteLine("------------------------------------");
+                    Process.Start(folderJsonActual);
                 }
                 catch (Exception ex)
                 {
@@ -706,17 +738,17 @@ namespace AUTOTESTJSON
             #region Get all execute json multi thread
 
             public static async Task UpdateAllTestCase()
-            { 
+            {
                 var minvalue = 3;
                 // Use a ConcurrentBag to collect results from parallel tasks safely
                 ConcurrentBag<bool> testResults = new ConcurrentBag<bool>();
 
                 #region Initial Setup
                 var pathfolder = System.Reflection.Assembly.GetExecutingAssembly().Location;
-              
+
                 pathfolder = Path.GetDirectoryName(pathfolder);
 
-             
+
                 var thongtinfile = Path.Combine(pathfolder, "TemplateReport.xlsx");
                 string FileApiUrl = Path.Combine(pathfolder, "URLTest.txt");
 
@@ -1070,7 +1102,106 @@ namespace AUTOTESTJSON
                 }
                 return true;
             }
+
+
+
         }
+        public static int CalculateLevenshteinDistance(string s, string t)
+        {
+            if (string.IsNullOrEmpty(s))
+            {
+                return string.IsNullOrEmpty(t) ? 0 : t.Length;
+            }
+            if (string.IsNullOrEmpty(t))
+            {
+                return s.Length;
+            }
+
+            int n = s.Length;
+            int m = t.Length;
+            int[,] d = new int[n + 1, m + 1];
+
+            // Initialize the distance matrix
+            for (int i = 0; i <= n; i++)
+            {
+                d[i, 0] = i;
+            }
+            for (int j = 0; j <= m; j++)
+            {
+                d[0, j] = j;
+            }
+
+            // Fill the distance matrix
+            for (int i = 1; i <= n; i++)
+            {
+                for (int j = 1; j <= m; j++)
+                {
+                    int cost = (t[j - 1] == s[i - 1]) ? 0 : 1;
+
+                    d[i, j] = Math.Min(
+                        Math.Min(d[i - 1, j] + 1,    // Deletion
+                                 d[i, j - 1] + 1),    // Insertion
+                        d[i - 1, j - 1] + cost);      // Substitution
+                }
+            }
+            return d[n, m];
+        }
+
+        // Calculates the percentage difference based on Jaccard Similarity
+        public static double GetJaccardPercentageDifference(string s1, string s2)
+        {
+            // Tokenize strings into sets of words (case-insensitive)
+            HashSet<string> set1 = new HashSet<string>(s1.ToLower().Split(new char[] { ' ', ',', '.', ';', '!', '?' }, StringSplitOptions.RemoveEmptyEntries));
+            HashSet<string> set2 = new HashSet<string>(s2.ToLower().Split(new char[] { ' ', ',', '.', ';', '!', '?' }, StringSplitOptions.RemoveEmptyEntries));
+
+            double jaccardSimilarity = CalculateJaccardSimilarity(set1, set2);
+            double percentageDifference = (1.0 - jaccardSimilarity) * 100.0;
+            return percentageDifference;
+        }
+
+        public static double GetDifferencePercentage(string s1, string s2)
+        {
+            if (string.IsNullOrEmpty(s1) && string.IsNullOrEmpty(s2))
+            {
+                return 0.0; // Both are empty, 0% difference
+            }
+            if (string.IsNullOrEmpty(s1) || string.IsNullOrEmpty(s2))
+            {
+                // One is empty, difference is 100% of the non-empty string's length
+                return 100.0;
+            }
+
+            int maxLength = Math.Max(s1.Length, s2.Length);
+            if (maxLength == 0) return 0.0; // Should not happen if previous checks work
+
+            int distance = CalculateLevenshteinDistance(s1, s2);
+            double difference = (double)distance / maxLength;
+            return difference * 100.0;
+        }
+
+        public static double CalculateJaccardSimilarity(HashSet<string> set1, HashSet<string> set2)
+        {
+            if (set1 == null || set2 == null)
+            {
+                throw new ArgumentNullException("Input sets cannot be null.");
+            }
+
+            if (!set1.Any() && !set2.Any())
+            {
+                return 1.0; // Both empty, considered 100% similar
+            }
+
+            // Calculate intersection
+            var intersection = set1.Intersect(set2).Count();
+
+            // Calculate union
+            var union = set1.Union(set2).Count();
+
+            if (union == 0) return 0.0; // Should only happen if both sets were empty, handled above
+
+            return (double)intersection / union;
+        }
+
         public class ExcelRowData
         {
             public int RowNumber { get; set; }

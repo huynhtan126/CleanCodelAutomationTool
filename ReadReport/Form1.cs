@@ -69,8 +69,8 @@ namespace ReadReport
                 var hangTangdan = 10;
                 for (int i = minvalue; i <= maxvalue; i++)
                 {
-                        worksheet.Cells[hangTangdan + 1, 1].Value = cotTangdan;
-                        cotTangdan++;
+                    worksheet.Cells[hangTangdan + 1, 1].Value = cotTangdan;
+                    cotTangdan++;
                     try
                     {
                         var pathIssue = "https://gitlab.tgl-cloud.com/PrimaSolutions/newcadgrp/newcad/-/issues/" + i;

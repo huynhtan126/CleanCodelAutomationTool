@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json.Linq;
 using OfficeOpenXml;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Information;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.Numeric;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -10,8 +11,10 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace AUTOTESTJSON
@@ -62,7 +65,7 @@ namespace AUTOTESTJSON
         //}
 
         #endregion
-
+        private static bool _isModeFile = false;
         public class ChatApiClient
         {
             public static void Main1(string[] args)
@@ -139,7 +142,9 @@ namespace AUTOTESTJSON
                     Console.WriteLine("\nPress any key to exit.");
                     Console.ReadKey(true);
                 }
+                var pathfolder = System.Reflection.Assembly.GetExecutingAssembly().Location;
 
+                _pathfolder = Path.GetDirectoryName(pathfolder);
                 switch (number)
                 {
                     case 1:
@@ -153,6 +158,95 @@ namespace AUTOTESTJSON
                         break;
                 }
                 Console.ReadKey();
+            }
+
+            public static async Task Main3(string[] args)
+            {
+                string apiUrl = "https://uncommon-pangolin-newly.ngrok-free.app/AIPDFProfile";
+                string filePath = @"C:\TGL\CleanCode\CleanCodelAutomationTool\AUTOTESTJSON\FolderSend\a.pdf";
+                if (!File.Exists(filePath))
+                {
+                    Console.WriteLine("File not found: " + filePath);
+                    return;
+                }
+                var handler = new HttpClientHandler();
+                handler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true;
+
+                using (var client = new HttpClient(handler))
+                using (var form = new MultipartFormDataContent())
+                {
+                    client.Timeout = TimeSpan.FromMinutes(50);
+                    // Tạo stream cho file PDF
+                    var fileStream = File.OpenRead(filePath);
+                    var fileContent = new StreamContent(fileStream);
+                    fileContent.Headers.ContentType = MediaTypeHeaderValue.Parse("application/pdf");
+                    // Thêm vào form-data, trường phải tên là "file" mới đúng!
+                    form.Add(fileContent, "file", Path.GetFileName(filePath));
+
+                    // Gửi POST
+                    var response = await client.PostAsync(apiUrl, form);
+                    string apiResponseString = await response.Content.ReadAsStringAsync();
+
+                    if (!response.IsSuccessStatusCode)
+                    {
+                        Console.WriteLine($"Status: {response.StatusCode}");
+                        Console.WriteLine($"Body: {apiResponseString}");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Success:");
+                        Console.WriteLine(apiResponseString);
+                    }
+                }
+            }
+            private static string _pathfolder;
+            private static string _jsonOut;
+            private async static void PostAPI(List<string> listRequest, string apiUrl, HttpClient client)
+            {
+                _jsonOut = "PostAPIStart";
+                string requestBody = File.ReadAllText(_pathfolder + "\\FormatBodyRequest.txt");
+                for (int j = 0; j < listRequest.Count; j++)
+                {
+                    requestBody = requestBody.Replace("$$J" + j, listRequest[j]);
+
+                }
+                HttpResponseMessage response;
+                var listFile = Directory.GetFiles(_pathfolder + "\\FolderSend")
+                    .Select(Path.GetFileName)
+                    .ToList();
+                if (listFile.Count > 0)
+                {
+                    var handler = new HttpClientHandler();
+                    handler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true;
+                    client.Timeout = TimeSpan.FromMinutes(50);
+                    var form = new MultipartFormDataContent();
+
+                    foreach (var item in listFile)
+                    {
+                        if (item != string.Empty && !string.IsNullOrWhiteSpace(item))
+                        {
+                            var fileStreamItem = File.OpenRead(_pathfolder + "\\FolderSend\\" + item.Trim());
+                            var fileContentItem = new StreamContent(fileStreamItem);
+                            fileContentItem.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
+                            form.Add(fileContentItem, "file", Path.GetFileName(item.Trim()));
+                        }
+                    }
+                    if (requestBody != string.Empty && !string.IsNullOrWhiteSpace(requestBody))
+                    {
+                        form.Add(new StringContent(requestBody, Encoding.UTF8, "application/json"), "jsonBody");
+                    }
+
+                    response = await client.PostAsync(apiUrl, form);
+                }
+                else
+                {
+                    StringContent content = new StringContent(requestBody, Encoding.UTF8, "application/json");
+                    response = await client.PostAsync(apiUrl, content);
+                }
+
+                response.EnsureSuccessStatusCode();
+                _jsonOut = await response.Content.ReadAsStringAsync();
+
             }
             #region Get expected json Input number
             public static async Task UpdateSpecificTC()
@@ -662,7 +756,7 @@ namespace AUTOTESTJSON
                                         //bool testPassed = StringComparer.CompareAndShowDifferencesWithZip(, predefinedJsonString, testCaseName);
 
                                         //var percent = CalculateLevenshteinDistance(apiRoot.GetRawText().Trim().Replace(" ",string.Empty), predefinedJsonString); ;
-                                        var percent = GetJaccardPercentageDifference(apiRoot.GetRawText().Trim().Replace(" ",string.Empty), predefinedJsonString.Replace(" ", string.Empty)); ;
+                                        var percent = GetJaccardPercentageDifference(apiRoot.GetRawText().Trim().Replace(" ", string.Empty), predefinedJsonString.Replace(" ", string.Empty)); ;
                                         Console.WriteLine(testCaseName + " % " + percent);
                                         var testPassed = percent < 0;
                                         if (!testPassed)
@@ -744,13 +838,11 @@ namespace AUTOTESTJSON
                 ConcurrentBag<bool> testResults = new ConcurrentBag<bool>();
 
                 #region Initial Setup
-                var pathfolder = System.Reflection.Assembly.GetExecutingAssembly().Location;
-
-                pathfolder = Path.GetDirectoryName(pathfolder);
 
 
-                var thongtinfile = Path.Combine(pathfolder, "TemplateReport.xlsx");
-                string FileApiUrl = Path.Combine(pathfolder, "URLTest.txt");
+
+                var thongtinfile = Path.Combine(_pathfolder, "TemplateReport.xlsx");
+                string FileApiUrl = Path.Combine(_pathfolder, "URLTest.txt");
 
                 if (!File.Exists(FileApiUrl))
                 {
@@ -760,7 +852,7 @@ namespace AUTOTESTJSON
                 }
                 var apiUrl = File.ReadAllText(FileApiUrl).Trim();
 
-                var folderJson = Path.Combine(pathfolder, @"ExpectJSON");
+                var folderJson = Path.Combine(_pathfolder, @"ExpectJSON");
                 if (!Directory.Exists(folderJson))
                 {
                     Console.WriteLine($"Error: Expected JSON folder not found at {folderJson}. Please ensure it exists.");
@@ -862,12 +954,18 @@ namespace AUTOTESTJSON
                             //listRequest.Add("fe9e982f-fbf0-41c3-90c2-da103767f7e1");
                             listRequest.Add("AiHoldings");
 
-                            string requestBody = File.ReadAllText(pathfolder + "\\FormatBodyRequest.txt");
+                            string requestBody = File.ReadAllText(_pathfolder + "\\FormatBodyRequest.txt");
                             for (int j = 0; j < listRequest.Count; j++)
                             {
                                 requestBody = requestBody.Replace("$$J" + j, listRequest[j]);
 
                             }
+
+                            var listFile = Directory.GetFiles(_pathfolder + "\\FolderSend")
+                                .Select(Path.GetFileName)
+                                .ToList();
+
+
                             // Add the task to the list
                             apiCallTasks.Add(Task.Run(async () => // Task.Run moves the async operation to a ThreadPool thread
                             {
@@ -875,18 +973,46 @@ namespace AUTOTESTJSON
                                 {
                                     try
                                     {
-                                        StringContent content = new StringContent(requestBody, Encoding.UTF8, "application/json");
+                                        HttpResponseMessage response;
+                                        //if (listFile.Count > 0)
+                                        //{
+                                        //    var form = new MultipartFormDataContent();
+                                        //    foreach (var item in listFile)
+                                        //    {
+                                        //        if (item != string.Empty && !string.IsNullOrWhiteSpace(item))
+                                        //        {
+                                        //            var fileStreamItem = File.OpenRead(pathfolder + "\\FolderSend\\" + item.Trim());
+                                        //            var fileContentItem = new StreamContent(fileStreamItem);
+                                        //            fileContentItem.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
+                                        //            form.Add(fileContentItem, "file", Path.GetFileName(item.Trim()));
+                                        //        }
+                                        //    }
+                                        //    if (requestBody != string.Empty && !string.IsNullOrWhiteSpace(requestBody))
+                                        //    {
+                                        //        form.Add(new StringContent(requestBody, Encoding.UTF8, "application/json"), "jsonBody");
+                                        //    }
 
-                                        HttpResponseMessage response = await client.PostAsync(apiUrl, content);
-                                        response.EnsureSuccessStatusCode(); // Throws if status code is not 2xx
+                                        //    response = await client.PostAsync(apiUrl, form);
+                                        //}
+                                        //else
+                                        //{
+                                        //    StringContent content = new StringContent(requestBody, Encoding.UTF8, "application/json");
+                                        //    response = await client.PostAsync(apiUrl, content);
+                                        //}
 
-                                        string apiResponseString = await response.Content.ReadAsStringAsync();
+                                        //response.EnsureSuccessStatusCode(); // Throws if status code is not 2xx
+                                        PostAPI(listRequest, apiUrl, client);
+                                        if (_jsonOut != "PostAPIStart")
+                                        {
+                                            string apiResponseString = _jsonOut;
 
-                                        JsonDocument apiJsonDocument = JsonDocument.Parse(apiResponseString);
-                                        JsonElement apiRoot = apiJsonDocument.RootElement;
-                                        File.WriteAllText(jsonExpectFilePath, apiRoot.GetRawText().Trim());
-                                        Console.WriteLine(jsonExpectFilePath);
-                                        testResults.Add(true);
+                                            JsonDocument apiJsonDocument = JsonDocument.Parse(apiResponseString);
+                                            JsonElement apiRoot = apiJsonDocument.RootElement;
+                                            File.WriteAllText(jsonExpectFilePath, apiRoot.GetRawText().Trim());
+                                            Console.WriteLine(jsonExpectFilePath);
+                                            testResults.Add(true);
+                                        }
+
 
                                         // Perform comparison and add result to concurrent bag
                                         //bool testPassed = StringComparer.CompareAndShowDifferencesWithZip(apiRoot.GetRawText().Trim(), predefinedJsonString, testCaseName);

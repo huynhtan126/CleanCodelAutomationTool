@@ -32,7 +32,17 @@ namespace GlobalMacroRecorder
         {
             this.components = new System.ComponentModel.Container();
             this.metroTabControl1 = new MetroFramework.Controls.MetroTabControl();
+            this.metroTabPage3 = new MetroFramework.Controls.MetroTabPage();
+            this.metroRadioButton1 = new MetroFramework.Controls.MetroRadioButton();
+            this.xaml = new MetroFramework.Controls.MetroRadioButton();
+            this.cs_cpp = new MetroFramework.Controls.MetroRadioButton();
+            this.sum = new System.Windows.Forms.CheckBox();
+            this.RemoveDouble = new MetroFramework.Controls.MetroButton();
+            this.note = new System.Windows.Forms.CheckBox();
+            this.todo = new System.Windows.Forms.CheckBox();
+            this.removeComment = new MetroFramework.Controls.MetroButton();
             this.metroTabPage4 = new MetroFramework.Controls.MetroTabPage();
+            this.btn_replace = new MetroFramework.Controls.MetroButton();
             this.metroButton7 = new MetroFramework.Controls.MetroButton();
             this.metroLabel4 = new MetroFramework.Controls.MetroLabel();
             this.metroLabel3 = new MetroFramework.Controls.MetroLabel();
@@ -77,21 +87,13 @@ namespace GlobalMacroRecorder
             this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.metroTabPage3 = new MetroFramework.Controls.MetroTabPage();
-            this.metroRadioButton1 = new MetroFramework.Controls.MetroRadioButton();
-            this.xaml = new MetroFramework.Controls.MetroRadioButton();
-            this.cs_cpp = new MetroFramework.Controls.MetroRadioButton();
-            this.sum = new System.Windows.Forms.CheckBox();
-            this.RemoveDouble = new MetroFramework.Controls.MetroButton();
-            this.note = new System.Windows.Forms.CheckBox();
-            this.todo = new System.Windows.Forms.CheckBox();
-            this.removeComment = new MetroFramework.Controls.MetroButton();
             this.Brower = new MetroFramework.Controls.MetroButton();
             this.PathfileorFolder = new System.Windows.Forms.TextBox();
             this.lbl_Status = new System.Windows.Forms.Label();
             this.programBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.btn_replace = new MetroFramework.Controls.MetroButton();
+            this.metroButton8 = new MetroFramework.Controls.MetroButton();
             this.metroTabControl1.SuspendLayout();
+            this.metroTabPage3.SuspendLayout();
             this.metroTabPage4.SuspendLayout();
             this.metroTabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
@@ -104,7 +106,6 @@ namespace GlobalMacroRecorder
             ((System.ComponentModel.ISupportInitialize)(this.ToEx)).BeginInit();
             this.metroTabPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
-            this.metroTabPage3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.programBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
@@ -116,13 +117,127 @@ namespace GlobalMacroRecorder
             this.metroTabControl1.Controls.Add(this.metroTabPage2);
             this.metroTabControl1.Location = new System.Drawing.Point(23, 116);
             this.metroTabControl1.Name = "metroTabControl1";
-            this.metroTabControl1.SelectedIndex = 0;
+            this.metroTabControl1.SelectedIndex = 1;
             this.metroTabControl1.Size = new System.Drawing.Size(500, 448);
             this.metroTabControl1.TabIndex = 3;
             this.metroTabControl1.UseSelectable = true;
             // 
+            // metroTabPage3
+            // 
+            this.metroTabPage3.Controls.Add(this.metroRadioButton1);
+            this.metroTabPage3.Controls.Add(this.xaml);
+            this.metroTabPage3.Controls.Add(this.cs_cpp);
+            this.metroTabPage3.Controls.Add(this.sum);
+            this.metroTabPage3.Controls.Add(this.RemoveDouble);
+            this.metroTabPage3.Controls.Add(this.note);
+            this.metroTabPage3.Controls.Add(this.todo);
+            this.metroTabPage3.Controls.Add(this.removeComment);
+            this.metroTabPage3.HorizontalScrollbarBarColor = true;
+            this.metroTabPage3.HorizontalScrollbarHighlightOnWheel = false;
+            this.metroTabPage3.HorizontalScrollbarSize = 10;
+            this.metroTabPage3.Location = new System.Drawing.Point(4, 38);
+            this.metroTabPage3.Name = "metroTabPage3";
+            this.metroTabPage3.Size = new System.Drawing.Size(492, 406);
+            this.metroTabPage3.TabIndex = 2;
+            this.metroTabPage3.Text = "Auto format code";
+            this.metroTabPage3.VerticalScrollbarBarColor = true;
+            this.metroTabPage3.VerticalScrollbarHighlightOnWheel = false;
+            this.metroTabPage3.VerticalScrollbarSize = 10;
+            // 
+            // metroRadioButton1
+            // 
+            this.metroRadioButton1.AutoSize = true;
+            this.metroRadioButton1.Checked = true;
+            this.metroRadioButton1.Location = new System.Drawing.Point(3, 91);
+            this.metroRadioButton1.Name = "metroRadioButton1";
+            this.metroRadioButton1.Size = new System.Drawing.Size(36, 15);
+            this.metroRadioButton1.TabIndex = 14;
+            this.metroRadioButton1.TabStop = true;
+            this.metroRadioButton1.Text = "*.*";
+            this.metroRadioButton1.TextAlign = System.Drawing.ContentAlignment.TopLeft;
+            this.metroRadioButton1.UseSelectable = true;
+            // 
+            // xaml
+            // 
+            this.xaml.AutoSize = true;
+            this.xaml.Location = new System.Drawing.Point(3, 60);
+            this.xaml.Name = "xaml";
+            this.xaml.Size = new System.Drawing.Size(56, 15);
+            this.xaml.TabIndex = 13;
+            this.xaml.Text = "*.xaml";
+            this.xaml.TextAlign = System.Drawing.ContentAlignment.TopLeft;
+            this.xaml.UseSelectable = true;
+            // 
+            // cs_cpp
+            // 
+            this.cs_cpp.AutoSize = true;
+            this.cs_cpp.Location = new System.Drawing.Point(3, 29);
+            this.cs_cpp.Name = "cs_cpp";
+            this.cs_cpp.Size = new System.Drawing.Size(94, 15);
+            this.cs_cpp.TabIndex = 12;
+            this.cs_cpp.Text = "*.cs *.cpp *.h ";
+            this.cs_cpp.TextAlign = System.Drawing.ContentAlignment.TopLeft;
+            this.cs_cpp.UseSelectable = true;
+            // 
+            // sum
+            // 
+            this.sum.AutoSize = true;
+            this.sum.Checked = true;
+            this.sum.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.sum.Location = new System.Drawing.Point(391, 27);
+            this.sum.Name = "sum";
+            this.sum.Size = new System.Drawing.Size(69, 17);
+            this.sum.TabIndex = 11;
+            this.sum.Text = "Keep ///";
+            this.sum.UseVisualStyleBackColor = true;
+            // 
+            // RemoveDouble
+            // 
+            this.RemoveDouble.Location = new System.Drawing.Point(327, 69);
+            this.RemoveDouble.Name = "RemoveDouble";
+            this.RemoveDouble.Size = new System.Drawing.Size(165, 46);
+            this.RemoveDouble.TabIndex = 10;
+            this.RemoveDouble.Text = "Remove double emptyline";
+            this.RemoveDouble.UseSelectable = true;
+            this.RemoveDouble.Click += new System.EventHandler(this.RemoveDouble_Click);
+            // 
+            // note
+            // 
+            this.note.AutoSize = true;
+            this.note.Checked = true;
+            this.note.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.note.Location = new System.Drawing.Point(303, 27);
+            this.note.Name = "note";
+            this.note.Size = new System.Drawing.Size(87, 17);
+            this.note.TabIndex = 9;
+            this.note.Text = "Keep //Note";
+            this.note.UseVisualStyleBackColor = true;
+            // 
+            // todo
+            // 
+            this.todo.AutoSize = true;
+            this.todo.Checked = true;
+            this.todo.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.todo.Location = new System.Drawing.Point(199, 27);
+            this.todo.Name = "todo";
+            this.todo.Size = new System.Drawing.Size(98, 17);
+            this.todo.TabIndex = 8;
+            this.todo.Text = "Keep //TODO ";
+            this.todo.UseVisualStyleBackColor = true;
+            // 
+            // removeComment
+            // 
+            this.removeComment.Location = new System.Drawing.Point(199, 69);
+            this.removeComment.Name = "removeComment";
+            this.removeComment.Size = new System.Drawing.Size(107, 46);
+            this.removeComment.TabIndex = 5;
+            this.removeComment.Text = "Remove Comment";
+            this.removeComment.UseSelectable = true;
+            this.removeComment.Click += new System.EventHandler(this.removeComment_Click);
+            // 
             // metroTabPage4
             // 
+            this.metroTabPage4.Controls.Add(this.metroButton8);
             this.metroTabPage4.Controls.Add(this.btn_replace);
             this.metroTabPage4.Controls.Add(this.metroButton7);
             this.metroTabPage4.Controls.Add(this.metroLabel4);
@@ -144,6 +259,16 @@ namespace GlobalMacroRecorder
             this.metroTabPage4.VerticalScrollbarBarColor = true;
             this.metroTabPage4.VerticalScrollbarHighlightOnWheel = false;
             this.metroTabPage4.VerticalScrollbarSize = 10;
+            // 
+            // btn_replace
+            // 
+            this.btn_replace.Location = new System.Drawing.Point(233, 210);
+            this.btn_replace.Name = "btn_replace";
+            this.btn_replace.Size = new System.Drawing.Size(256, 31);
+            this.btn_replace.TabIndex = 17;
+            this.btn_replace.Text = "Replace Autocad DwgOut";
+            this.btn_replace.UseSelectable = true;
+            this.btn_replace.Click += new System.EventHandler(this.btn_replace_Click);
             // 
             // metroButton7
             // 
@@ -641,119 +766,6 @@ namespace GlobalMacroRecorder
             this.Column3.HeaderText = "Name in Source";
             this.Column3.Name = "Column3";
             // 
-            // metroTabPage3
-            // 
-            this.metroTabPage3.Controls.Add(this.metroRadioButton1);
-            this.metroTabPage3.Controls.Add(this.xaml);
-            this.metroTabPage3.Controls.Add(this.cs_cpp);
-            this.metroTabPage3.Controls.Add(this.sum);
-            this.metroTabPage3.Controls.Add(this.RemoveDouble);
-            this.metroTabPage3.Controls.Add(this.note);
-            this.metroTabPage3.Controls.Add(this.todo);
-            this.metroTabPage3.Controls.Add(this.removeComment);
-            this.metroTabPage3.HorizontalScrollbarBarColor = true;
-            this.metroTabPage3.HorizontalScrollbarHighlightOnWheel = false;
-            this.metroTabPage3.HorizontalScrollbarSize = 10;
-            this.metroTabPage3.Location = new System.Drawing.Point(4, 38);
-            this.metroTabPage3.Name = "metroTabPage3";
-            this.metroTabPage3.Size = new System.Drawing.Size(492, 406);
-            this.metroTabPage3.TabIndex = 2;
-            this.metroTabPage3.Text = "Auto format code";
-            this.metroTabPage3.VerticalScrollbarBarColor = true;
-            this.metroTabPage3.VerticalScrollbarHighlightOnWheel = false;
-            this.metroTabPage3.VerticalScrollbarSize = 10;
-            // 
-            // metroRadioButton1
-            // 
-            this.metroRadioButton1.AutoSize = true;
-            this.metroRadioButton1.Checked = true;
-            this.metroRadioButton1.Location = new System.Drawing.Point(3, 91);
-            this.metroRadioButton1.Name = "metroRadioButton1";
-            this.metroRadioButton1.Size = new System.Drawing.Size(36, 15);
-            this.metroRadioButton1.TabIndex = 14;
-            this.metroRadioButton1.TabStop = true;
-            this.metroRadioButton1.Text = "*.*";
-            this.metroRadioButton1.TextAlign = System.Drawing.ContentAlignment.TopLeft;
-            this.metroRadioButton1.UseSelectable = true;
-            // 
-            // xaml
-            // 
-            this.xaml.AutoSize = true;
-            this.xaml.Location = new System.Drawing.Point(3, 60);
-            this.xaml.Name = "xaml";
-            this.xaml.Size = new System.Drawing.Size(57, 15);
-            this.xaml.TabIndex = 13;
-            this.xaml.Text = "*.xaml";
-            this.xaml.TextAlign = System.Drawing.ContentAlignment.TopLeft;
-            this.xaml.UseSelectable = true;
-            // 
-            // cs_cpp
-            // 
-            this.cs_cpp.AutoSize = true;
-            this.cs_cpp.Location = new System.Drawing.Point(3, 29);
-            this.cs_cpp.Name = "cs_cpp";
-            this.cs_cpp.Size = new System.Drawing.Size(94, 15);
-            this.cs_cpp.TabIndex = 12;
-            this.cs_cpp.Text = "*.cs *.cpp *.h ";
-            this.cs_cpp.TextAlign = System.Drawing.ContentAlignment.TopLeft;
-            this.cs_cpp.UseSelectable = true;
-            // 
-            // sum
-            // 
-            this.sum.AutoSize = true;
-            this.sum.Checked = true;
-            this.sum.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.sum.Location = new System.Drawing.Point(391, 27);
-            this.sum.Name = "sum";
-            this.sum.Size = new System.Drawing.Size(69, 17);
-            this.sum.TabIndex = 11;
-            this.sum.Text = "Keep ///";
-            this.sum.UseVisualStyleBackColor = true;
-            // 
-            // RemoveDouble
-            // 
-            this.RemoveDouble.Location = new System.Drawing.Point(327, 69);
-            this.RemoveDouble.Name = "RemoveDouble";
-            this.RemoveDouble.Size = new System.Drawing.Size(165, 46);
-            this.RemoveDouble.TabIndex = 10;
-            this.RemoveDouble.Text = "Remove double emptyline";
-            this.RemoveDouble.UseSelectable = true;
-            this.RemoveDouble.Click += new System.EventHandler(this.RemoveDouble_Click);
-            // 
-            // note
-            // 
-            this.note.AutoSize = true;
-            this.note.Checked = true;
-            this.note.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.note.Location = new System.Drawing.Point(303, 27);
-            this.note.Name = "note";
-            this.note.Size = new System.Drawing.Size(87, 17);
-            this.note.TabIndex = 9;
-            this.note.Text = "Keep //Note";
-            this.note.UseVisualStyleBackColor = true;
-            // 
-            // todo
-            // 
-            this.todo.AutoSize = true;
-            this.todo.Checked = true;
-            this.todo.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.todo.Location = new System.Drawing.Point(199, 27);
-            this.todo.Name = "todo";
-            this.todo.Size = new System.Drawing.Size(98, 17);
-            this.todo.TabIndex = 8;
-            this.todo.Text = "Keep //TODO ";
-            this.todo.UseVisualStyleBackColor = true;
-            // 
-            // removeComment
-            // 
-            this.removeComment.Location = new System.Drawing.Point(199, 69);
-            this.removeComment.Name = "removeComment";
-            this.removeComment.Size = new System.Drawing.Size(107, 46);
-            this.removeComment.TabIndex = 5;
-            this.removeComment.Text = "Remove Comment";
-            this.removeComment.UseSelectable = true;
-            this.removeComment.Click += new System.EventHandler(this.removeComment_Click);
-            // 
             // Brower
             // 
             this.Brower.Location = new System.Drawing.Point(468, 88);
@@ -787,15 +799,15 @@ namespace GlobalMacroRecorder
             // 
             this.programBindingSource.DataSource = typeof(GlobalMacroRecorder.Program);
             // 
-            // btn_replace
+            // metroButton8
             // 
-            this.btn_replace.Location = new System.Drawing.Point(233, 210);
-            this.btn_replace.Name = "btn_replace";
-            this.btn_replace.Size = new System.Drawing.Size(256, 31);
-            this.btn_replace.TabIndex = 17;
-            this.btn_replace.Text = "Replace Autocad DwgOut";
-            this.btn_replace.UseSelectable = true;
-            this.btn_replace.Click += new System.EventHandler(this.btn_replace_Click);
+            this.metroButton8.Location = new System.Drawing.Point(94, 13);
+            this.metroButton8.Name = "metroButton8";
+            this.metroButton8.Size = new System.Drawing.Size(88, 46);
+            this.metroButton8.TabIndex = 18;
+            this.metroButton8.Text = "Replace Text";
+            this.metroButton8.UseSelectable = true;
+            this.metroButton8.Click += new System.EventHandler(this.metroButton8_Click);
             // 
             // MacroForm
             // 
@@ -813,6 +825,8 @@ namespace GlobalMacroRecorder
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MacroForm_FormClosed);
             this.Load += new System.EventHandler(this.MacroForm_Load);
             this.metroTabControl1.ResumeLayout(false);
+            this.metroTabPage3.ResumeLayout(false);
+            this.metroTabPage3.PerformLayout();
             this.metroTabPage4.ResumeLayout(false);
             this.metroTabPage4.PerformLayout();
             this.metroTabPage1.ResumeLayout(false);
@@ -831,8 +845,6 @@ namespace GlobalMacroRecorder
             this.metroTabPage2.ResumeLayout(false);
             this.metroTabPage2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
-            this.metroTabPage3.ResumeLayout(false);
-            this.metroTabPage3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.programBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -900,6 +912,7 @@ namespace GlobalMacroRecorder
         private MetroFramework.Controls.MetroLabel metroLabel3;
         private MetroFramework.Controls.MetroButton metroButton7;
         private MetroFramework.Controls.MetroButton btn_replace;
+        private MetroFramework.Controls.MetroButton metroButton8;
     }
 }
 

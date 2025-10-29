@@ -1717,9 +1717,9 @@ namespace GlobalMacroRecorder
                     var listMatch = regex.Matches(replaceContent);
                     if (listMatch.Count > 0)
                     {
-                        string replaceText = fileName + "::"+listMatch[0].Value.Substring(2);
+                        string replaceText = fileName + "::" + listMatch[0].Value.Substring(2);
                         var index = replaceText.LastIndexOf('}');
-                        replaceText = replaceText.Substring(0, index-1);
+                        replaceText = replaceText.Substring(0, index - 1);
                         string newContent = /*"#if defined Ares || ODA\r\nvoid\r\n#elif defined AutoCad\r\nOdResult\r\n#endif\n" + */replaceText + "#if defined AutoCad\r\n\treturn OdResult::eOk;\r\n#endif";
                         replaceContent = replaceContent.Replace(replaceText, newContent);
 
@@ -1727,6 +1727,50 @@ namespace GlobalMacroRecorder
                     }
                 }
             }
+        }
+        //replace text
+        private void metroButton8_Click(object sender, EventArgs e)
+        {
+
+            // File gốc và file đích
+            string destinationFile = SavedFunctionFolder.Text;
+            string sourceFile = TargetToReplaceFolder.Text;
+           
+
+            try
+            {
+                string[] profile = Directory.GetFiles(sourceFile, "*.xml");
+                foreach (var namePath in profile)
+                {
+                    var fileName = Path.GetFileNameWithoutExtension(namePath);
+                    fileName = fileName.Replace("Profile_1", string.Empty);
+                    for (int i = 1; i <= 34; i++)
+                    {
+                        // 1. Copy file gốc sang file đích
+                        File.Copy(namePath, destinationFile + "\\"+ i +fileName  + ".xml", true); // true = overwrite nếu file tồn tại
+
+                        // 2. Đọc nội dung file đích
+                        string content = File.ReadAllText(destinationFile + "\\" + i + fileName + ".xml");
+
+                        // 3. Thay thế text
+                        content = content.Replace("1"+ fileName, i + fileName);
+
+                        // 4. Ghi lại nội dung mới vào file đích
+                        File.WriteAllText(destinationFile + "\\" + i + fileName + ".xml", content);
+                    }
+                }
+                
+              
+
+                Console.WriteLine("Đã copy file và thay thế text thành công!");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Lỗi: " + ex.Message);
+            }
+
+
+
         }
     }
 }

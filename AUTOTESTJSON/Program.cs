@@ -92,7 +92,7 @@ namespace AUTOTESTJSON
                 Console.WriteLine($"The percentage difference between '{string7}' and '{string8}' is: {percentageDiff:F2}%");
                 Console.ReadLine();
             }
-            public static async Task Main(string[] args)
+            public static async Task Main3(string[] args)
             {
                 Console.WriteLine("1- Update All Test Case");
                 Console.WriteLine("2- Test All Test Case");
@@ -160,94 +160,183 @@ namespace AUTOTESTJSON
                 Console.ReadKey();
             }
 
-            public static async Task Main3(string[] args)
+            public static async Task Main5(string[] args)
             {
-                string apiUrl = "https://uncommon-pangolin-newly.ngrok-free.app/AIPDFProfile";
-                string filePath = @"C:\TGL\CleanCode\CleanCodelAutomationTool\AUTOTESTJSON\FolderSend\a.pdf";
-                if (!File.Exists(filePath))
+                var pathfolder = System.Reflection.Assembly.GetExecutingAssembly().Location;
+
+                _pathfolder = Path.GetDirectoryName(pathfolder);
+                var jsonExpectFilePath = _pathfolder + "\\extracted_profiles.json";
+                //string apiUrl = "https://uncommon-pangolin-newly.ngrok-free.app/AIPDFProfile";
+                //string apiUrl = "https://mallard-natural-albacore.ngrok-free.app/AImodelLine";
+                string FileApiUrl = _pathfolder + "\\URLTest.txt";
+                string outputFolder = _pathfolder + "\\OutputFolder.txt";
+                var apiUrl = File.ReadAllText(FileApiUrl).Trim();
+                if (File.Exists(jsonExpectFilePath))
                 {
-                    Console.WriteLine("File not found: " + filePath);
-                    return;
+                    var fileJson = new FileInfo(jsonExpectFilePath);
+                    fileJson.Delete();
+                    //Console.WriteLine("File not found: " + filePath);
+                    //return;
                 }
-                var handler = new HttpClientHandler();
-                handler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true;
 
-                using (var client = new HttpClient(handler))
-                using (var form = new MultipartFormDataContent())
+                await PostAPI("", apiUrl, "TC1", _pathfolder + "\\"+ outputFolder);
+
+                if (_jsonOut != "PostAPIStart")
                 {
-                    client.Timeout = TimeSpan.FromMinutes(50);
-                    // Tạo stream cho file PDF
-                    var fileStream = File.OpenRead(filePath);
-                    var fileContent = new StreamContent(fileStream);
-                    fileContent.Headers.ContentType = MediaTypeHeaderValue.Parse("application/pdf");
-                    // Thêm vào form-data, trường phải tên là "file" mới đúng!
-                    form.Add(fileContent, "file", Path.GetFileName(filePath));
+                    string apiResponseString = _jsonOut;
 
-                    // Gửi POST
-                    var response = await client.PostAsync(apiUrl, form);
-                    string apiResponseString = await response.Content.ReadAsStringAsync();
+                    JsonDocument apiJsonDocument = JsonDocument.Parse(apiResponseString);
+                    JsonElement apiRoot = apiJsonDocument.RootElement;
+                    File.WriteAllText(jsonExpectFilePath, apiRoot.GetRawText().Trim());
+                    Console.WriteLine(jsonExpectFilePath);
 
-                    if (!response.IsSuccessStatusCode)
-                    {
-                        Console.WriteLine($"Status: {response.StatusCode}");
-                        Console.WriteLine($"Body: {apiResponseString}");
-                    }
-                    else
-                    {
-                        Console.WriteLine("Success:");
-                        Console.WriteLine(apiResponseString);
-                    }
                 }
+
+            }
+
+            public static async Task Main(string[] args)
+            {
+                var pathfolder = System.Reflection.Assembly.GetExecutingAssembly().Location;
+
+                _pathfolder = Path.GetDirectoryName(pathfolder);
+                var jsonExpectFilePath = _pathfolder + "\\extracted_profiles.json";
+                //string apiUrl = "https://uncommon-pangolin-newly.ngrok-free.app/AIPDFProfile";
+                //string apiUrl = "https://mallard-natural-albacore.ngrok-free.app/AImodelLine";
+                string FileApiUrl = _pathfolder + "\\URLTest.txt";
+                var apiUrl = File.ReadAllText(FileApiUrl).Trim();
+                if (File.Exists(jsonExpectFilePath))
+                {
+                    var fileJson = new FileInfo(jsonExpectFilePath);
+                    fileJson.Delete();
+                    //Console.WriteLine("File not found: " + filePath);
+                    //return;
+                }
+
+                await PostExeAPI(_pathfolder + "\\" + apiUrl, "TC1","Output");
+
+                if (_jsonOut != "PostAPIStart")
+                {
+                    string apiResponseString = _jsonOut;
+
+                    JsonDocument apiJsonDocument = JsonDocument.Parse(apiResponseString);
+                    JsonElement apiRoot = apiJsonDocument.RootElement;
+                    File.WriteAllText(jsonExpectFilePath, apiRoot.GetRawText().Trim());
+                    Console.WriteLine(jsonExpectFilePath);
+
+                }
+
             }
             private static string _pathfolder;
             private static string _jsonOut;
-            private async static void PostAPI(List<string> listRequest, string apiUrl, HttpClient client)
+            private async static Task PostAPI(string requestBody, string apiUrl, string TCName,string folderOutput)
             {
-                _jsonOut = "PostAPIStart";
-                string requestBody = File.ReadAllText(_pathfolder + "\\FormatBodyRequest.txt");
-                for (int j = 0; j < listRequest.Count; j++)
+                try
                 {
-                    requestBody = requestBody.Replace("$$J" + j, listRequest[j]);
+                    #region Start POST
+                    HttpClient client = new HttpClient();
+                    _jsonOut = "PostAPIStart";
 
-                }
-                HttpResponseMessage response;
-                var listFile = Directory.GetFiles(_pathfolder + "\\FolderSend")
-                    .Select(Path.GetFileName)
-                    .ToList();
-                if (listFile.Count > 0)
-                {
-                    var handler = new HttpClientHandler();
-                    handler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true;
-                    client.Timeout = TimeSpan.FromMinutes(50);
-                    var form = new MultipartFormDataContent();
-
-                    foreach (var item in listFile)
+                    HttpResponseMessage response;
+                    var listFile = Directory.GetFiles(_pathfolder + "\\FolderSend\\" + TCName)
+                        .Select(Path.GetFileName)
+                        .ToList();
+                    if (listFile.Count > 0)
                     {
-                        if (item != string.Empty && !string.IsNullOrWhiteSpace(item))
+                        var handler = new HttpClientHandler();
+                        handler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true;
+                        client.Timeout = TimeSpan.FromMinutes(50);
+                        var form = new MultipartFormDataContent();
+
+                        foreach (var item in listFile)
                         {
-                            var fileStreamItem = File.OpenRead(_pathfolder + "\\FolderSend\\" + item.Trim());
-                            var fileContentItem = new StreamContent(fileStreamItem);
-                            fileContentItem.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
-                            form.Add(fileContentItem, "file", Path.GetFileName(item.Trim()));
+                            if (item != string.Empty && !string.IsNullOrWhiteSpace(item))
+                            {
+                                var fileStreamItem = File.OpenRead(_pathfolder + "\\FolderSend\\" + TCName + "\\" + item.Trim());
+                                var fileContentItem = new StreamContent(fileStreamItem);
+                                fileContentItem.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
+                                form.Add(fileContentItem, "file", Path.GetFileName(item.Trim()));
+                            }
                         }
+                        if (requestBody != string.Empty && !string.IsNullOrWhiteSpace(requestBody))
+                        {
+                            form.Add(new StringContent(requestBody, Encoding.UTF8, "application/json"), "jsonBody");
+                        }
+
+                        response = await client.PostAsync(apiUrl, form);
                     }
-                    if (requestBody != string.Empty && !string.IsNullOrWhiteSpace(requestBody))
+                    else
                     {
-                        form.Add(new StringContent(requestBody, Encoding.UTF8, "application/json"), "jsonBody");
+                        StringContent content = new StringContent(requestBody, Encoding.UTF8, "application/json");
+                        response = await client.PostAsync(apiUrl, content);
                     }
 
-                    response = await client.PostAsync(apiUrl, form);
-                }
-                else
-                {
-                    StringContent content = new StringContent(requestBody, Encoding.UTF8, "application/json");
-                    response = await client.PostAsync(apiUrl, content);
-                }
+                    response.EnsureSuccessStatusCode();
+                    _jsonOut = await response.Content.ReadAsStringAsync();
 
-                response.EnsureSuccessStatusCode();
-                _jsonOut = await response.Content.ReadAsStringAsync();
+                    File.WriteAllText(TCName, _jsonOut);
+                    #endregion
+                }
+                catch (Exception ex)
+                {
+
+                }
 
             }
+            private async static Task PostExeAPI(string pathExe, string TCName, string OutputFolder ,string fileNameExpect = "extracted_profiles.json")
+            {
+                try
+                {
+                    #region Start POST
+
+                    _jsonOut = "PostAPIStart";
+
+                    var listFile = Directory.GetFiles(_pathfolder + "\\FolderSend\\" + TCName)
+                        .Select(Path.GetFullPath)
+                        .ToList();
+
+                    if (listFile.Count > 0)
+                    {
+                        var folder = Path.GetDirectoryName(pathExe);
+                        Directory.CreateDirectory(folder + "\\Input\\");
+                        var listFileExe = Directory.GetFiles(_pathfolder + "\\Input\\" )
+                         .Select(Path.GetFullPath)
+                         .ToList();
+
+                        foreach (var item in listFileExe)
+                        {
+                            File.Delete(item);
+                        }
+
+                        foreach (var item in listFile)
+                        {
+                            if (item != string.Empty && !string.IsNullOrWhiteSpace(item))
+                            {
+                                var file = new FileInfo(item);
+
+                                File.Copy(item, folder + "\\Input\\" + file.Name, true);
+                            }
+                        }
+                        Process.Start(pathExe).WaitForExit();
+                        if(File.Exists(folder+"\\"+ fileNameExpect))
+                        {
+                            File.Copy(folder + "\\" + fileNameExpect, folder  +"\\" +OutputFolder+ "\\"+ TCName+".json", true);
+                        }
+                    }
+                    else
+                    {
+
+                    }
+
+
+                    #endregion
+                }
+                catch (Exception ex)
+                {
+
+                }
+
+            }
+
             #region Get expected json Input number
             public static async Task UpdateSpecificTC()
             {
@@ -961,27 +1050,38 @@ namespace AUTOTESTJSON
 
                             }
 
-                            var listFile = Directory.GetFiles(_pathfolder + "\\FolderSend")
-                                .Select(Path.GetFileName)
-                                .ToList();
+                            //var listFile = Directory.GetFiles(_pathfolder + "\\FolderSend")
+                            //    .Select(Path.GetFileName)
+                            //    .ToList();
 
 
                             // Add the task to the list
                             apiCallTasks.Add(Task.Run(async () => // Task.Run moves the async operation to a ThreadPool thread
                             {
-                                using (HttpClient client = new HttpClient())
+
                                 {
                                     try
                                     {
-                                        HttpResponseMessage response;
+                                        #region Start POST
+                                        //HttpClient client = new HttpClient();
+                                        //_jsonOut = "PostAPIStart";
+
+                                        //HttpResponseMessage response;
+                                        //var listFile = Directory.GetFiles(_pathfolder + "\\FolderSend")
+                                        //    .Select(Path.GetFileName)
+                                        //    .ToList();
                                         //if (listFile.Count > 0)
                                         //{
+                                        //    var handler = new HttpClientHandler();
+                                        //    handler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true;
+                                        //    client.Timeout = TimeSpan.FromMinutes(50);
                                         //    var form = new MultipartFormDataContent();
+
                                         //    foreach (var item in listFile)
                                         //    {
                                         //        if (item != string.Empty && !string.IsNullOrWhiteSpace(item))
                                         //        {
-                                        //            var fileStreamItem = File.OpenRead(pathfolder + "\\FolderSend\\" + item.Trim());
+                                        //            var fileStreamItem = File.OpenRead(_pathfolder + "\\FolderSend\\" + item.Trim());
                                         //            var fileContentItem = new StreamContent(fileStreamItem);
                                         //            fileContentItem.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
                                         //            form.Add(fileContentItem, "file", Path.GetFileName(item.Trim()));
@@ -1000,8 +1100,11 @@ namespace AUTOTESTJSON
                                         //    response = await client.PostAsync(apiUrl, content);
                                         //}
 
-                                        //response.EnsureSuccessStatusCode(); // Throws if status code is not 2xx
-                                        PostAPI(listRequest, apiUrl, client);
+                                        //response.EnsureSuccessStatusCode();
+                                        //_jsonOut = await response.Content.ReadAsStringAsync();
+
+                                        #endregion
+                                        //PostAPI(listRequest, apiUrl, client);
                                         if (_jsonOut != "PostAPIStart")
                                         {
                                             string apiResponseString = _jsonOut;

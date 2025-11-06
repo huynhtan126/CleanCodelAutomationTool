@@ -1,4 +1,5 @@
-﻿using OfficeOpenXml.FormulaParsing.Excel.Functions.Text;
+﻿using Microsoft.Win32.TaskScheduler;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.Text;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,16 +14,39 @@ namespace ReadReport
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
-        static void Main()
+        static void Main(string[] args)
         {
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+            if (args.Length > 0)
+            {
+                Form1.Report_(1, 10000, true, false, false, "Team");
+
+            }
+            else
+            {
+                Application.EnableVisualStyles();
+                Application.SetCompatibleTextRenderingDefault(false);
+                Application.Run(new Form1());
+            }
         }
 
         //[STAThread]
         //static void Main()
         //{
+        //    using (TaskService ts = new TaskService())
+        //    {
+        //        TaskDefinition td = ts.NewTask();
+        //        td.RegistrationInfo.Description = "Chạy command mỗi ngày 20h";
+
+        //        // Lịch chạy mỗi ngày lúc 20:00
+        //        td.Triggers.Add(new DailyTrigger { StartBoundary = DateTime.Today + TimeSpan.FromHours(20) });
+
+        //        // Hành động (lệnh cần chạy)
+        //        td.Actions.Add(new ExecAction("cmd.exe", "/c backup.bat", null));
+
+        //        ts.RootFolder.RegisterTaskDefinition("MyDailyCommand", td);
+
+        //        Console.WriteLine("Đã tạo Task Scheduler thành công!");
+        //    }
         //    ScheduleDailyTask(new TimeSpan(17,59, 0)); // Chạy lúc 7:00 sáng mỗi ngày
 
         //    Console.WriteLine("Chương trình đang chạy, nhấn Enter để thoát...");
@@ -48,7 +72,7 @@ namespace ReadReport
         //{
         //    Console.WriteLine($"Chạy tác vụ vào: {DateTime.Now}");
         //    Form1.Report_(1,1,true,false,false,"");
-        //}
-
     }
+
+
 }

@@ -1,9 +1,13 @@
 ﻿using Microsoft.Win32.TaskScheduler;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Task = System.Threading.Tasks.Task;
 
@@ -18,7 +22,7 @@ namespace ScheduleApp
             while (true)
             {
                 DateTime now = DateTime.Now;
-                DateTime nextRun = DateTime.Today.AddHours(20); // 20:00 (8 PM)
+                DateTime nextRun = DateTime.Today.AddHours(10); // 20:00 (8 PM)
 
                 if (now > nextRun)
                 {
@@ -30,13 +34,13 @@ namespace ScheduleApp
 
                 await Task.Delay(waitTime);
 
-                RunFixedExe();
+                RunFixedExeAsync();
             }
         }
 
-        static void RunFixedExe()
+        static async Task RunFixedExeAsync()
         {
-            string exePath = @"C:\TGL\CleanCode\CleanCodelAutomationTool\ReadReport\bin\Debug\ReadReport.exe"; // Đường dẫn cố định tới file EXE
+            string exePath = @"C:\TGL\CleanCode\CleanCodelAutomationTool\ExportIssue\bin\Debug\net7.0\ExportIssue.exe"; // Đường dẫn cố định tới file EXE
 
             try
             {
@@ -53,6 +57,9 @@ namespace ScheduleApp
             {
                 Console.WriteLine("Lỗi khi chạy file: " + ex.Message);
             }
+
         }
+
+
     }
 }

@@ -19,7 +19,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AUTOTESTJSON", "..\AUTOTEST
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScheduleApp", "..\ScheduleApp\ScheduleApp.csproj", "{DEB3722D-066B-4946-8872-4FAF010E006C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExportIssue", "..\ExportIssue\ExportIssue.csproj", "{53074B82-C89C-4C9B-B042-A1052EAFE910}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExportIssue", "..\ExportIssue\ExportIssue.csproj", "{53074B82-C89C-4C9B-B042-A1052EAFE910}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChangeRegion", "..\ChangeRegion\ChangeRegion.csproj", "{ECDBA40B-813F-4C36-A6B5-1E664F89C80D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "regionApp", "..\regionApp\regionApp.csproj", "{B4EA5DAD-331B-488A-937A-5D67DB153F37}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -63,6 +67,14 @@ Global
 		{53074B82-C89C-4C9B-B042-A1052EAFE910}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{53074B82-C89C-4C9B-B042-A1052EAFE910}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{53074B82-C89C-4C9B-B042-A1052EAFE910}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ECDBA40B-813F-4C36-A6B5-1E664F89C80D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ECDBA40B-813F-4C36-A6B5-1E664F89C80D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ECDBA40B-813F-4C36-A6B5-1E664F89C80D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ECDBA40B-813F-4C36-A6B5-1E664F89C80D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B4EA5DAD-331B-488A-937A-5D67DB153F37}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B4EA5DAD-331B-488A-937A-5D67DB153F37}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B4EA5DAD-331B-488A-937A-5D67DB153F37}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B4EA5DAD-331B-488A-937A-5D67DB153F37}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

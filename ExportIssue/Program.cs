@@ -4,7 +4,7 @@ using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json.Serialization;
 
-string token = "glpat-kvcg_foZaePzKwp8cNx7";
+string token = "glpat-m-6rcPTA9cDERckcLxyG";
 string baseUrl = "https://gitlab.tgl-cloud.com/api/v4/projects/PrimaSolutions%2Fnewcadgrp%2Fnewcad/issues?per_page=100";
 var excludedLabels = new HashSet<string> { "_Done: Đã xong", "_RootCause" };
 var labelMap = new Dictionary<string, string>
@@ -152,28 +152,90 @@ var statisticsKHBugDrawing = filteredIssuesKHBugDrawing
     .OrderByDescending(g => g.ChoLam)
     .ToList();
 
+var filteredIssuesKHTrialbug = allIssues
+    .Where(issue => issue.Labels != null && !issue.Labels.Any(label => excludedLabels.Contains(label)) && issue.Labels.Any(x => x.ToUpper().Contains("CLIENT")) && issue.Labels.Any(x => x.ToUpper().Contains("TRIAL")))
+    .ToList();
+
+Console.WriteLine($"✅ Tổng số issue: {filteredIssuesKHTrialbug.Count}");
+// Gom nhóm theo assignee
+var statisticsKHTrialBUG = filteredIssuesKHTrialbug
+    .GroupBy(i => i.Assignee?.Name ?? "Unassigned")
+    .Select(g => new
+    {
+        Assignee = g.Key,
+        Total = g.Count(),
+        DoiSpec = g.Count(i => i.Labels?.Contains("_Đợi Spec") == true),
+        ChoLam = g.Count(i => i.Labels?.Contains("_Todo: Chờ làm") == true),
+        DangLam = g.Count(i => i.Labels?.Contains("_In-Progress: Đang làm") == true),
+        TamNgung = g.Count(i => i.Labels?.Contains("_Pending:  Tạm ngưng (lý do)") == true),
+        Testing = g.Count(i => i.Labels?.Contains("Testing : đã xong chức năng chờ test") == true),
+        Plan10 = g.Count(i => i.Labels?.Contains("Plan 10-12") == true),
+        Plan1 = g.Count(i => i.Labels?.Contains("Plan 1-3 2026") == true),
+        CanNotPlan = g.Count(i => i.Labels?.Contains("Can not plan (not enough information)") == true),
+        NotSeenYet = g.Count() - g.Count(i => i.Labels?.Contains("Plan 10-12") == true) - g.Count(i => i.Labels?.Contains("Plan 1-3 2026") == true) - g.Count(i => i.Labels?.Contains("Can not plan (not enough information)") == true),
+        ids = string.Join("", g.Select(i => i.iid.ToString() + ";"))
+    })
+    .OrderByDescending(g => g.ChoLam)
+    .ToList();
+
+var filteredIssuesKHTrialImprove = allIssues
+    .Where(issue => issue.Labels != null && !issue.Labels.Any(label => excludedLabels.Contains(label)) && issue.Labels.Any(x => x.ToUpper().Contains("CLIENT")) && issue.Labels.Any(x => x.ToUpper().Contains("IMPROVE")))
+    .ToList();
+
+Console.WriteLine($"✅ Tổng số issue: {filteredIssuesKHTrialbug.Count}");
+// Gom nhóm theo assignee
+var statisticsKHTrialImprove = filteredIssuesKHTrialImprove
+    .GroupBy(i => i.Assignee?.Name ?? "Unassigned")
+    .Select(g => new
+    {
+        Assignee = g.Key,
+        Total = g.Count(),
+        DoiSpec = g.Count(i => i.Labels?.Contains("_Đợi Spec") == true),
+        ChoLam = g.Count(i => i.Labels?.Contains("_Todo: Chờ làm") == true),
+        DangLam = g.Count(i => i.Labels?.Contains("_In-Progress: Đang làm") == true),
+        TamNgung = g.Count(i => i.Labels?.Contains("_Pending:  Tạm ngưng (lý do)") == true),
+        Testing = g.Count(i => i.Labels?.Contains("Testing : đã xong chức năng chờ test") == true),
+        Plan10 = g.Count(i => i.Labels?.Contains("Plan 10-12") == true),
+        Plan1 = g.Count(i => i.Labels?.Contains("Plan 1-3 2026") == true),
+        CanNotPlan = g.Count(i => i.Labels?.Contains("Can not plan (not enough information)") == true),
+        NotSeenYet = g.Count() - g.Count(i => i.Labels?.Contains("Plan 10-12") == true) - g.Count(i => i.Labels?.Contains("Plan 1-3 2026") == true) - g.Count(i => i.Labels?.Contains("Can not plan (not enough information)") == true),
+        ids = string.Join("", g.Select(i => i.iid.ToString() + ";"))
+    })
+    .OrderByDescending(g => g.ChoLam)
+    .ToList();
 
 
 
 // Export ra CSV
 string filePath = "gitlab_issue_summary.csv";
 var lines = new List<string>();
-lines.Add("======================All=================, Total,ĐơiSpec, Todo, In-Progress, Pending ,Testing,Plan 10-12,Plan 1-3 2026,Can not plan (not enough information),Not Seen Yet");
+lines.Add("====================== Feedback KH BUG TRIAL =================, Total,ĐơiSpec, Todo, In-Progress, Pending ,Testing,Plan 10-12,Plan 1-3 2026,Can not plan (not enough information),Not Seen Yet");
+lines.AddRange(statisticsKHTrialBUG.Select(s =>
+   $"{s.Assignee},{s.Total},{s.DoiSpec},{s.ChoLam},{s.DangLam},{s.TamNgung},{s.Testing},{s.Plan10},{s.Plan1},{s.CanNotPlan},{s.NotSeenYet},{s.ids}"
+));
 
-lines.AddRange(statistics.Select(s =>
-    $"{s.Assignee},{s.Total},{s.DoiSpec},{s.ChoLam},{s.DangLam},{s.TamNgung},{s.Testing},{s.Plan10},{s.Plan1},{s.CanNotPlan},{s.NotSeenYet},{s.ids}"
+lines.Add("====================== Feedback KH IMPROVE TRIAL =================, Total,ĐơiSpec, Todo, In-Progress, Pending ,Testing,Plan 10-12,Plan 1-3 2026,Can not plan (not enough information),Not Seen Yet");
+lines.AddRange(statisticsKHTrialImprove.Select(s =>
+   $"{s.Assignee},{s.Total},{s.DoiSpec},{s.ChoLam},{s.DangLam},{s.TamNgung},{s.Testing},{s.Plan10},{s.Plan1},{s.CanNotPlan},{s.NotSeenYet},{s.ids}"
 ));
-lines.Add("======================Feedback KH=================, Total,ĐơiSpec, Todo, In-Progress, Pending ,Testing,Plan 10-12,Plan 1-3 2026,Can not plan (not enough information),Not Seen Yet");
-lines.AddRange(statisticsKH.Select(s =>
-    $"{s.Assignee},{s.Total},{s.DoiSpec},{s.ChoLam},{s.DangLam},{s.TamNgung},{s.Testing},{s.Plan10},{s.Plan1},{s.CanNotPlan},{s.NotSeenYet},{s.ids}"
-));
+
 lines.Add("====================== Feedback KH BUG =================, Total,ĐơiSpec, Todo, In-Progress, Pending ,Testing,Plan 10-12,Plan 1-3 2026,Can not plan (not enough information),Not Seen Yet");
 lines.AddRange(statisticsKHBug.Select(s =>
    $"{s.Assignee},{s.Total},{s.DoiSpec},{s.ChoLam},{s.DangLam},{s.TamNgung},{s.Testing},{s.Plan10},{s.Plan1},{s.CanNotPlan},{s.NotSeenYet},{s.ids}"
 ));
-lines.Add("====================== Feedback KH BUG Drawing=================, Total,ĐơiSpec, Todo, In-Progress, Pending ,Testing,Plan 10-12,Plan 1-3 2026,Can not plan (not enough information),Not Seen Yet");
+lines.Add("====================== Feedback KH BUG Drawing =================, Total,ĐơiSpec, Todo, In-Progress, Pending ,Testing,Plan 10-12,Plan 1-3 2026,Can not plan (not enough information),Not Seen Yet");
 lines.AddRange(statisticsKHBugDrawing.Select(s =>
    $"{s.Assignee},{s.Total},{s.DoiSpec},{s.ChoLam},{s.DangLam},{s.TamNgung},{s.Testing},{s.Plan10},{s.Plan1},{s.CanNotPlan},{s.NotSeenYet},{s.ids}"
+));
+
+lines.Add("======================Feedback Incident + Mail + Chat =================, Total,ĐơiSpec, Todo, In-Progress, Pending ,Testing,Plan 10-12,Plan 1-3 2026,Can not plan (not enough information),Not Seen Yet");
+lines.AddRange(statisticsKH.Select(s =>
+    $"{s.Assignee},{s.Total},{s.DoiSpec},{s.ChoLam},{s.DangLam},{s.TamNgung},{s.Testing},{s.Plan10},{s.Plan1},{s.CanNotPlan},{s.NotSeenYet},{s.ids}"
+));
+
+lines.Add("======================All=================, Total,ĐơiSpec, Todo, In-Progress, Pending ,Testing,Plan 10-12,Plan 1-3 2026,Can not plan (not enough information),Not Seen Yet");
+lines.AddRange(statistics.Select(s =>
+    $"{s.Assignee},{s.Total},{s.DoiSpec},{s.ChoLam},{s.DangLam},{s.TamNgung},{s.Testing},{s.Plan10},{s.Plan1},{s.CanNotPlan},{s.NotSeenYet},{s.ids}"
 ));
 
 await File.WriteAllLinesAsync(filePath, lines, new UTF8Encoding(true));

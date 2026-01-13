@@ -248,17 +248,17 @@ Process.Start(new ProcessStartInfo
 public class GitLabIssue
 {
     public int iid { get; set; }
-    public string Title { get; set; }
-    public GitLabUser Assignee { get; set; }
-    public string State { get; set; }
+    public string? Title { get; set; }
+    public GitLabUser? Assignee { get; set; }
+    public string? State { get; set; }
     public DateTime CreatedAt { get; set; }
 
     [JsonPropertyName("labels")]
-    public List<string> Labels { get; set; }
+    public List<string>? Labels { get; set; }
 }
 
 public class GitLabUser
 {
-    public string Name { get; set; }
-    public string Username { get; set; }
+    public string? Name { get; set; }
+    public string? Username { get; set; }
 }

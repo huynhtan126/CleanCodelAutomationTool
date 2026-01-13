@@ -23,7 +23,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExportIssue", "..\ExportIss
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChangeRegion", "..\ChangeRegion\ChangeRegion.csproj", "{ECDBA40B-813F-4C36-A6B5-1E664F89C80D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "regionApp", "..\regionApp\regionApp.csproj", "{B4EA5DAD-331B-488A-937A-5D67DB153F37}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "regionApp", "..\regionApp\regionApp.csproj", "{B4EA5DAD-331B-488A-937A-5D67DB153F37}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppCreateFolder", "..\AppCreateFolder\AppCreateFolder.csproj", "{CBDA75FF-17E9-43E2-B40F-18A42A3FA319}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppScanFolder", "..\AppScanFolder\AppScanFolder.csproj", "{C1D8150A-3823-405E-B2F8-104738C078C1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -75,6 +79,14 @@ Global
 		{B4EA5DAD-331B-488A-937A-5D67DB153F37}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B4EA5DAD-331B-488A-937A-5D67DB153F37}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B4EA5DAD-331B-488A-937A-5D67DB153F37}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CBDA75FF-17E9-43E2-B40F-18A42A3FA319}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CBDA75FF-17E9-43E2-B40F-18A42A3FA319}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CBDA75FF-17E9-43E2-B40F-18A42A3FA319}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CBDA75FF-17E9-43E2-B40F-18A42A3FA319}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C1D8150A-3823-405E-B2F8-104738C078C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C1D8150A-3823-405E-B2F8-104738C078C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C1D8150A-3823-405E-B2F8-104738C078C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C1D8150A-3823-405E-B2F8-104738C078C1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -26,8 +26,13 @@ namespace AppCreateFolder
                 string excelFilePath = excelFile.FullName;
                 Console.WriteLine($"Đã tìm thấy file Excel: {excelFile.Name}");
 
+                Console.InputEncoding = System.Text.Encoding.Unicode;
+                Console.OutputEncoding = System.Text.Encoding.Unicode;
+
+                Console.Write("Nhập đường dẫn thư mục: ");
+                string inputPath = Console.ReadLine();
                 // Gọi hàm xử lý Excel của bạn ở đây
-                ProcessExcel(excelFilePath);
+                ProcessExcel(excelFilePath, inputPath);
             }
             else
             {
@@ -37,11 +42,11 @@ namespace AppCreateFolder
             Console.ReadKey();
         }
 
-        static void ProcessExcel(string excelFilePath)
+        static void ProcessExcel(string excelFilePath, string rootDirectory)
         {
             // 1. Đường dẫn file Excel và thư mục gốc muốn tạo folder con
             //string excelFilePath = @"C:\Users\Admin\Desktop\DanhSach.xlsx";
-            string rootDirectory = @"G:\.shortcut-targets-by-id\1j30Cjkw2rMmDc38p56T1kIubX_PRuu9G\0043_AIHoldings\01_NewCAD\08.Training new member\5.Folder Structure\Organizations\AiHoldings\AiCad-sf\TL_Document_NEW\Version1.0.2501.33";
+            //string rootDirectory = @"G:\.shortcut-targets-by-id\1j30Cjkw2rMmDc38p56T1kIubX_PRuu9G\0043_AIHoldings\01_NewCAD\08.Training new member\5.Folder Structure\Organizations\AiHoldings\AiCad-sf\TL_Document_NEW\Version1.0.2501.33";
 
             // Đảm bảo thư mục gốc tồn tại
             if (!Directory.Exists(rootDirectory))

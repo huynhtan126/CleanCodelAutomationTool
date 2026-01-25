@@ -29,6 +29,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppCreateFolder", "..\AppCr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppScanFolder", "..\AppScanFolder\AppScanFolder.csproj", "{C1D8150A-3823-405E-B2F8-104738C078C1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppJoinVideo", "..\AppJoinVideo\AppJoinVideo.csproj", "{4ACC65B8-6C7D-4143-91AF-EF7B5423DF04}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DichScriptnet8", "..\DichScriptnet8\DichScriptnet8.csproj", "{769A20EB-3187-4B9C-B8CB-AB667591BA6D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -87,6 +91,14 @@ Global
 		{C1D8150A-3823-405E-B2F8-104738C078C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C1D8150A-3823-405E-B2F8-104738C078C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C1D8150A-3823-405E-B2F8-104738C078C1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4ACC65B8-6C7D-4143-91AF-EF7B5423DF04}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4ACC65B8-6C7D-4143-91AF-EF7B5423DF04}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4ACC65B8-6C7D-4143-91AF-EF7B5423DF04}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4ACC65B8-6C7D-4143-91AF-EF7B5423DF04}.Release|Any CPU.Build.0 = Release|Any CPU
+		{769A20EB-3187-4B9C-B8CB-AB667591BA6D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{769A20EB-3187-4B9C-B8CB-AB667591BA6D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{769A20EB-3187-4B9C-B8CB-AB667591BA6D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{769A20EB-3187-4B9C-B8CB-AB667591BA6D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
